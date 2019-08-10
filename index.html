@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Manish Raj</title>
+    <meta name="viewport" content="width=device-width" />
+    <style type="text/css">
+    html, body {
+      padding: 0;
+      margin: 0;
+      font-family: monospace;
+    }
+
+    html, body {
+      scrollbar-width: none;
+      scroll-snap-type: y mandatory;
+    }
+
+    .card {
+      scroll-snap-align: start;
+      height: 100vh;
+      background: hsla(1, 1, 1, 1);
+      display: grid;
+      place-items: center;
+    }
+
+    .card1 {
+      background: rgb(246, 109, 82);
+      color: rgb(255, 255, 255);
+    }
+
+    .card2 {
+      background: rgb(115, 173, 248);
+      color: rgb(255, 255, 255);
+    }
+
+    .card h1 {
+      text-transform: uppercase;
+      font-weight: normal;
+      font-size: 64px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .card h3 {
+      font-weight: normal;
+      margin: 0;
+      padding: 0;
+      font-size: 24px;
+    }
+
+    .center-text { text-align: center;}
+    </style>
+  </head>
+  <body>
+      <!-- card 1 -->
+      <div class="card card1">
+        <div class="center-text">
+            <h1>Manish Raj</h1>
+            <h3>JavaScript Developer</h3>
+          </div>
+        </div>
+
+      <!-- card 2 -->
+      <div class="card card2">
+        <div class="center-text">
+          <h3>About; Blog; Resume; Connect</h3>
+        </div>
+      </div>
+    <script id="__bs_script__">//<![CDATA[
+    document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.js?v=2.26.7'><\/script>".replace("HOST", location.hostname));
+//]]></script>
+  </body>
+</html>
