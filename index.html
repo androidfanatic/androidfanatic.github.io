@@ -4,29 +4,22 @@
     <title>Manish Raj</title>
     <meta name="viewport" content="width=device-width" />
     <link id="favicon" rel="shortcut icon" type="image/png" href="/images/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <style>
     html, body {
       padding: 0;
       margin: 0;
-      font-family: 'Open Sans', sans-serif;
-      scrollbar-width: none;
-      scroll-snap-type: y mandatory;
+      font-family: Verdana, Sans-Serif;
     }
 
     /* cards */
     .card {
-      scroll-snap-align: start;
       box-sizing: border-box;
       height: 100vh;
       display: grid;
       place-items: center;
     }
-    .card h1 { margin: 0; padding: 0; }
-    .card h3 { margin: 0; padding: 0; }
-    .card1 { background: #0798EC; color: rgb(255, 255, 255); }
-    .card2 { background: #FC6C7C; color: rgb(255, 255, 255); }
-    .card3 { background: #FEC401; color: rgb(255, 255, 255); }
+    .card h1, h3 { margin: 0; padding: 0; font-weight: normal; }
+    .card1 { background: #002A35; color: #dbdbdb; }
 
     /* links */
     .link-simple { color: inherit; text-decoration: none; }
@@ -35,66 +28,26 @@
     /* text */
     .text-center { text-align: center;}
     .text-medium { font-size: 24px; font-weight: bold; }
-    .text-large { font-size: 36px; font-weight: bold; }
-    .text-huge { font-size: 64px; font-weight: bold; }
+    .text-large { font-size: 36px; }
+    .text-huge { font-size: 64px; }
     .text-upper { text-transform: uppercase; }
     .text-underline { text-decoration: underline; }
-
-    .email-btn {
-      line-height: 36px;
-      font-size: 36px;
-      background-color: transparent;
-      border: 0;
-      color: #fff;
-      font-weight: bold;
-    }
-    .email-btn:focus { outline: none; }
-    .email-btn::-moz-focus-inner { border: 0; }
-
-    .email-btn img {
-      height: 36px;
-      width: 36px;
-      vertical-align: middle;
-    }
     </style>
   </head>
   <body>
       <!-- card 1 -->
       <div class="card card1">
         <div class="text-center">
-            <h1 class="text-huge text-upper">Manish Raj</h1>
-            <h3>Fullstack JavaScript Developer</h3>
+          <h1 class="text-huge text-upper">Manish Raj</h1>
+          <div class="text-center">
+            <p class="text-upper" style="color: #cb4b16;">Fullstack Developer</p>
+            <p>
+              <a class="link-simple text-underline" href="/blog/about" title="Coming soon">About</a> | 
+              <a class="link-simple text-underline" href="/blog" title="Coming soon">Blog</a> |  
+              <a class="link-simple text-underline" href="mailto:manish_raj@outlook.com" title="manish_raj@outlook.com">Connect</a>
+            </p>
           </div>
         </div>
-
-      <!-- card 2 -->
-      <div class="card card2">
-        <div class="text-center text-medium">
-          <a class="link-simple text-underline" href="#about" title="Coming soon">About</a> / 
-          <a class="link-simple text-underline" href="#blog" title="Coming soon">Blog</a> / 
-          <a class="link-simple text-underline" href="#connect">Connect</a>
-        </div>
       </div>
-
-      <div class="card card3" id="connect">
-        <div class="text-center text-large">
-          <button title="Click to copy" class="email-btn" onclick="copyToClipboard('manish_raj@outlook.com')">
-            <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiBoZWlnaHQ9IjI0cHgiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGZpbGw9IiNmZmZmZmYiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTExLjk4NCwxM0MxMC4wMzEsMTMtMC4wMzEsNC44OTEtMC4wMzEsNC44OTFWNGMwLTEuMTA0LDAuODk2LTIsMi4wMDItMmgyMC4wMjYgIEMyMy4xMDQsMiwyNCwyLjg5NiwyNCw0bC0wLjAxNiwxQzIzLjk4NCw1LDE0LjAzMSwxMywxMS45ODQsMTN6IE0xMS45ODQsMTUuNzVjMi4xNDEsMCwxMi03Ljc1LDEyLTcuNzVMMjQsMjAgIGMwLDEuMTA0LTAuODk2LDItMi4wMDMsMkgxLjk3MWMtMS4xMDUsMC0yLjAwMi0wLjg5Ni0yLjAwMi0ybDAuMDE2LTEyQy0wLjAxNiw4LDEwLjAzMSwxNS43NSwxMS45ODQsMTUuNzV6IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=" />
-            manish_raj@outlook.com
-          </button>
-        </div>
-      </div>
-      <script type="text/javascript">
-      const copyToClipboard = (str) => {
-        const el = document.createElement('textarea');
-        el.value = str;
-        el.setAttribute('readonly', '');
-        el.style = { position: 'absolute', left: '-9999px' };
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-      }
-      </script>
   </body>
 </html>
