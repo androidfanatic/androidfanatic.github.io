@@ -1,18 +1,12 @@
 ---
 title: "About"
-date: 2017-11-17T16:25:11+05:30
-draft: true
+type: "page"
+date: 2017-08-18T16:25:11+05:30
+draft: false
 ---
 
-I solve problems and translate them into beautiful solutions using one of many programming languages. 
+I enjoy solving all kinds of problems using one of many programming languages. Got fascinated with programming back in 2008-09 while building download sites meant to work over 2G networks. From 2010 to 2012, I developed, co-owned and moderated a popular forum and downloads site powered by PHP and MySQL. I got into computer engineering in 2012 and graduated in 2016. I've been working as a software engineer since then, taking up multiple roles and responsibilities as a fullstack developer.
 
-I got fascinated with programming, the very first time I created WAP pages with DHTML and CSS 1.0, back in 2009, for a ringtone download site meant to work over 1.5 or 2G networks with browsers like Opera mobile and UCWeb. From 2010 to 2012, I co-owned, developed and moderated a popular disucssion board and downloads site (love4m.org) powered by PHP and MySQL.
+My current toolset includes some python for data processing, React and Vue.js for UI and JavaScript for the rest. 
 
-
-Open-source projects:
-
-Hobbies and interests:
-
-When I'm not solving problems or mashing keys, I enjoy hiking, camping and macro photography.
-
-Contact me:
+When I'm not staring at screens or mashing keys, I enjoy hiking, camping, photography and some occasional blogging.

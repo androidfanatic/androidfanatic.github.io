@@ -13,11 +13,6 @@
   </url>
   
   <url>
-    <loc>https://manishraj.dev/blog/privacy-geospock/</loc>
-    <lastmod>2019-01-16T20:37:09+05:30</lastmod>
-  </url>
-  
-  <url>
     <loc>https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/</loc>
     <lastmod>2017-10-12T22:11:46+05:30</lastmod>
   </url>
@@ -35,6 +30,11 @@
   <url>
     <loc>https://manishraj.dev/blog/post/puppeteer-quick-start/</loc>
     <lastmod>2017-09-01T13:43:32+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/blog/about/</loc>
+    <lastmod>2017-08-18T16:25:11+05:30</lastmod>
   </url>
   
   <url>

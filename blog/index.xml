@@ -36,17 +36,6 @@
     </item>
     
     <item>
-      <title>Privacy Policy - Geo Spock Google Action</title>
-      <link>https://manishraj.dev/blog/privacy-geospock/</link>
-      <pubDate>Wed, 16 Jan 2019 20:37:09 +0530</pubDate>
-      
-      <guid>https://manishraj.dev/blog/privacy-geospock/</guid>
-      <description>I built the Geo Spock app as a Free app. This SERVICE is provided by at no cost and is intended for use as is.
-This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
-If you choose to use my Service, then you agree to the collection and use of information in relation to this policy.</description>
-    </item>
-    
-    <item>
       <title>Setting up Slash commands for Slack workspace</title>
       <link>https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/</link>
       <pubDate>Thu, 12 Oct 2017 22:11:46 +0530</pubDate>
@@ -87,6 +76,15 @@ Træfik is simple enough to get started with, within minutes and offers a variet
       <description>Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
 This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.
 Quick start Begin by installing nodejs version 7.6 or later.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://manishraj.dev/blog/about/</link>
+      <pubDate>Fri, 18 Aug 2017 16:25:11 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/about/</guid>
+      <description>I enjoy solving all kinds of problems using one of many programming languages. Got fascinated with programming back in 2008-09 while building download sites meant to work over 2G networks. From 2010 to 2012, I developed, co-owned and moderated a popular forum and downloads site powered by PHP and MySQL. I got into computer engineering in 2012 and graduated in 2016. I&amp;rsquo;ve been working as a software engineer since then, taking up multiple roles and responsibilities as a fullstack developer.</description>
     </item>
     
   </channel>
