@@ -1,388 +1,151 @@
-
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
+	<head>
+	<meta name="generator" content="Hugo 0.52" />
+		<meta charset="utf-8">
+		<title>Blog</title>
+		<meta name="viewport" content="width=device-width">
+		
+			<link href="https://manishraj.dev/blog/index.xml" rel="alternate" type="application/rss+xml" title="Blog" />
+			<link href="https://manishraj.dev/blog/index.xml" rel="feed" type="application/rss+xml" title="Blog" />
+		
+		<link rel="stylesheet" href="https://manishraj.dev/blog/css/hybrid.css">
+		<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css">
+		<link rel="stylesheet" href="https://manishraj.dev/blog/css/colors-dark.css">
 
-<head>
-<meta charset="utf-8" />
-<meta name="author" content="" />
-<meta name="description" content="Personal blog." />
-<meta name="keywords" content="blog, tech" />
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.52" />
+		
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://manishraj.dev/blog/">Blog</a></h1>
+			<p></p>
+		</header>
 
-<link rel="canonical" href="https://manishraj.dev/blog/">
-<meta property="og:title" content="Manish Raj" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://manishraj.dev/blog/" />
-<meta property="og:updated_time" content="2019-03-27T05:30:31&#43;05:30"/>
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="https://manishraj.dev/blog/post/"><span>Posts</span></a></li>
+			
+				<li><a href="https://manishraj.dev/blog/tags/"><span>Tags</span></a></li>
+			
+		</ul>
+	
+</nav>
 
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Manish Raj"/>
-<meta name="twitter:description" content=""/>
+			</div>
 
+			<div id="content">
+				
+	
+		<article class="post">
+			<h1><a href="https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/">A quick glimpse of what&#39;s new in ES10</a> </h1>
 
-
-<meta itemprop="name" content="Manish Raj">
-<meta itemprop="description" content="">
-
-
-
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/layout.css" />
-<style type="text/css">
-body {
-  background-color: #101010;
-  color: #dbdbdb;
-}
-
-a { color: #dbdbdb; }
-
-pre {
-  background: #1D1F21;
-  border: 1px solid #dbdbdb;
-  border-radius: 5px;
-}
-
-code {
-  background: #1D1F21;
-}
-
-blockquote {
-  background: #1D1F21;
-  border-left: 3px solid #dbdbdb;
-}
-
-table {
-  margin: 1em auto;
-  border-collapse: collapse;
-}
-
-table, th, td {
-  border: 1px solid #dbdbdb;
-}
-
-th {
-  background: #dbdbdb;
-  color: #101010;
-}
-
-.siteTitle a { color: #99cc66; }
-
-.post .content h1{ color: #99cc66; }
-.post .content h2{ color: #99cc66; }
-.post .content h3{ color: #99cc66; }
-.post .content h4{ color: #99cc66; }
-.post .content h5{ color: #99cc66; }
-.post .content h6{ color: #99cc66; }
-.post .content a:hover { color: #99cc66; }
-.social-link:hover { color: #99cc66; }
-.nav-item-title:hover { color: #99cc66; }
-.tag a:hover { color: #99cc66; }
-.copyright { color: #404040 }
-.poweredby { color: #404040 }
-.poweredby a { color: #404040; }
-.post-preview .title a{ color: #99cc66; }
-.content-item a:hover{
-  text-decoration: underline;
-  color: #99cc66;
-}
-.post-list .title { color: #99cc66; }
-.rmore { color: #99cc66; }
-.terms .term a:hover {
-  text-decoration: underline;
-  color: #99cc66;
-}
-
-</style>
-
-
-
-<title>
-
-
-     Manish Raj 
-
-</title>
-
-</head>
-
-
-<body>
-<div class="main">
-<header>
-
-<div class="header-bar">
-
-  <nav>
-    <div class="siteTitle">
-      <a href="https://manishraj.dev/blog/">Manish Raj</a>
-    </div> 
-
-    
-    
-    <a class="nav-item" href="https://manishraj.dev/blog/post/"><div class="nav-item-title">Posts</div></a>
-    
-    <a class="nav-item" href="https://manishraj.dev/blog/tags/"><div class="nav-item-title">Tags</div></a>
-    
-
-  </nav>
-</div>
-
-  
-<div class="social-links-header">
-
-  
-  <a href="mailto:myemail"><div class="social-link">email</div></a>
-  
-
-  
-  <a href="https://github.com/github%20id" target="_blank"><div class="social-link">gh</div></a>
-  
-
-  
-  <a href="https://gitlab.com/gitlab%20id" target="_blank"><div class="social-link">gl</div></a>
-  
-
-  
-  <a href="https://twitter.com/twitter%20id" target="_blank"><div class="social-link">twtr</div></a>
-  
-
-  
-  <a href="https://www.linkedin.com/in/linkedin%20id" target="_blank"><div class="social-link">in</div></a>
-  
-
-</div>
-
-
-</header>
-
-
-<main>
-
-
-  
-    <article class="post-preview">
-
-  <header>
-    <h2 class="title"> <a href='https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/'> A quick glimpse of what&#39;s new in ES10</a> </h2>
-    <div class="meta">
-      Mar 27, 2019 - 2 minutes
-    </div>
-    
-<div class="tags">
-    
-</div>
-
-  </header>
-
-  <div class="summary">
-    Here&rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:
+			<div class="post-content">
+				<p>Here&rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:
  Trim whitespaces only from start of a string
 &quot; My String &quot;.trimStart() // Produces: &quot;My String &quot;  Trim whitespaces only from end of a string:
 &quot; My String &quot;.trimEnd() // Produces: &quot; My String&quot;  Flatten an array:
-[1, 2, 3, [4, [5, 6]]].
-    <a href='https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/' class="rmore">Read more ...</a>
-  </div>
+[1, 2, 3, [4, [5, 6]]].  … </p>
+			</div>
 
-  <div class="rmore">
-  </div>
+			<p class="meta">Posted on <span class="postdate">27. March 2019</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/">Generate vector tiles with built-in postgis functions</a> </h1>
 
-</article>
+			<div class="post-content">
+				<p>This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
+1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services.  … </p>
+			</div>
 
+			<p class="meta">Posted on <span class="postdate">03. February 2019</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://manishraj.dev/blog/privacy-geospock/">Privacy Policy - Geo Spock Google Action</a> </h1>
 
-    <article class="post-preview">
+			<div class="post-content">
+				<p>I built the Geo Spock app as a Free app. This SERVICE is provided by at no cost and is intended for use as is.
+This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
+If you choose to use my Service, then you agree to the collection and use of information in relation to this policy.  … </p>
+			</div>
 
-  <header>
-    <h2 class="title"> <a href='https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/'> Generate vector tiles with built-in postgis functions</a> </h2>
-    <div class="meta">
-      Feb 3, 2019 - 4 minutes
-    </div>
-    
-<div class="tags">
-    
-</div>
+			<p class="meta">Posted on <span class="postdate">16. January 2019</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/">Setting up Slash commands for Slack workspace</a> </h1>
 
-  </header>
-
-  <div class="summary">
-    This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
-1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services.
-    <a href='https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/' class="rmore">Read more ...</a>
-  </div>
-
-  <div class="rmore">
-  </div>
-
-</article>
-
-
-    <article class="post-preview">
-
-  <header>
-    <h2 class="title"> <a href='https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/'> Setting up Slash commands for Slack workspace</a> </h2>
-    <div class="meta">
-      Oct 12, 2017 - 2 minutes
-    </div>
-    
-<div class="tags">
-    
-</div>
-
-  </header>
-
-  <div class="summary">
-    Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.
+			<div class="post-content">
+				<p>Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.
 In this post, we will try to set up a slash command /hello for our slack workspace that makes a request to a REST API and displays response back on the slack channel.
-The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.
-    <a href='https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/' class="rmore">Read more ...</a>
-  </div>
+The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.  … </p>
+			</div>
 
-  <div class="rmore">
-  </div>
+			<p class="meta">Posted on <span class="postdate">12. October 2017</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://manishraj.dev/blog/post/webvr-with-aframe/">WebVR With A-Frame</a> </h1>
 
-</article>
+			<div class="post-content">
+				<p>WebVR WebVR is an emerging technology that enables virtual reality experience to be delivered and experienced from within a web browser. WebVR is mostly composed of experimental Javascript APIs supported by browsers such as Firefox and Chrome and VR headsets such as Oculus Rift, Google Daydream etc.
+WebVR can be used to build all kinds of VR experiences such as presentations, stories, walk-through guides, maps, architectural design demos, games and anything else one can envision.  … </p>
+			</div>
 
+			<p class="meta">Posted on <span class="postdate">23. September 2017</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/">Træfik, reverse proxy, HTTPs and more</a> </h1>
 
-    <article class="post-preview">
-
-  <header>
-    <h2 class="title"> <a href='https://manishraj.dev/blog/post/webvr-with-aframe/'> WebVR With A-Frame</a> </h2>
-    <div class="meta">
-      Sep 23, 2017 - 4 minutes
-    </div>
-    
-<div class="tags">
-    
-</div>
-
-  </header>
-
-  <div class="summary">
-    WebVR WebVR is an emerging technology that enables virtual reality experience to be delivered and experienced from within a web browser. WebVR is mostly composed of experimental Javascript APIs supported by browsers such as Firefox and Chrome and VR headsets such as Oculus Rift, Google Daydream etc.
-WebVR can be used to build all kinds of VR experiences such as presentations, stories, walk-through guides, maps, architectural design demos, games and anything else one can envision.
-    <a href='https://manishraj.dev/blog/post/webvr-with-aframe/' class="rmore">Read more ...</a>
-  </div>
-
-  <div class="rmore">
-  </div>
-
-</article>
-
-
-    <article class="post-preview">
-
-  <header>
-    <h2 class="title"> <a href='https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/'> Træfik, reverse proxy, HTTPs and more</a> </h2>
-    <div class="meta">
-      Sep 11, 2017 - 5 minutes
-    </div>
-    
-<div class="tags">
-    
-</div>
-
-  </header>
-
-  <div class="summary">
-    I stumbled upon Træfik last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.
+			<div class="post-content">
+				<p>I stumbled upon Træfik last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.
 Træfik is simple enough to get started with, within minutes and offers a variety of features such as:
- Deploy Traefik using a tiny go binary or docker image. Serve as a reverse proxy for multiple micro-services. Supports several back-end systems such as Docker, Kubernetes, Consul, Amazon ECS and more.
-    <a href='https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/' class="rmore">Read more ...</a>
-  </div>
+ Deploy Traefik using a tiny go binary or docker image. Serve as a reverse proxy for multiple micro-services. Supports several back-end systems such as Docker, Kubernetes, Consul, Amazon ECS and more.  … </p>
+			</div>
 
-  <div class="rmore">
-  </div>
+			<p class="meta">Posted on <span class="postdate">11. September 2017</span></p>
+		</article>
+	
+		<article class="post">
+			<h1><a href="https://manishraj.dev/blog/post/puppeteer-quick-start/">Puppeteer - quick start guide</a> </h1>
 
-</article>
-
-
-    <article class="post-preview">
-
-  <header>
-    <h2 class="title"> <a href='https://manishraj.dev/blog/post/puppeteer-quick-start/'> Puppeteer - quick start guide</a> </h2>
-    <div class="meta">
-      Sep 1, 2017 - 4 minutes
-    </div>
-    
-<div class="tags">
-    
-</div>
-
-  </header>
-
-  <div class="summary">
-    Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
+			<div class="post-content">
+				<p>Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
 This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.
-Quick start Begin by installing nodejs version 7.6 or later.
-    <a href='https://manishraj.dev/blog/post/puppeteer-quick-start/' class="rmore">Read more ...</a>
-  </div>
+Quick start Begin by installing nodejs version 7.6 or later.  … </p>
+			</div>
 
-  <div class="rmore">
-  </div>
+			<p class="meta">Posted on <span class="postdate">01. September 2017</span></p>
+		</article>
+	
 
-</article>
-
-
+	
 
 
-<div class="page-nav">
-  <div class="page-prev">
-    
-  </div> 
+			</div>
 
-  <div class="page-num">
-    1/1
-  </div> 
+			<footer id="footer">
+				<p class="copyright">
+					
+						 
+					
+				</p>
+			</footer>
+		</div>
 
-  <div class="page-next">
-    
-  </div> 
-</div> 
-
-
-</main>
-
-  <footer>
-
-  <div class="social-links-footer">
-
-  
-  <a href="mailto:myemail"><div class="social-link">Email</div></a>
-  
-
-  
-  <a href="https://github.com/github%20id" target="_blank"><div class="social-link">GitHub</div></a>
-  
-
-  
-  <a href="https://gitlab.com/gitlab%20id" target="_blank"><div class="social-link">GitLab</div></a>
-  
-
-  
-  <a href="https://twitter.com/twitter%20id" target="_blank"><div class="social-link">Twitter</div></a>
-  
-
-  
-  <a href="https://www.linkedin.com/in/linkedin%20id" target="_blank"><div class="social-link">LinkedIn</div></a>
-  
-
-  <div class="social-link">
-  <a href="https://manishraj.dev/blog/index.xml" target="_blank">RSS</a>
-  </div>
-
+		<div style="text-align: center;">
+  <a href="https://www.linkedin.com/in/manish-raj/" target="_blank">
+    <img style="filter: invert(100%) sepia(5%) saturate(753%) hue-rotate(236deg) brightness(117%) contrast(100%); width: 20px; height: 20px;" 
+      src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI1MHB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MCA1MCIgd2lkdGg9IjUwcHgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGUvPjxkZWZzLz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIj48ZyBmaWxsPSIjMDAwMDAwIiBpZD0iTGlua2VkSW4iPjxwYXRoIGQ9Ik0yNSw1MCBDMzguODA3MTE5NCw1MCA1MCwzOC44MDcxMTk0IDUwLDI1IEM1MCwxMS4xOTI4ODA2IDM4LjgwNzExOTQsMCAyNSwwIEMxMS4xOTI4ODA2LDAgMCwxMS4xOTI4ODA2IDAsMjUgQzAsMzguODA3MTE5NCAxMS4xOTI4ODA2LDUwIDI1LDUwIFogTTI1LDQ3IEMzNy4xNTAyNjUxLDQ3IDQ3LDM3LjE1MDI2NTEgNDcsMjUgQzQ3LDEyLjg0OTczNDkgMzcuMTUwMjY1MSwzIDI1LDMgQzEyLjg0OTczNDksMyAzLDEyLjg0OTczNDkgMywyNSBDMywzNy4xNTAyNjUxIDEyLjg0OTczNDksNDcgMjUsNDcgWiBNMTQsMjAuMTE4MDQ3OSBMMTQsMzQuNjU4MTgzNCBMMTguNzEwMDg1MSwzNC42NTgxODM0IEwxOC43MTAwODUxLDIwLjExODA0NzkgTDE0LDIwLjExODA0NzkgWiBNMTYuNjY0Njk2MiwxMyBDMTUuMDUzNDA1OCwxMyAxNCwxNC4wODU4NjExIDE0LDE1LjUxMTUxMjIgQzE0LDE2LjkwNzYzMzEgMTUuMDIyMjcxMSwxOC4wMjQ3NjE0IDE2LjYwMzU1NTYsMTguMDI0NzYxNCBMMTYuNjMzNjU1NiwxOC4wMjQ3NjE0IEMxOC4yNzU5ODY3LDE4LjAyNDc2MTQgMTkuMjk4ODIyMiwxNi45MDc2MzMxIDE5LjI5ODgyMjIsMTUuNTExNTEyMiBDMTkuMjY4MjUxOSwxNC4wODU4NjExIDE4LjI3NTk4NjcsMTMgMTYuNjY0Njk2MiwxMyBaIE0zMC41NzY5MjEzLDIwLjExODA0NzkgQzI4LjA3NjE3NiwyMC4xMTgwNDc5IDI2Ljk1NjU1MDEsMjEuNTI5MzE5OSAyNi4zMzE0MTA4LDIyLjUxOTM1MjcgTDI2LjMzMTQxMDgsMjAuNDU5ODY0NCBMMjEuNjIwNzYxNCwyMC40NTk4NjQ0IEMyMS42ODI4NDI3LDIxLjgyNDIzNTYgMjEuNjIwNzYxNCwzNSAyMS42MjA3NjE0LDM1IEwyNi4zMzE0MTA4LDM1IEwyNi4zMzE0MTA4LDI2Ljg3OTU4ODcgQzI2LjMzMTQxMDgsMjYuNDQ1MDMyIDI2LjM2MTk4MTIsMjYuMDExNTM2OCAyNi40ODY1MTk5LDI1LjcwMDQwODQgQzI2LjgyNjkzMiwyNC44MzIyNiAyNy42MDIwMDY5LDIzLjkzMzQyMzMgMjguOTAzMjY3NCwyMy45MzM0MjMzIEMzMC42MDgzMzgxLDIzLjkzMzQyMzMgMzEuMjg5OTE0OSwyNS4yNjY3MjAyIDMxLjI4OTkxNDksMjcuMjIwNjMzMyBMMzEuMjg5OTE0OSwzNC45OTk2MTQgTDM1Ljk5OTgxMTksMzQuOTk5NjE0IEwzNiwyNi42NjI3NDQ2IEMzNiwyMi4xOTY2NDM5IDMzLjY3NjM3NDMsMjAuMTE4MDQ3OSAzMC41NzY5MjEzLDIwLjExODA0NzkgWiBNMzAuNTc2OTIxMywyMC4xMTgwNDc5IiBpZD0iT3ZhbC0xIi8+PC9nPjwvZz48L3N2Zz4=" 
+      alt="Linkedin"
+    />
+  </a>
 </div>
-
-
-  <div class="copyright"> &copy; 2019. All rights reserved. </div>
-
-  <div class="poweredby">
-    Powered by <a href="https://gohugo.io/">Hugo</a>.
-  </div>
-
-  </footer>
-
-</div> 
-
-</body>
+	</body>
 </html>
-

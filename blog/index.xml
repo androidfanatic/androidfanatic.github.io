@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Manish Raj</title>
+    <title>Blog</title>
     <link>https://manishraj.dev/blog/</link>
-    <description>Recent content on Manish Raj</description>
+    <description>Recent content on Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <copyright> </copyright>
     <lastBuildDate>Wed, 27 Mar 2019 05:30:31 +0530</lastBuildDate>
     
 	<atom:link href="https://manishraj.dev/blog/index.xml" rel="self" type="application/rss+xml" />
