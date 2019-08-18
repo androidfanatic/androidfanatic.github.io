@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="" />
+<meta name="description" content="Personal blog." />
+<meta name="keywords" content="blog, tech" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.52" />
+
+<link rel="canonical" href="https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/">
+<meta property="og:title" content="Generate vector tiles with built-in postgis functions" />
+<meta property="og:description" content="This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
+1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/" /><meta property="article:published_time" content="2019-02-03T02:30:47&#43;05:30"/>
+<meta property="article:modified_time" content="2019-02-03T02:30:47&#43;05:30"/>
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Generate vector tiles with built-in postgis functions"/>
+<meta name="twitter:description" content="This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
+1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services."/>
+
+
+
+<meta itemprop="name" content="Generate vector tiles with built-in postgis functions">
+<meta itemprop="description" content="This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
+1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services.">
+
+
+<meta itemprop="datePublished" content="2019-02-03T02:30:47&#43;05:30" />
+<meta itemprop="dateModified" content="2019-02-03T02:30:47&#43;05:30" />
+<meta itemprop="wordCount" content="772">
+
+
+
+<meta itemprop="keywords" content="" />
+
+
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/layout.css" />
+<style type="text/css">
+body {
+  background-color: #101010;
+  color: #dbdbdb;
+}
+
+a { color: #dbdbdb; }
+
+pre {
+  background: #1D1F21;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
+}
+
+code {
+  background: #1D1F21;
+}
+
+blockquote {
+  background: #1D1F21;
+  border-left: 3px solid #dbdbdb;
+}
+
+table {
+  margin: 1em auto;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #dbdbdb;
+}
+
+th {
+  background: #dbdbdb;
+  color: #101010;
+}
+
+.siteTitle a { color: #99cc66; }
+
+.post .content h1{ color: #99cc66; }
+.post .content h2{ color: #99cc66; }
+.post .content h3{ color: #99cc66; }
+.post .content h4{ color: #99cc66; }
+.post .content h5{ color: #99cc66; }
+.post .content h6{ color: #99cc66; }
+.post .content a:hover { color: #99cc66; }
+.social-link:hover { color: #99cc66; }
+.nav-item-title:hover { color: #99cc66; }
+.tag a:hover { color: #99cc66; }
+.copyright { color: #404040 }
+.poweredby { color: #404040 }
+.poweredby a { color: #404040; }
+.post-preview .title a{ color: #99cc66; }
+.content-item a:hover{
+  text-decoration: underline;
+  color: #99cc66;
+}
+.post-list .title { color: #99cc66; }
+.rmore { color: #99cc66; }
+.terms .term a:hover {
+  text-decoration: underline;
+  color: #99cc66;
+}
+
+</style>
+
+
+
+<title>
+
+
+     Generate vector tiles with built-in postgis functions 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://manishraj.dev/blog/">Manish Raj</a>
+    </div> 
+
+    
+    
+    <a class="nav-item active" href="https://manishraj.dev/blog/post/"><div class="nav-item-title">Posts</div></a>
+    
+    <a class="nav-item" href="https://manishraj.dev/blog/tags/"><div class="nav-item-title">Tags</div></a>
+    
+
+  </nav>
+</div>
+
+  
+<div class="social-links-header">
+
+  
+  <a href="mailto:myemail"><div class="social-link">email</div></a>
+  
+
+  
+  <a href="https://github.com/github%20id" target="_blank"><div class="social-link">gh</div></a>
+  
+
+  
+  <a href="https://gitlab.com/gitlab%20id" target="_blank"><div class="social-link">gl</div></a>
+  
+
+  
+  <a href="https://twitter.com/twitter%20id" target="_blank"><div class="social-link">twtr</div></a>
+  
+
+  
+  <a href="https://www.linkedin.com/in/linkedin%20id" target="_blank"><div class="social-link">in</div></a>
+  
+
+</div>
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> Generate vector tiles with built-in postgis functions </h1>
+    <div class="content"> 
+
+<p>This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions <a href="https://postgis.net/docs/ST_AsMVT.html" target="_blank">ST_AsMVT</a> and  <a href="https://postgis.net/docs/ST_MakeEnvelope.html" target="_blank">ST_MakeEnvelope</a>.</p>
+
+<h3 id="1-setup-a-test-database">1. Setup a test database</h3>
+
+<p>Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services. For now, we will get started with a single docker image which gives us a Postgres instance with PostGIS extension installed.</p>
+
+<p>File: <code>docker-compose.yml</code></p>
+
+<pre><code>version: '3'
+services:
+  db:
+    image: mdillon/postgis
+    ports:
+      - &quot;5432:5432&quot;
+    environment:
+      - &quot;POSTGRES_PASSWORD=pass&quot;
+</code></pre>
+
+<p>Note: The database password here is extremely simple. Make sure you use something more complex if running this code outside of local development environment.</p>
+
+<p>To test the compose file, execute: <code>docker-compose config -q</code> and to fire up the containers, run the command: <code>docker-compose up -d</code>:</p>
+
+<h3 id="2-import-some-test-data">2. Import some test data</h3>
+
+<p>Now that we&rsquo;ve a postgres instance up and running, we can begin importing some data.</p>
+
+<p>Create a database and initialize the POSTGIS extension:</p>
+
+<pre><code>docker-compose exec db psql -U postgres -c 'CREATE DATABASE roads'
+docker-compose exec db psql -U postgres roads -c 'CREATE EXTENSION POSTGIS'
+</code></pre>
+
+<p>I exported road data of the Pune city, the city I live in, and hosted it on the github repo:</p>
+
+<p>Download and extract test data <sup>[1]</sup>:</p>
+
+<pre><code>wget https://github.com/androidfanatic/tiles_with_st_asmvt/raw/master/data/pune_roads.tar.gz
+tar -xvf pune_roads.tar.gz
+</code></pre>
+
+<p>This will extract a GeoJSON file in the current directory. We want to be able to import this data into our database. In comes <code>GDAL</code>. I call it the swiss-knife of GIS data. GDAL allows one to work with GIS datasets of all sizes and formats and offers wide variety of features for data translation. Head over to <a href="https://www.gdal.org/" target="_blank"><a href="https://www.gdal.org/">https://www.gdal.org/</a></a> for quick installation steps and to read more about it.</p>
+
+<p>Once installed, we can begin importing the data from the GeoJSON file into our database with this simple one-liner:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ogr2ogr -f <span style="color:#ed9d13">&#34;PostgreSQL&#34;</span> PG:<span style="color:#ed9d13">&#34;dbname=roads user=postgres host=localhost password=pass&#34;</span> <span style="color:#ed9d13">\
+</span><span style="color:#ed9d13"></span>  <span style="color:#ed9d13">&#34;pune_roads.geojson&#34;</span> -nln pune_roads -append <span style="color:#ed9d13">\
+</span><span style="color:#ed9d13"></span>  -t_srs <span style="color:#ed9d13">&#34;http://spatialreference.org/ref/epsg/4326/&#34;</span> -overwrite</code></pre></div>
+<p>Let&rsquo;s also verify that the data was imported.</p>
+
+<pre><code>docker-compose exec db psql -U postgres roads -c &quot;SELECT COUNT(*) FROM pune_roads&quot;
+</code></pre>
+
+<p>Now that we&rsquo;ve the test database setup with some test data seeded in, let&rsquo;s work on generting the vector tiles on the fly.</p>
+
+<h3 id="3-create-a-tile-service">3. Create a tile service</h3>
+
+<p>To display the data back, we begin by creating a HTTP service that returns vector tiles. To do so, we use a combination of ST_AsMVT, ST_AsMVTGeom and ST_MakeEnvelope functions provided by PostGIS.</p>
+
+<p>Here&rsquo;s a NodeJS script, inspired by Chris&rsquo;s blog post <sup>[2]</sup>:</p>
+
+<p>The interesting bit here is the translation of <code>/z/x/y</code> parameters to a bounding box that gets consumed by the function ST_MakeEnvelope(). We also set <code>clipping = True</code> for the function ST_AsMVTGeom and select additional database columns (id, name and highway in this case) that get translated to feature properties.</p>
+
+<p>These feature properties can be used for data-driven styling <sup>[3]</sup>, displaying additional information on map and more.</p>
+
+<p>File: <code>app.js</code></p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#999;font-style:italic">// mercator
+</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">const</span> SphericalMercator = require(<span style="color:#ed9d13">&#39;@mapbox/sphericalmercator&#39;</span>);
+<span style="color:#6ab825;font-weight:bold">const</span> mercator = <span style="color:#6ab825;font-weight:bold">new</span> SphericalMercator({size: <span style="color:#3677a9">256</span>});
+
+<span style="color:#999;font-style:italic">// database library
+</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">const</span> {Client} = require(<span style="color:#ed9d13">&#39;pg&#39;</span>)
+<span style="color:#6ab825;font-weight:bold">const</span> db = <span style="color:#6ab825;font-weight:bold">new</span> Client(<span style="color:#ed9d13">&#39;postgres://postgres:pass@localhost:5432/roads&#39;</span>);
+db.connect();
+
+<span style="color:#999;font-style:italic">// http server
+</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">const</span> express = require(<span style="color:#ed9d13">&#39;express&#39;</span>);
+<span style="color:#6ab825;font-weight:bold">const</span> app = express();
+
+app.use(express.<span style="color:#6ab825;font-weight:bold">static</span>(__dirname + <span style="color:#ed9d13">&#39;/public&#39;</span>));
+
+<span style="color:#999;font-style:italic">// route
+</span><span style="color:#999;font-style:italic"></span><span style="color:#6ab825;font-weight:bold">const</span> layerName = <span style="color:#ed9d13">&#39;pune_roads&#39;</span>;
+app.get(<span style="color:#ed9d13">`/tiles/</span><span style="color:#ed9d13">${</span>layerName<span style="color:#ed9d13">}</span><span style="color:#ed9d13">/:z/:x/:y.mvt`</span>, <span style="color:#6ab825;font-weight:bold">async</span> (req, res) =&gt; {
+  <span style="color:#6ab825;font-weight:bold">const</span> bbox = mercator.bbox(req.params.x, req.params.y, req.params.z, <span style="color:#6ab825;font-weight:bold">false</span>);
+  <span style="color:#6ab825;font-weight:bold">const</span> query = <span style="color:#ed9d13">`
+</span><span style="color:#ed9d13">      SELECT ST_AsMVT(q, &#39;</span><span style="color:#ed9d13">${</span>layerName<span style="color:#ed9d13">}</span><span style="color:#ed9d13">&#39;, 4096, &#39;geom&#39;) FROM (
+</span><span style="color:#ed9d13">        SELECT 
+</span><span style="color:#ed9d13">          id, name, highway,
+</span><span style="color:#ed9d13">          ST_AsMVTGeom(
+</span><span style="color:#ed9d13">            wkb_geometry,
+</span><span style="color:#ed9d13">            ST_MakeEnvelope(</span><span style="color:#ed9d13">${</span>bbox[<span style="color:#3677a9">0</span>]<span style="color:#ed9d13">}</span><span style="color:#ed9d13">, </span><span style="color:#ed9d13">${</span>bbox[<span style="color:#3677a9">1</span>]<span style="color:#ed9d13">}</span><span style="color:#ed9d13">, </span><span style="color:#ed9d13">${</span>bbox[<span style="color:#3677a9">2</span>]<span style="color:#ed9d13">}</span><span style="color:#ed9d13">, </span><span style="color:#ed9d13">${</span>bbox[<span style="color:#3677a9">3</span>]<span style="color:#ed9d13">}</span><span style="color:#ed9d13">, 4326),
+</span><span style="color:#ed9d13">            4096,
+</span><span style="color:#ed9d13">            256,
+</span><span style="color:#ed9d13">            true
+</span><span style="color:#ed9d13">          ) geom FROM pune_roads WHERE highway IS NOT NULL
+</span><span style="color:#ed9d13">        ) q
+</span><span style="color:#ed9d13">    `</span>;
+  <span style="color:#6ab825;font-weight:bold">try</span> {
+    <span style="color:#6ab825;font-weight:bold">const</span> tiles = <span style="color:#6ab825;font-weight:bold">await</span> db.query(query);
+    <span style="color:#6ab825;font-weight:bold">const</span> tile = tiles.rows[<span style="color:#3677a9">0</span>];
+    res.setHeader(<span style="color:#ed9d13">&#39;Content-Type&#39;</span>, <span style="color:#ed9d13">&#39;application/x-protobuf&#39;</span>);
+    <span style="color:#6ab825;font-weight:bold">if</span> (tile.st_asmvt.length === <span style="color:#3677a9">0</span>) {
+      res.status(<span style="color:#3677a9">204</span>);
+    }
+    res.send(tile.st_asmvt);
+  } <span style="color:#6ab825;font-weight:bold">catch</span> (err) {
+    res.status(<span style="color:#3677a9">404</span>).send({ error: err.toString() });
+  }
+});
+
+app.listen(<span style="color:#3677a9">8080</span>);
+</code></pre></div>
+<h3 id="4-add-the-new-vector-layer">4. Add the new vector layer</h3>
+
+<p>Let&rsquo;s add the tile layer to the map. We used mapbox <sup>[4]</sup> which is our web map of choice because of it&rsquo;s performance, data-sets and robustness when it comes to configuring and styling the map.</p>
+
+<p>Add the layer to map with this snippet:</p>
+<div class="highlight"><pre style="color:#d0d0d0;background-color:#202020;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">map.addLayer({
+  <span style="color:#ed9d13">&#34;id&#34;</span>: <span style="color:#ed9d13">&#34;road&#34;</span>,
+  <span style="color:#ed9d13">&#34;source-layer&#34;</span>: <span style="color:#ed9d13">&#34;pune_roads&#34;</span>,
+  <span style="color:#ed9d13">&#34;source&#34;</span>: {
+    <span style="color:#ed9d13">&#34;type&#34;</span>: <span style="color:#ed9d13">&#34;vector&#34;</span>,
+    <span style="color:#ed9d13">&#34;tiles&#34;</span>: [<span style="color:#ed9d13">&#34;http://localhost:8080/tiles/pune_roads/{z}/{x}/{y}.mvt&#34;</span>],
+    <span style="color:#ed9d13">&#34;tolerance&#34;</span>: <span style="color:#3677a9">0</span>,
+  },
+  <span style="color:#ed9d13">&#34;type&#34;</span>: <span style="color:#ed9d13">&#34;line&#34;</span>,
+  <span style="color:#ed9d13">&#34;paint&#34;</span>: {
+    <span style="color:#ed9d13">&#34;line-color&#34;</span>: <span style="color:#ed9d13">&#34;orangered&#34;</span>,
+    <span style="color:#ed9d13">&#34;line-width&#34;</span>: [<span style="color:#ed9d13">&#39;step&#39;</span>, [<span style="color:#ed9d13">&#39;zoom&#39;</span>], <span style="color:#3677a9">0.4</span>, <span style="color:#3677a9">14</span>, <span style="color:#3677a9">1</span>, <span style="color:#3677a9">16</span>, <span style="color:#3677a9">2</span>, <span style="color:#3677a9">18</span>, <span style="color:#3677a9">4</span>, <span style="color:#3677a9">20</span>, <span style="color:#3677a9">8</span>]
+  }
+});
+</code></pre></div>
+<p>At this point, you should be able to see road data being rendered on the map.</p>
+
+<p><center></p>
+
+<p><img src="https://raw.githubusercontent.com/androidfanatic/tiles_with_st_asmvt/master/img/img3.png" style="max-width: 100%;" /></p>
+
+<p></center></p>
+
+<p>Next steps to work on and explore:</p>
+
+<ul>
+<li>Cache tiles for sometime, say an hour, instead of re-generating again</li>
+<li>Allow pre-seeding and invalidation of cached tiles</li>
+</ul>
+
+<p>You can find the entire source code, with caching, here at: <a href="https://github.com/androidfanatic/tiles_with_st_asmvt">https://github.com/androidfanatic/tiles_with_st_asmvt</a></p>
+
+<p>References:</p>
+
+<p>[1] Road data source: <a href="https://overpass-turbo.eu/">https://overpass-turbo.eu/</a></p>
+
+<p>[2] <a href="https://medium.com/nycplanninglabs/using-the-new-mvt-function-in-postgis-75f8addc1d68">https://medium.com/nycplanninglabs/using-the-new-mvt-function-in-postgis-75f8addc1d68</a></p>
+
+<p>[3] <a href="https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/">https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/</a></p>
+
+<p>[4] <a href="https://docs.mapbox.com/mapbox-gl-js/api/">https://docs.mapbox.com/mapbox-gl-js/api/</a></p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+    
+<div class="tags">
+    
+</div>
+
+    <div class="date"> Feb 3, 2019 </div>
+  </div>
+
+</footer>
+
+
+  
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+  <a href="mailto:myemail"><div class="social-link">Email</div></a>
+  
+
+  
+  <a href="https://github.com/github%20id" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+  <a href="https://gitlab.com/gitlab%20id" target="_blank"><div class="social-link">GitLab</div></a>
+  
+
+  
+  <a href="https://twitter.com/twitter%20id" target="_blank"><div class="social-link">Twitter</div></a>
+  
+
+  
+  <a href="https://www.linkedin.com/in/linkedin%20id" target="_blank"><div class="social-link">LinkedIn</div></a>
+  
+
+  <div class="social-link">
+  <a href="https://manishraj.dev/blog/index.xml" target="_blank">RSS</a>
+  </div>
+
+</div>
+
+
+  <div class="copyright"> &copy; 2019. All rights reserved. </div>
+
+  <div class="poweredby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>.
+  </div>
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+

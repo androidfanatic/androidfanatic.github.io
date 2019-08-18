@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.26" />
+
+  <title>Træfik, reverse proxy, HTTPs support and more &middot; Tech ramblings by Manish</title>
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://techramblings.bitbucket.io/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://techramblings.bitbucket.io/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://techramblings.bitbucket.io/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
+
+  
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/androidstudio.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://techramblings.bitbucket.io/img/favicon.ico" type="image/x-icon" />
+
+  
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://techramblings.bitbucket.io/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://techramblings.bitbucket.io/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://techramblings.bitbucket.io/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/manishr41883690" target="_blank"><i class="fa fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://instagram.com/geek.manish" target="_blank"><i class="fa fa-instagram fa-fw"></i>Instagram</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/manish-raj-154646102" target="_blank"><i class="fa fa-linkedin-square fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/androidfanatic" target="_blank"><i class="fa fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://stackoverflow.com/users/906065/manish" target="_blank"><i class="fa fa-stack-overflow fa-fw"></i>Stack Overflow</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2017. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Træfik, reverse proxy, HTTPs support and more</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>11 Sep 2017, 00:43</time>
+  </div>
+
+  
+
+  
+
+  
+
+</div>
+
+  
+
+<p>Last week while working with a client, I came across Træfik - a lightweight, robust HTTP reverse proxy and load balancer. It is simple enough to get started with, within minutes and offers a variety of features.</p>
+
+<ul>
+<li>Deploy Traefik using a tiny go binary or docker image.</li>
+<li>Serve as a reverse proxy for multiple micro-services.</li>
+<li>Supports several back-end systems such as Docker, Kubernetes, Consul, Amazon ECS and more.</li>
+<li>Reload configurations without restarting process.</li>
+<li>Add proxy SSL support with <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a>.</li>
+<li>Add load balancing.</li>
+<li>Provide access logs and metrics; dashboard with a clean UI</li>
+<li>Cluster mode for high availability.</li>
+</ul>
+
+<p>To sum it all up, Træfik is a great tool to serve and manage multiple micro-services or web applications while ensuring high availability, fast speed and continuous deployment.</p>
+
+<p><img src="https://techramblings.bitbucket.io/img/09/traefik_architecture.png" style="max-width: 80%; display: block; margin: auto;" >
+<center>@<a href="https://traefik.io/">https://traefik.io/</a></center></p>
+
+<p>To demonstrate the robustness and simplicity of traefik, we will try to setup two services with reverse proxy and SSL support. We will host the services on different subdomain on a local machine.</p>
+
+<h3 id="what-are-we-aiming-for">What are we aiming for?</h3>
+
+<p>Setup gitlab and nextcloud on a local machine on different subdomain with SSL support to demonstrate dynamic config reload, docker backend support, proxied SSL and reverse proxy capabilities of Traefik.</p>
+
+<ul>
+<li><strong>gitlab</strong> is an open source VCS similar to github</li>
+<li><strong>nextcloud</strong> is open source file host similar to dropbox</li>
+</ul>
+
+<p>I picked up gitlab and nextcloud for this exercise because these are two prominent services often deployed within a company for internal use and can be a nuisance to setup as both compete for port 80, gitlab offers SSL support out of the box whereas nextcloud depends on a reverse proxy for SSL support.</p>
+
+<p>As Traefik supports docker among several other back-end systems, we will use docker based deployment of these services.</p>
+
+<h3 id="what-do-we-need-to-begin">What do we need to begin?</h3>
+
+<p>Before we being, we&rsquo;ll need docker host up and running on the target machine, SSL certificate and key (self signed or otherwise) and some free time to glance through Traefik docs.</p>
+
+<p>To generate a self signed certificate, check out: <a href="https://devcenter.heroku.com/articles/ssl-certificate-self">https://devcenter.heroku.com/articles/ssl-certificate-self</a></p>
+
+<h3 id="start-deploying-microservices">Start deploying microservices</h3>
+
+<ol>
+<li><p>Create a traefik config file: <span id="toml"><code>traefik.toml</code> </span></p>
+
+<pre><code>defaultEntryPoints = [&quot;http&quot;, &quot;https&quot;]
+[entryPoints]
+[entryPoints.http]
+address = &quot;:80&quot;
+    [entryPoints.http.redirect]
+    entryPoint = &quot;https&quot;
+[entryPoints.https]
+address = &quot;:443&quot;
+    [entryPoints.https.tls]
+    [[entryPoints.https.tls.certificates]]
+    certFile = &quot;/etc/traefik/server.crt&quot;
+    keyFile = &quot;/etc/traefik/server.key&quot;
+[web]
+address = &quot;:8080&quot;
+
+[docker]
+domain = &quot;docker.localhost&quot;
+</code></pre>
+
+<p>The config file:</p>
+
+<ul>
+<li><p>accepts http and https traffic</p></li>
+
+<li><p>routes all http traffic to https endpoint</p></li>
+
+<li><p>adds self signed certificate and key</p></li>
+
+<li><p>Enables [web] i.e. Traefik dashboard at port 8080</p></li>
+
+<li><p>Enables [docker] backed and sets the main domain to docker.localhost</p></li>
+</ul>
+
+<p>More information on traefik configs can be found at: <a href="https://docs.traefik.io/configuration/commons/">https://docs.traefik.io/configuration/commons/</a></p></li>
+
+<li><p>Start the traefik docker container:</p>
+
+<pre><code>ssl_cert=`pwd`/server.crt
+ssl_cert_key=`pwd`/server.key
+
+docker run --detach \
+  --name traefik \
+  --publish 8080:8080 \
+  --publish 443:443 \
+  --publish 80:80 \
+  --restart always \
+  --volume $PWD/traefik.toml:/etc/traefik/traefik.toml \
+  --volume $ssl_cert:/etc/traefik/server.crt \
+  --volume $ssl_cert_key:/etc/traefik/server.key \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  traefik:latest
+</code></pre>
+
+<p>The run command:</p>
+
+<ul>
+<li><p>Publishes port 8080 for dashboard and 80, 443 for http/https traffic</p></li>
+
+<li><p>Makes traefik.toml file available to container.</p></li>
+
+<li><p>Makes cert/key available to container. Note that <a href="#toml"><code>traefik.toml</code></a> points to this location for SSL cert/key.</p></li>
+
+<li><p>Makes docker.sock file available to container. This is how traefik automatically picks up and publishes new containers. For different back-ends, traefik supports other kinds of discovery including REST api.</p></li>
+</ul>
+
+<p>Once docker run command executes successfully, you should be able to access traefik dashboard at <a href="http://localhost:8080">http://localhost:8080</a>.</p></li>
+
+<li><p>Start nextcloud docker container:</p>
+
+<pre><code>docker run --detach \
+  --name nextcloud \
+  --label traefik.port=80 \
+  --restart always \
+  --volume /srv/nextcloud:/var/www/html \
+  nextcloud:latest
+</code></pre>
+
+<p>The run command:</p>
+
+<ul>
+<li><p>&ndash;name: names the container <code>nextcloud</code>. Traefik uses container name and the domain specified in <a href="#toml"><code>traefik.toml</code></a> file to come up with subdomain for the container. In this case, the subdomain where nextcloud gets served is <code>nextcloud.docker.localhost</code></p></li>
+
+<li><p>&ndash;label: Tags port 80 to be used by traefik for routing. By default, traefik will try to get the first port exposed by container and try to route http/https traffic to it.</p></li>
+
+<li><p>&ndash;volume: Adds persistent storage to nextcloud container. More container specific options can be found at: <a href="https://github.com/nextcloud/docker">https://github.com/nextcloud/docker</a></p></li>
+</ul>
+
+<p>If you visit traefik dashboard at <a href="http://localhost:8080">http://localhost:8080</a>, you should be able to see nextcloud container automatically added to <a href="https://techramblings.bitbucket.io/img/09/traefik_dashboard_nextcloud.png" target="_blank">dashboard</a>.</p>
+
+<p>If you head over to <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a>, you should be presented with <a href="https://techramblings.bitbucket.io/img/09/nextcloud_init.png" target="_blank">nextcloud UI</a>.</p></li>
+
+<li><p>Start gitlab docker container:</p>
+
+<p>Alright, let&rsquo;s get the second container running to see how easy it is to route different services with traefik</p>
+
+<pre><code>gitlab_path=/srv/gitlab
+
+docker run --detach \
+--name gitlab \
+--label traefik.port=80 \
+--restart always \
+--volume $gitlab_path/config:/etc/gitlab \
+--volume $gitlab_path/logs:/var/log/gitlab \
+--volume $gitlab_path/data:/var/opt/gitlab \
+gitlab/gitlab-ce:latest    
+</code></pre>
+
+<p>The run command:</p>
+
+<ul>
+<li><p>&ndash;name: Names the container <code>gitlab</code> which results in target subdomain being <code>gitlab.docker.localhost</code>.</p></li>
+
+<li><p>&ndash;volume: Adds container specific options such as volume mount paths found at: <a href="http://doc.gitlab.com/omnibus/docker/">http://doc.gitlab.com/omnibus/docker/</a></p></li>
+
+<li><p>&ndash;label: Tags port 80 to be used by traefik for routing. Tagging a port was useful in this case because gitlab container exposes ports 22, 443 and 80 and traefik was picking up port 22 and forwarding all traffic from gitlab.docker.localhost to port 22 of the container which kept resulting in an ISE.</p></li>
+</ul></li>
+</ol>
+
+<p>At this point, you should have the two services being routed through traefik with SSL support available at <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a> and <a href="https://gitlab.docker.localhost">https://gitlab.docker.localhost</a> and traefik dashboard, available at localhost:8080, should look something like this:</p>
+
+<p><a href="https://techramblings.bitbucket.io/img/09/traefix_dashboard.png" target="_blank"><img src="https://techramblings.bitbucket.io/img/09/traefix_dashboard.png" style="max-width: 95%; display: block; margin: auto;" ></a></p>
+
+<p>Try exploring the &ldquo;Health&rdquo; tab on dashboard and see what kind of metrics it offers.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>With this exercise, we observed that traefix automatically picked up and published new services to a different subdomain along with SSL support and load balancing.</p>
+
+<p>Traefix shows logging and metrics about application status and health on dashboard.</p>
+
+<p>Traefix is simple enough that getting started and deploying multiple services, only takes a few minutes yet robust enough to offer wide range of features and configurations.</p>
+
+<h3 id="links">Links:</h3>
+
+<ul>
+<li><p><a href="https://traefik.io">https://traefik.io</a></p></li>
+
+<li><p><a href="https://docs.traefik.io/">https://docs.traefik.io/</a></p></li>
+</ul>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+    <a href="https://techramblings.bitbucket.io/post/puppeteer-quick-start/"><i class="fa fa-chevron-left"></i></a>
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="prev">
+      <a href="https://techramblings.bitbucket.io/post/puppeteer-quick-start/">Puppeteer - quick start guide</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://techramblings.bitbucket.io/js/ui.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-105709910-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

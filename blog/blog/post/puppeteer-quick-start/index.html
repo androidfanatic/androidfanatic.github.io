@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8" />
+<meta name="author" content="" />
+<meta name="description" content="Personal blog." />
+<meta name="keywords" content="blog, tech" />
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.52" />
+
+<link rel="canonical" href="https://manishraj.dev/post/puppeteer-quick-start/">
+<meta property="og:title" content="Puppeteer - quick start guide" />
+<meta property="og:description" content="Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
+This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.
+Quick start Begin by installing nodejs version 7.6 or later." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://manishraj.dev/post/puppeteer-quick-start/" /><meta property="article:published_time" content="2017-09-01T13:43:32&#43;05:30"/>
+<meta property="article:modified_time" content="2017-09-01T13:43:32&#43;05:30"/>
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Puppeteer - quick start guide"/>
+<meta name="twitter:description" content="Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
+This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.
+Quick start Begin by installing nodejs version 7.6 or later."/>
+
+
+
+<meta itemprop="name" content="Puppeteer - quick start guide">
+<meta itemprop="description" content="Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
+This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.
+Quick start Begin by installing nodejs version 7.6 or later.">
+
+
+<meta itemprop="datePublished" content="2017-09-01T13:43:32&#43;05:30" />
+<meta itemprop="dateModified" content="2017-09-01T13:43:32&#43;05:30" />
+<meta itemprop="wordCount" content="657">
+
+
+
+<meta itemprop="keywords" content="" />
+
+
+<link rel="stylesheet" href="https://manishraj.dev/css/layout.css" />
+<style type="text/css">
+body {
+  background-color: #101010;
+  color: #dbdbdb;
+}
+
+a { color: #dbdbdb; }
+
+pre {
+  background: #1D1F21;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
+}
+
+code {
+  background: #1D1F21;
+}
+
+blockquote {
+  background: #1D1F21;
+  border-left: 3px solid #dbdbdb;
+}
+
+table {
+  margin: 1em auto;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #dbdbdb;
+}
+
+th {
+  background: #dbdbdb;
+  color: #101010;
+}
+
+.siteTitle a { color: #99cc66; }
+
+.post .content h1{ color: #99cc66; }
+.post .content h2{ color: #99cc66; }
+.post .content h3{ color: #99cc66; }
+.post .content h4{ color: #99cc66; }
+.post .content h5{ color: #99cc66; }
+.post .content h6{ color: #99cc66; }
+.post .content a:hover { color: #99cc66; }
+.social-link:hover { color: #99cc66; }
+.nav-item-title:hover { color: #99cc66; }
+.tag a:hover { color: #99cc66; }
+.copyright { color: #404040 }
+.poweredby { color: #404040 }
+.poweredby a { color: #404040; }
+.post-preview .title a{ color: #99cc66; }
+.content-item a:hover{
+  text-decoration: underline;
+  color: #99cc66;
+}
+.post-list .title { color: #99cc66; }
+.rmore { color: #99cc66; }
+.terms .term a:hover {
+  text-decoration: underline;
+  color: #99cc66;
+}
+
+</style>
+
+
+
+<title>
+
+
+     Puppeteer - quick start guide 
+
+</title>
+
+</head>
+
+
+<body>
+<div class="main">
+<header>
+
+<div class="header-bar">
+
+  <nav>
+    <div class="siteTitle">
+      <a href="https://manishraj.dev/">Manish Raj</a>
+    </div> 
+
+    
+    
+    <a class="nav-item active" href="https://manishraj.dev/post/"><div class="nav-item-title">Posts</div></a>
+    
+    <a class="nav-item" href="https://manishraj.dev/tags/"><div class="nav-item-title">Tags</div></a>
+    
+
+  </nav>
+</div>
+
+  
+<div class="social-links-header">
+
+  
+  <a href="mailto:myemail"><div class="social-link">email</div></a>
+  
+
+  
+  <a href="https://github.com/github%20id" target="_blank"><div class="social-link">gh</div></a>
+  
+
+  
+  <a href="https://gitlab.com/gitlab%20id" target="_blank"><div class="social-link">gl</div></a>
+  
+
+  
+  <a href="https://twitter.com/twitter%20id" target="_blank"><div class="social-link">twtr</div></a>
+  
+
+  
+  <a href="https://www.linkedin.com/in/linkedin%20id" target="_blank"><div class="social-link">in</div></a>
+  
+
+</div>
+
+
+</header>
+
+
+<article class="post">
+    <h1 class="title"> Puppeteer - quick start guide </h1>
+    <div class="content"> 
+
+<h1 id="puppeteer-quick-start-guide">Puppeteer: quick start guide</h1>
+
+<p>The team behind Google chrome has recently released <a target="_blank" href="https://github.com/GoogleChrome/puppeteer">puppeteer</a>, a nodejs library for controlling <a href="https://developers.google.com/web/updates/2017/04/headless-chrome" target="_blank">Chrome headless</a>. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing  community.</p>
+
+<p>This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.</p>
+
+<h2 id="quick-start">Quick start</h2>
+
+<p>Begin by installing nodejs version 7.6 or later. I use <a href="https://github.com/creationix/nvm/blob/master/README.md">nvm</a> to install and manage different versions of nodejs and it works great!</p>
+
+<p>With <code>nvm</code>, installing and switching to a version of nodejs is as easy as:</p>
+
+<pre><code>nvm install v7.6.0
+</code></pre>
+
+<p>Alternatively, install nodejs v7.6 or above using official installers which can be found here: <a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a></p>
+
+<h2 id="create-a-project-and-install-puppeteer">Create a project and install puppeteer</h2>
+
+<p>Begin setting up a new nodejs project</p>
+
+<pre><code>mkdir puppet
+cd puppet
+npm init
+npm i puppeteer --save
+</code></pre>
+
+<p>This might take a while as it installs puppeteer and downloads recent version of chromium which is saved locally inside <code>node_modules/puppeteer</code> folder.</p>
+
+<h2 id="start-simple-visit-a-webpage">Start simple: visit a webpage</h2>
+
+<p>With project set up and puppeteer installed, let&rsquo;s dive into first example.</p>
+
+<p>Create a file <code>example.js</code> with following code:</p>
+
+<pre><code>const puppeteer = require('puppeteer');
+
+(async () =&gt; {
+    const browser = await puppeteer.launch({
+        headless: false
+    });
+
+    const page = await browser.newPage();
+    await page.goto('https://www.example.com');
+    console.log('Page loaded');
+
+    //browser.close();
+})();
+</code></pre>
+
+<p>Run the example:</p>
+
+<pre><code>node example.js
+</code></pre>
+
+<p><strong>Output:</strong></p>
+
+<p><img src="https://manishraj.dev/img/09/puppeteer_load_example_com.gif" style="max-width: 80%; margin: auto; display: block;" /></p>
+
+<p>If everything goes well, you should be able to see a new chromium window pop up and load <code>www.example.com</code>.</p>
+
+<p>Notice how we commented out <code>browser.close()</code> and set headless to false.</p>
+
+<ul>
+<li><p>Setting headless to false makes puppeteer run chromium in headful mode which is good for visual debugging or observing what goes on when a puppeteer script executes.</p></li>
+
+<li><p>Commenting out <code>browser.close()</code> prevents the browser from closing at the end of script execution. This is also helpful while troubleshooting.</p></li>
+</ul>
+
+<h2 id="lookup-cat-gifs">Lookup cat gifs</h2>
+
+<p>Alright, now that we know the basics of creating, executing and troubleshooting, or at least observing, a puppeteer script, let&rsquo;s try automating some common tasks.</p>
+
+<p>Create another file <code>cats.js</code> with following code:</p>
+
+<pre><code>const puppeteer = require('puppeteer');
+
+(async () =&gt; {
+
+    const browser = await puppeteer.launch({
+        headless: false
+    });
+
+    const page = await browser.newPage();
+
+    // Go to images.google.com
+    await page.goto('https://images.google.com', { 
+        waitUntil: 'networkidle' 
+    });
+
+    // Focus on input box
+    await page.focus('input[name=q]');
+    // Type some stuff
+    await page.type('cat gifs');
+    // Press enter
+    await page.press('Enter');
+
+    //browser.close();
+})();
+</code></pre>
+
+<p>Run the script:</p>
+
+<pre><code>node cats.js
+</code></pre>
+
+<p><strong>Output</strong>:</p>
+
+<p><img src="https://manishraj.dev/img/09/puppeteer_cat_gifs.gif" style="max-width: 80%; margin: auto; display: block;" /></p>
+
+<p>We just added a few function calls - <code>page.focus</code>, <code>page.type</code>, <code>page.press</code> and got some cats in return. Sweet!</p>
+
+<h3 id="so-how-exactly-did-we-look-up-cats">So how exactly did we look up cats?</h3>
+
+<ol>
+<li><p>Go to <a href="https://images.google.com">https://images.google.com</a></p>
+
+<pre><code>// Go to images.google.com
+await page.goto('https://images.google.com', { 
+    waitUntil: 'networkidle' 
+});
+</code></pre>
+
+<p>The <code>waitUntil</code> option makes puppeteer wait for all network requests to finish i.e. all js, css, images are done loading.</p></li>
+
+<li><p>Focus on search box.</p>
+
+<p><code>page.focus</code> takes a css selector as parameter and focuses on that element on page.</p>
+
+<pre><code>// Focus on input box
+await page.focus('input[name=q]');
+</code></pre>
+
+<p>I was able to find the selector for the search box by using inspector (F12).</p>
+
+<p><a href="https://manishraj.dev/img/google_inspector.png" target="_blank" title="Click to open in a new window">
+<img src="https://manishraj.dev/img/google_inspector.png" style="max-width: 90%; height: auto;" />
+</a></p></li>
+
+<li><p>Now that search box is in focus, all we need to do is type &lsquo;cats gif&rsquo; and press &lsquo;enter&rsquo; which puppeteer provides simple APIs for.</p>
+
+<pre><code>// Type some stuff
+await page.type('cat gifs');
+// Press enter
+await page.press('Enter');
+</code></pre></li>
+</ol>
+
+<p>Apart from searching for cat gifs, puppeteer can be used to take full page screenshots, generate PDF of pages, test UI on different viewport and anything else that a browser can do.</p>
+
+<p>Also, once happy with the functioning of script, <code>headless</code> can be set to true so that puppeteer scripts can run without a GUI, on a VPS, in cloud or otherwise.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Puppeteer is extremely easy to start with and offers a comprehensive set of APIs. The library comes from team behind Google chrome and is under active development. It has the potential to become widely used for UI testing, web scrapping and browser based automation.</p>
+
+<p><strong>Some links:</strong></p>
+
+<p><a href="https://github.com/GoogleChrome/puppeteer" target="_blank">Puppeteer</a>
+&nbsp;&gt;&nbsp;
+<a href="https://github.com/GoogleChrome/puppeteer/tree/master/examples" target="_blank">Examples</a>
+&nbsp;&gt;&nbsp;
+<a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md" target="_blank">API reference</a></p>
+
+<p>Here&rsquo;s a good tutorial if you&rsquo;re confused about all that async await stuff like I was: <a href="https://blog.risingstack.com/mastering-async-await-in-nodejs/" target="_blank"><a href="https://blog.risingstack.com/mastering-async-await-in-nodejs/">https://blog.risingstack.com/mastering-async-await-in-nodejs/</a></a></p>
+ </div>
+    <footer class="post-footer">
+
+  <div class="post-footer-data">
+    
+<div class="tags">
+    
+</div>
+
+    <div class="date"> Sep 1, 2017 </div>
+  </div>
+
+</footer>
+
+
+  
+
+
+</article>
+
+  <footer>
+
+  <div class="social-links-footer">
+
+  
+  <a href="mailto:myemail"><div class="social-link">Email</div></a>
+  
+
+  
+  <a href="https://github.com/github%20id" target="_blank"><div class="social-link">GitHub</div></a>
+  
+
+  
+  <a href="https://gitlab.com/gitlab%20id" target="_blank"><div class="social-link">GitLab</div></a>
+  
+
+  
+  <a href="https://twitter.com/twitter%20id" target="_blank"><div class="social-link">Twitter</div></a>
+  
+
+  
+  <a href="https://www.linkedin.com/in/linkedin%20id" target="_blank"><div class="social-link">LinkedIn</div></a>
+  
+
+  <div class="social-link">
+  <a href="https://manishraj.dev/index.xml" target="_blank">RSS</a>
+  </div>
+
+</div>
+
+
+  <div class="copyright"> &copy; 2019. All rights reserved. </div>
+
+  <div class="poweredby">
+    Powered by <a href="https://gohugo.io/">Hugo</a>.
+  </div>
+
+  </footer>
+
+</div> 
+
+</body>
+</html>
+

@@ -1,0 +1,29 @@
+baseurl = "https://manishraj.dev/blog/"
+languageCode = "en-us"
+title = "Blog"
+theme = "solar-theme-hugo"
+author = "Manish Raj"
+copyright = " "
+canonifyurls = true
+paginate = 10
+publishDir = ".."
+
+googleAnalytics = ""
+disqusShortname = ""
+
+pygmentsStyle = "solarized-dark"
+pygmentsCodeFences = true
+
+[[menu.main]]
+  name = "Posts"
+  identifier = "post"
+  url = "/post/"
+
+[[menu.main]]
+  name = "Tags"
+  identifier = "tag"
+  url = "/tags/"
+
+[params]
+  scheme = "dark"
+  description = ""

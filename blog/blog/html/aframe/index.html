@@ -1,0 +1,31 @@
+<html>
+
+<head>
+    <title>Maze</title>
+    <meta charset="UTF-8">
+    <script src="//aframe.io/releases/0.6.0/aframe.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v3.11.4/dist/aframe-extras.min.js"></script>
+    <script src="game.js"></script>
+</head>
+
+<body class="a-body ">
+
+    <a-scene physics="
+          driver: worker; 
+          workerFps: 60; 
+          workerInterpolate: true; 
+          workerInterpBufferSize: 2;
+        ">
+        <a-assets>
+            <img id="wall" src="img/wall.jpg">
+            <img id="sand" src="img/sand.jpg">
+        </a-assets>
+        <a-sky color="#6EBAA7"></a-sky>
+        <a-grid static-body material="src: #sand"></a-grid>
+        <a-entity camera="userHeight: 1.6" universal-controls kinematic-body>
+        </a-entity>
+    </a-scene>
+    <a style="display: none;"></a>
+</body>
+
+</html>

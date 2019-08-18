@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://manishraj.dev/post/a-quick-glimpse-of-whats-new-in-es10/</loc>
+    <lastmod>2019-03-27T05:30:31+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/post/generate_vector_tiles_built_in_postgis_functions/</loc>
+    <lastmod>2019-02-03T02:30:47+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/privacy-geospock/</loc>
+    <lastmod>2019-01-16T20:37:09+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/post/slash-commands-for-slack-workspace/</loc>
+    <lastmod>2017-10-12T22:11:46+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/post/webvr-with-aframe/</loc>
+    <lastmod>2017-09-23T13:41:37+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/post/traefix_reverse_proxy_https_and_more/</loc>
+    <lastmod>2017-09-11T00:43:32+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/post/puppeteer-quick-start/</loc>
+    <lastmod>2017-09-01T13:43:32+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/</loc>
+    <lastmod>2019-03-27T05:30:31+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/post/</loc>
+    <lastmod>2019-03-27T05:30:31+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
