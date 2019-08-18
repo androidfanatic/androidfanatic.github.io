@@ -15,14 +15,12 @@ pygmentsStyle = "solarized-dark"
 pygmentsCodeFences = true
 
 [[menu.main]]
-  name = "Posts"
-  identifier = "post"
-  url = "/post/"
+  name = "Home"
+  url = "../"
 
 [[menu.main]]
-  name = "Tags"
-  identifier = "tag"
-  url = "/tags/"
+  name = "Posts"
+  url = "/post/"
 
 [params]
   scheme = "dark"
