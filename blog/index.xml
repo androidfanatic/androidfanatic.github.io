@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright> </copyright>
-    <lastBuildDate>Wed, 27 Mar 2019 05:30:31 +0530</lastBuildDate>
+    <lastBuildDate>Wed, 21 Aug 2019 23:30:51 +0530</lastBuildDate>
     
 	<atom:link href="https://manishraj.dev/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Mapping My Ladakh Road Trip</title>
+      <link>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</link>
+      <pubDate>Wed, 21 Aug 2019 23:30:51 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</guid>
+      <description>Back in May, I went on a week long road trip with two of my friends and we took a ton of photos along the way. The goal of this exercise is to visualize those photos on a map.
+Planned route starting from Delhi and ending at Pangong Lake.   I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.</description>
+    </item>
     
     <item>
       <title>A quick glimpse of what&#39;s new in ES10</title>

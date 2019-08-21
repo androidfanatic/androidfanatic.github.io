@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Mapping My Ladakh Road Trip</title>
+		<meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="https://manishraj.dev/blog/css/hybrid.css">
+		<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css">
+		<link rel="stylesheet" href="https://manishraj.dev/blog/css/colors-dark.css">
+
+		
+	</head>
+	<body>
+		<header id="header">
+			<h1><a href="https://manishraj.dev/blog/">Blog</a></h1>
+			<p></p>
+		</header>
+
+		<div id="page">
+			<div id="sidebar">
+				<nav>
+	
+		<ul class="nav">
+			
+				<li><a href="../"><span>Home</span></a></li>
+			
+				<li><a href="https://manishraj.dev/blog/post/"><span>Posts</span></a></li>
+			
+		</ul>
+	
+</nav>
+
+			</div>
+
+			<div id="content">
+				
+	<article class="post">
+		<h1><a href="https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/">Mapping My Ladakh Road Trip</a> </h1>
+
+		<div class="post-content"><p>Back in May, I went on a week long road trip with two of my friends and we took a ton of photos along the way. The goal of this exercise is to visualize those photos on a map.</p>
+
+<figure style="width: 75%; margin: auto; display: block; margin-bottom: 8px;">
+  <img src="https://manishraj.dev/blog/img/08/the_plan.png" title="Image of planned route of the road trip"  >
+  <figcaption style="font-size: 11px">
+    Planned route starting from Delhi and ending at Pangong Lake.
+  <figcaption>
+</figure>
+
+<p>I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.</p>
+
+<p>To begin with, we will lists all the files in target folder and filters out jpegs. This is done to discard any png or mp4 files in the folder.</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#719e07">const</span> allFiles <span style="color:#719e07">=</span> fs.readdirSync(path.join(__dirname, <span style="color:#2aa198">&#39;files&#39;</span>));
+<span style="color:#719e07">const</span> jpegs <span style="color:#719e07">=</span> allFiles.filter(file =&gt; <span style="color:#dc322f">/\.jpe?g$/i</span>.test(file));
+</code></pre></div>
+<p>Next we will parse data out of all the selected jpegs. Given the asynchronous nature of EXIF data extraction, we will create an array of promises that we&rsquo;d later resolve using <code>Promise.all()</code> to get EXIF data of all these files in an array.</p>
+
+<p>The result of these promises are structured in JSON format, that we&rsquo;d then use to render the photos back on a map.</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#586e75">// require ExifImage
+</span><span style="color:#586e75"></span><span style="color:#719e07">const</span> ExifImage <span style="color:#719e07">=</span> require(<span style="color:#2aa198">&#39;exif&#39;</span>).ExifImage;
+
+<span style="color:#719e07">const</span> allPromises <span style="color:#719e07">=</span> jpegs.map(jpeg =&gt; {
+  <span style="color:#719e07">return</span> <span style="color:#719e07">new</span> <span style="color:#b58900">Promise</span>((resolve, reject) =&gt; {
+    <span style="color:#719e07">try</span> {
+      <span style="color:#719e07">const</span> filePath <span style="color:#719e07">=</span> path.join(<span style="color:#2aa198">&#39;files&#39;</span>, jpeg);
+      ExifImage({ image<span style="color:#719e07">:</span> filePath }, <span style="color:#268bd2">function</span> (err, exifData) {
+        <span style="color:#719e07">if</span> (err) { reject(err); }
+        <span style="color:#719e07">else</span> <span style="color:#719e07">if</span> (exifData <span style="color:#719e07">&amp;&amp;</span> exifData.gps 
+          <span style="color:#719e07">&amp;&amp;</span> exifData.gps.GPSLatitude
+        ) {
+          resolve({ jpeg, exifData });
+        } <span style="color:#719e07">else</span> { resolve(); }
+      });
+    } <span style="color:#719e07">catch</span> (err) { reject(err); }
+  });
+});
+</code></pre></div>
+<p>To add these images on a map, we also need to either host the images somewhere and add a link to the JSON or base64 encode the image, include the encoded image in the JSON structure and then serve them on the map using HTML data URLs.</p>
+
+<p>I picked the second approach because of its simplicity and used <a href="https://www.npmjs.com/package/sharp" target="_blank" title="Sharp NPM module">sharp</a> npm module to do so.</p>
+
+<p>Instead of storing encoded values of full size images, we will resize the images to a maximum of 180 pixels using sharp, which works well enough for the visualization.</p>
+
+<p>I also used the command <code>mogrify -auto-orient *.jpg</code> to auto orient some of the images in the folder that were oriented incorrectly but had the correct orientation information embedded in their exif data.</p>
+
+<p>The modified script looks something like this:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#586e75">// require sharp
+</span><span style="color:#586e75"></span><span style="color:#719e07">const</span> sharp <span style="color:#719e07">=</span> require(<span style="color:#2aa198">&#39;sharp&#39;</span>);
+
+<span style="color:#719e07">const</span> allPromises <span style="color:#719e07">=</span> jpegs.map(jpeg =&gt; {
+  <span style="color:#719e07">return</span> <span style="color:#719e07">new</span> <span style="color:#b58900">Promise</span>((resolve, reject) =&gt; {
+    <span style="color:#719e07">try</span> {
+      <span style="color:#719e07">const</span> filePath <span style="color:#719e07">=</span> path.join(<span style="color:#2aa198">&#39;files&#39;</span>, jpeg);
+      ExifImage({ image<span style="color:#719e07">:</span> filePath }, <span style="color:#268bd2">function</span> (err, exifData) {
+        <span style="color:#719e07">if</span> (err) { reject(err); }
+        <span style="color:#719e07">else</span> <span style="color:#719e07">if</span> (exifData <span style="color:#719e07">&amp;&amp;</span> exifData.gps <span style="color:#719e07">&amp;&amp;</span> exifData.gps.GPSLatitude) {
+          sharp(filePath)
+            .resize(<span style="color:#2aa198">180</span>)
+            .toBuffer()
+            .then(data =&gt; {
+              resolve({
+                jpeg,
+                exifData,
+                img<span style="color:#719e07">:</span> data.toString(<span style="color:#2aa198">&#39;base64&#39;</span>)
+              });
+            }).<span style="color:#719e07">catch</span>(reject);
+        } <span style="color:#719e07">else</span> { resolve(); }
+      });
+    } <span style="color:#719e07">catch</span> (err) { reject(err); }
+  });
+});
+</code></pre></div>
+<p>Finally we need to wait for all the promises to resolve with an array containing exif information of all images. I used <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank"><code>Promise.all()</code></a> which does just that.</p>
+
+<p>I also wrote two helper functions to convert GPS data from Exif tags into latitude and longitude coordinates. I also used moment.js to parse the date-time of images and convert them into JavaScript timestamp. It worked out well with a bit of timezone correction.</p>
+
+<p>After filtering the array to only include images that have meaningful GPS information
+ and also sorting the result by timestamp, we have our final JSON ready to be served on a map.</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#719e07">const</span> moment <span style="color:#719e07">=</span> require(<span style="color:#2aa198">&#39;moment&#39;</span>);
+
+<span style="color:#b58900">Promise</span>.all(allPromises).then(allExifData =&gt; {
+  <span style="color:#719e07">const</span> jpegWithCoords <span style="color:#719e07">=</span> allExifData
+    .filter(data =&gt; data <span style="color:#719e07">&amp;&amp;</span> data.jpeg <span style="color:#719e07">&amp;&amp;</span> data.img)
+    .map(({ jpeg, exifData, img }) =&gt; ({
+      jpeg,
+      coords<span style="color:#719e07">:</span> exifDataToLngLat(exifData.gps),
+      timestamp<span style="color:#719e07">:</span> moment(
+        exifData.exif.CreateDate,
+        <span style="color:#2aa198">&#34;YYYY:MM:dd hh:mm:ss&#34;</span>
+      ).add(<span style="color:#2aa198">330</span>, <span style="color:#2aa198">&#39;minutes&#39;</span>).valueOf(),
+      img,
+    })).sort((a, b) =&gt; a.timestamp <span style="color:#719e07">-</span> b.timestamp);
+  <span style="color:#586e75">// write the file
+</span><span style="color:#586e75"></span>  fs.writeFileSync(
+    path.join(__dirname, <span style="color:#2aa198">&#39;files&#39;</span>, <span style="color:#2aa198">&#39;places.json&#39;</span>),
+    JSON.stringify(jpegWithCoords)
+  );
+}).<span style="color:#719e07">catch</span>(console.error)
+</code></pre></div>
+<p>Here are the two helper methods:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#586e75">// convert degree, minutes, seconds
+</span><span style="color:#586e75"></span><span style="color:#719e07">const</span> convertDMSToDD <span style="color:#719e07">=</span> (degrees, minutes, seconds, direction) =&gt; {
+  <span style="color:#268bd2">let</span> dd <span style="color:#719e07">=</span> degrees <span style="color:#719e07">+</span> (minutes <span style="color:#dc322f">/ 60) + (seconds /</span> <span style="color:#2aa198">3600</span>);
+  <span style="color:#719e07">if</span> (direction <span style="color:#719e07">===</span> <span style="color:#2aa198">&#39;S&#39;</span> <span style="color:#719e07">||</span> direction <span style="color:#719e07">===</span> <span style="color:#2aa198">&#39;W&#39;</span>) {
+    dd <span style="color:#719e07">*=</span> <span style="color:#719e07">-</span><span style="color:#2aa198">1</span>;
+  }
+  <span style="color:#719e07">return</span> dd;
+}
+
+<span style="color:#586e75">// convert exif data to lngLat
+</span><span style="color:#586e75"></span><span style="color:#719e07">const</span> exifDataToLngLat <span style="color:#719e07">=</span> (exifData) =&gt; {
+  <span style="color:#719e07">const</span> latDegree <span style="color:#719e07">=</span> exifData.GPSLatitude[<span style="color:#2aa198">0</span>];
+  <span style="color:#719e07">const</span> latMinute <span style="color:#719e07">=</span> exifData.GPSLatitude[<span style="color:#2aa198">1</span>];
+  <span style="color:#719e07">const</span> latSecond <span style="color:#719e07">=</span> exifData.GPSLatitude[<span style="color:#2aa198">2</span>];
+  <span style="color:#719e07">const</span> latDirection <span style="color:#719e07">=</span> exifData.GPSLatitudeRef;
+  <span style="color:#719e07">const</span> lat <span style="color:#719e07">=</span> convertDMSToDD(latDegree, latMinute, latSecond, latDirection);
+
+  <span style="color:#719e07">const</span> lngDegree <span style="color:#719e07">=</span> exifData.GPSLongitude[<span style="color:#2aa198">0</span>];
+  <span style="color:#719e07">const</span> lngMinute <span style="color:#719e07">=</span> exifData.GPSLongitude[<span style="color:#2aa198">1</span>];
+  <span style="color:#719e07">const</span> lngSecond <span style="color:#719e07">=</span> exifData.GPSLongitude[<span style="color:#2aa198">2</span>];
+  <span style="color:#719e07">const</span> lngDirection <span style="color:#719e07">=</span> exifData.GPSLongitudeRef;
+  <span style="color:#719e07">const</span> lng <span style="color:#719e07">=</span> convertDMSToDD(lngDegree, lngMinute, lngSecond, lngDirection);
+  <span style="color:#719e07">return</span> { lng, lat };
+};
+</code></pre></div>
+<p>Once the JSON is ready, visualizing the data on map is pretty straightforward. Using <a href="https://docs.mapbox.com/mapbox-gl-js/example/custom-marker-icons/" target="_blank">mapbox-gl-js</a> and following snippet, we were able to visualize the data on maps.</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">fetch(<span style="color:#2aa198">&#39;places.json&#39;</span>).then(res =&gt; res.json()).then(places =&gt; {
+  places.forEach(place =&gt; {
+    <span style="color:#719e07">const</span> el <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;div&#39;</span>);
+    el.className <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;marker&#39;</span>;
+    el.innerText <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;📌&#39;</span>;
+    el.onclick <span style="color:#719e07">=</span> () =&gt; {
+      <span style="color:#268bd2">let</span> removed <span style="color:#719e07">=</span> <span style="color:#cb4b16">false</span>;
+      el.querySelectorAll(<span style="color:#2aa198">&#39;.imageElement&#39;</span>).forEach(elem =&gt; {
+        removed <span style="color:#719e07">=</span> <span style="color:#cb4b16">true</span>;
+        elem.remove();
+      })
+      <span style="color:#719e07">if</span> (<span style="color:#719e07">!</span>removed) {
+        <span style="color:#719e07">const</span> imgEl <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;div&#39;</span>);
+
+        imgEl.className <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;imgElement&#39;</span>;
+        <span style="color:#719e07">const</span> img <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;img&#39;</span>);
+        img.src <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;data:image/jpg;base64,&#39;</span> <span style="color:#719e07">+</span> place.img;
+        <span style="color:#719e07">const</span> captionEl <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;p&#39;</span>);
+        captionEl.innerText <span style="color:#719e07">=</span> <span style="color:#719e07">new</span> <span style="color:#b58900">Date</span>(place.timestamp);
+
+        imgEl.appendChild(img);
+        imgEl.appendChild(captionEl);
+        el.appendChild(imgEl);
+      }
+    }
+    <span style="color:#719e07">new</span> mapboxgl.Marker(el)
+      .setLngLat(place.coords)
+      .addTo(map);
+  })
+}).<span style="color:#719e07">catch</span>(console.error);
+</code></pre></div>
+<p>And here&rsquo;s the final interactive map. Click on the pins to view photos and the time when they were taken.</p>
+
+<iframe src="https://manishraj.dev/blog/html/ladakh" style="width: 640px; height: 320px; border: 0px; margin: auto; display: block;"></iframe>
+
+<p style="margin-top: 4px;">
+  <a href="https://manishraj.dev/blog/html/ladakh" target="_blank"><strong>Click here to view this map in fullscreen</strong></a>
+</p>
+
+<p>In the end, I&rsquo;d say it was a fun exercise for me to create this app and re-explore these vast cold deserts and picturesque locations, using random photos clicked throughout the road trip. I hope you enjoyed the write-up.</p>
+
+<hr >
+
+<p>Here&rsquo;s the HTML part of this app that renders the map and the pins on map.</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#719e07">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#268bd2">html</span> lang<span style="color:#719e07">=</span><span style="color:#2aa198">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#268bd2">head</span>&gt;
+  &lt;<span style="color:#268bd2">meta</span> charset<span style="color:#719e07">=</span><span style="color:#2aa198">&#39;utf-8&#39;</span> /&gt;
+  &lt;<span style="color:#268bd2">title</span>&gt;Ladakh 2019&lt;/<span style="color:#268bd2">title</span>&gt;
+  &lt;<span style="color:#268bd2">meta</span> name<span style="color:#719e07">=</span><span style="color:#2aa198">&#39;viewport&#39;</span> content<span style="color:#719e07">=</span><span style="color:#2aa198">&#39;initial-scale=1,maximum-scale=1&#39;</span>&gt;
+  &lt;<span style="color:#268bd2">script</span> src<span style="color:#719e07">=</span><span style="color:#2aa198">&#39;https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.1/mapbox-gl.js&#39;</span>&gt;&lt;/<span style="color:#268bd2">script</span>&gt;
+  &lt;<span style="color:#268bd2">link</span> href<span style="color:#719e07">=</span><span style="color:#2aa198">&#39;https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.1/mapbox-gl.css&#39;</span> rel<span style="color:#719e07">=</span><span style="color:#2aa198">&#39;stylesheet&#39;</span> /&gt;
+  &lt;<span style="color:#268bd2">style</span>&gt;
+    <span style="color:#268bd2">html</span><span style="color:#719e07">,</span>
+    <span style="color:#268bd2">body</span> {
+      <span style="color:#719e07">margin</span>: <span style="color:#2aa198">0</span>;
+      <span style="color:#719e07">padding</span>: <span style="color:#2aa198">0</span>;
+      <span style="color:#719e07">height</span>: <span style="color:#2aa198">100</span><span style="color:#dc322f">%</span>;
+    }
+    #map {
+      <span style="color:#719e07">width</span>: <span style="color:#2aa198">100</span><span style="color:#dc322f">%</span>;
+      <span style="color:#719e07">height</span>: <span style="color:#2aa198">100</span><span style="color:#dc322f">%</span>;
+    }
+    .<span style="color:#268bd2">marker</span> {
+      <span style="color:#719e07">width</span>: <span style="color:#2aa198">12</span><span style="color:#dc322f">px</span>;
+      <span style="color:#719e07">height</span>: <span style="color:#2aa198">12</span><span style="color:#dc322f">px</span>;
+      <span style="color:#719e07">line-height</span>: <span style="color:#2aa198">12</span><span style="color:#dc322f">px</span>;
+      <span style="color:#719e07">display</span>: <span style="color:#719e07">grid</span>;
+      place-items: <span style="color:#cb4b16">center</span>;
+      <span style="color:#719e07">border-radius</span>: <span style="color:#2aa198">50</span><span style="color:#dc322f">%</span>;
+      <span style="color:#719e07">font-size</span>: <span style="color:#2aa198">16</span><span style="color:#dc322f">px</span>;
+    }
+    .<span style="color:#268bd2">imgEl</span> {
+      <span style="color:#719e07">position</span>: <span style="color:#cb4b16">absolute</span>;
+      <span style="color:#719e07">top</span>: <span style="color:#2aa198">0</span>;
+      <span style="color:#719e07">font-size</span>: <span style="color:#2aa198">10</span><span style="color:#dc322f">px</span>;
+      <span style="color:#719e07">color</span>: <span style="color:#2aa198">#fff</span>;
+      <span style="color:#719e07">background</span>: <span style="color:#b58900">rgba</span>(<span style="color:#2aa198">0</span>, <span style="color:#2aa198">0</span>, <span style="color:#2aa198">0</span>, <span style="color:#2aa198">0.5</span>);
+      <span style="color:#719e07">text-align</span>: <span style="color:#cb4b16">center</span>;
+    }
+    .<span style="color:#268bd2">imgEl</span> <span style="color:#268bd2">img</span> {
+      <span style="color:#719e07">max-height</span>: <span style="color:#2aa198">180</span><span style="color:#dc322f">px</span>;
+    }
+  &lt;/<span style="color:#268bd2">style</span>&gt;
+&lt;/<span style="color:#268bd2">head</span>&gt;
+&lt;<span style="color:#268bd2">body</span>&gt;
+  &lt;<span style="color:#268bd2">div</span> id<span style="color:#719e07">=</span><span style="color:#2aa198">&#39;map&#39;</span>&gt;&lt;/<span style="color:#268bd2">div</span>&gt;
+  &lt;<span style="color:#268bd2">script</span>&gt;
+    <span style="color:#719e07">const</span> base <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;http://13.126.70.198&#39;</span>;
+    mapboxgl.accessToken <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA&#39;</span>;
+    <span style="color:#719e07">const</span> map <span style="color:#719e07">=</span> <span style="color:#719e07">new</span> mapboxgl.Map({
+      container<span style="color:#719e07">:</span> <span style="color:#2aa198">&#39;map&#39;</span>,
+      style<span style="color:#719e07">:</span> <span style="color:#2aa198">&#39;mapbox://styles/mapbox/dark-v10&#39;</span>,
+      zoom<span style="color:#719e07">:</span> <span style="color:#2aa198">6</span>,
+      maxZoom<span style="color:#719e07">:</span> <span style="color:#2aa198">20</span>,
+      center<span style="color:#719e07">:</span> [<span style="color:#2aa198">76.5762</span>, <span style="color:#2aa198">33.7782</span>],
+      attributionControl<span style="color:#719e07">:</span> <span style="color:#cb4b16">false</span>,
+    });
+    <span style="color:#719e07">const</span> popup <span style="color:#719e07">=</span> <span style="color:#719e07">new</span> mapboxgl.Popup();
+    map.on(<span style="color:#2aa198">&#39;load&#39;</span>, () =&gt; {
+      fetch(<span style="color:#2aa198">&#39;places.json&#39;</span>).then(res =&gt; res.json()).then(places =&gt; {
+        places.forEach(place =&gt; {
+          <span style="color:#719e07">const</span> el <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;div&#39;</span>);
+          el.className <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;marker&#39;</span>;
+          el.innerText <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;📌&#39;</span>;
+          el.onclick <span style="color:#719e07">=</span> () =&gt; {
+            <span style="color:#268bd2">let</span> removed <span style="color:#719e07">=</span> <span style="color:#cb4b16">false</span>;
+            el.querySelectorAll(<span style="color:#2aa198">&#39;.imgEl&#39;</span>).forEach(elem =&gt; {
+              removed <span style="color:#719e07">=</span> <span style="color:#cb4b16">true</span>;
+              elem.remove();
+            })
+            <span style="color:#719e07">if</span> (<span style="color:#719e07">!</span>removed) {
+              <span style="color:#719e07">const</span> imgEl <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;div&#39;</span>);
+              imgEl.className <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;imgEl&#39;</span>;
+              <span style="color:#719e07">const</span> img <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;img&#39;</span>);
+              img.src <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;data:image/jpg;base64,&#39;</span> <span style="color:#719e07">+</span> place.img;
+              <span style="color:#719e07">const</span> captionEl <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;div&#39;</span>);
+              captionEl.innerText <span style="color:#719e07">=</span> <span style="color:#719e07">new</span> <span style="color:#b58900">Date</span>(place.timestamp).toLocaleString();
+              imgEl.appendChild(img);
+              imgEl.appendChild(captionEl);
+              el.appendChild(imgEl);
+            }
+          }
+          <span style="color:#719e07">new</span> mapboxgl.Marker(el)
+            .setLngLat(place.coords)
+            .addTo(map);
+        })
+      }).<span style="color:#719e07">catch</span>(console.error);
+    });
+  &lt;/<span style="color:#268bd2">script</span>&gt;
+&lt;/<span style="color:#268bd2">body</span>&gt;
+&lt;/<span style="color:#268bd2">html</span>&gt;</code></pre></div></div>
+
+		<p class="meta">Posted on <span class="postdate">21. August 2019</span></p>
+	</article>
+
+			</div>
+
+			<footer id="footer">
+				<p class="copyright">
+					
+						 
+					
+				</p>
+			</footer>
+		</div>
+
+		<div style="text-align: center;">
+  <a href="https://www.linkedin.com/in/manish-raj/" target="_blank">
+    <img style="filter: invert(100%) sepia(5%) saturate(753%) hue-rotate(236deg) brightness(117%) contrast(100%); width: 20px; height: 20px;" 
+      src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI1MHB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MCA1MCIgd2lkdGg9IjUwcHgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGUvPjxkZWZzLz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIj48ZyBmaWxsPSIjMDAwMDAwIiBpZD0iTGlua2VkSW4iPjxwYXRoIGQ9Ik0yNSw1MCBDMzguODA3MTE5NCw1MCA1MCwzOC44MDcxMTk0IDUwLDI1IEM1MCwxMS4xOTI4ODA2IDM4LjgwNzExOTQsMCAyNSwwIEMxMS4xOTI4ODA2LDAgMCwxMS4xOTI4ODA2IDAsMjUgQzAsMzguODA3MTE5NCAxMS4xOTI4ODA2LDUwIDI1LDUwIFogTTI1LDQ3IEMzNy4xNTAyNjUxLDQ3IDQ3LDM3LjE1MDI2NTEgNDcsMjUgQzQ3LDEyLjg0OTczNDkgMzcuMTUwMjY1MSwzIDI1LDMgQzEyLjg0OTczNDksMyAzLDEyLjg0OTczNDkgMywyNSBDMywzNy4xNTAyNjUxIDEyLjg0OTczNDksNDcgMjUsNDcgWiBNMTQsMjAuMTE4MDQ3OSBMMTQsMzQuNjU4MTgzNCBMMTguNzEwMDg1MSwzNC42NTgxODM0IEwxOC43MTAwODUxLDIwLjExODA0NzkgTDE0LDIwLjExODA0NzkgWiBNMTYuNjY0Njk2MiwxMyBDMTUuMDUzNDA1OCwxMyAxNCwxNC4wODU4NjExIDE0LDE1LjUxMTUxMjIgQzE0LDE2LjkwNzYzMzEgMTUuMDIyMjcxMSwxOC4wMjQ3NjE0IDE2LjYwMzU1NTYsMTguMDI0NzYxNCBMMTYuNjMzNjU1NiwxOC4wMjQ3NjE0IEMxOC4yNzU5ODY3LDE4LjAyNDc2MTQgMTkuMjk4ODIyMiwxNi45MDc2MzMxIDE5LjI5ODgyMjIsMTUuNTExNTEyMiBDMTkuMjY4MjUxOSwxNC4wODU4NjExIDE4LjI3NTk4NjcsMTMgMTYuNjY0Njk2MiwxMyBaIE0zMC41NzY5MjEzLDIwLjExODA0NzkgQzI4LjA3NjE3NiwyMC4xMTgwNDc5IDI2Ljk1NjU1MDEsMjEuNTI5MzE5OSAyNi4zMzE0MTA4LDIyLjUxOTM1MjcgTDI2LjMzMTQxMDgsMjAuNDU5ODY0NCBMMjEuNjIwNzYxNCwyMC40NTk4NjQ0IEMyMS42ODI4NDI3LDIxLjgyNDIzNTYgMjEuNjIwNzYxNCwzNSAyMS42MjA3NjE0LDM1IEwyNi4zMzE0MTA4LDM1IEwyNi4zMzE0MTA4LDI2Ljg3OTU4ODcgQzI2LjMzMTQxMDgsMjYuNDQ1MDMyIDI2LjM2MTk4MTIsMjYuMDExNTM2OCAyNi40ODY1MTk5LDI1LjcwMDQwODQgQzI2LjgyNjkzMiwyNC44MzIyNiAyNy42MDIwMDY5LDIzLjkzMzQyMzMgMjguOTAzMjY3NCwyMy45MzM0MjMzIEMzMC42MDgzMzgxLDIzLjkzMzQyMzMgMzEuMjg5OTE0OSwyNS4yNjY3MjAyIDMxLjI4OTkxNDksMjcuMjIwNjMzMyBMMzEuMjg5OTE0OSwzNC45OTk2MTQgTDM1Ljk5OTgxMTksMzQuOTk5NjE0IEwzNiwyNi42NjI3NDQ2IEMzNiwyMi4xOTY2NDM5IDMzLjY3NjM3NDMsMjAuMTE4MDQ3OSAzMC41NzY5MjEzLDIwLjExODA0NzkgWiBNMzAuNTc2OTIxMywyMC4xMTgwNDc5IiBpZD0iT3ZhbC0xIi8+PC9nPjwvZz48L3N2Zz4=" 
+      alt="Linkedin"
+    />
+  </a>
+</div>
+	</body>
+</html>

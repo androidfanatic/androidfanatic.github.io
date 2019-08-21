@@ -1,7 +1,7 @@
 ---
 title: "Mapping My Ladakh Road Trip"
 date: 2019-08-21T23:30:51+05:30
-draft: true
+draft: false
 ---
 
 Back in May, I went on a week long road trip with two of my friends and we took a ton of photos along the way. The goal of this exercise is to visualize those photos on a map.

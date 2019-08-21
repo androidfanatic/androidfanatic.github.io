@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</loc>
+    <lastmod>2019-08-21T23:30:51+05:30</lastmod>
+  </url>
+  
+  <url>
     <loc>https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/</loc>
     <lastmod>2019-03-27T05:30:31+05:30</lastmod>
   </url>
@@ -39,7 +44,7 @@
   
   <url>
     <loc>https://manishraj.dev/blog/</loc>
-    <lastmod>2019-03-27T05:30:31+05:30</lastmod>
+    <lastmod>2019-08-21T23:30:51+05:30</lastmod>
     <priority>0</priority>
   </url>
   
@@ -50,7 +55,7 @@
   
   <url>
     <loc>https://manishraj.dev/blog/post/</loc>
-    <lastmod>2019-03-27T05:30:31+05:30</lastmod>
+    <lastmod>2019-08-21T23:30:51+05:30</lastmod>
     <priority>0</priority>
   </url>
   
