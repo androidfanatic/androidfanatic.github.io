@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset='utf-8' />
+  <title>Ladakh 2019</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1'>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.1/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.1/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .marker {
+      width: 12px;
+      height: 12px;
+      line-height: 12px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 16px;
+    }
+
+    .imgEl {
+      position: absolute;
+      top: 0;
+      font-size: 10px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .imgEl img {
+      max-height: 180px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id='map'></div>
+  <script>
+    const base = 'http://13.126.70.198';
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/dark-v10',
+      zoom: 6,
+      maxZoom: 20,
+      center: [76.5762, 33.7782],
+      attributionControl: false,
+    });
+
+    const popup = new mapboxgl.Popup();
+
+    map.on('load', () => {
+      fetch('places.json').then(res => res.json()).then(places => {
+        places.forEach(place => {
+          const el = document.createElement('div');
+          el.className = 'marker';
+          el.innerText = '📌';
+          el.onclick = () => {
+            let removed = false;
+            el.querySelectorAll('.imgEl').forEach(elem => {
+              removed = true;
+              elem.remove();
+            })
+            if (!removed) {
+              const imgEl = document.createElement('div');
+
+              imgEl.className = 'imgEl';
+              const img = document.createElement('img');
+              img.src = 'data:image/jpg;base64,' + place.img;
+              const captionEl = document.createElement('div');
+              captionEl.innerText = new Date(place.timestamp).toLocaleString();
+
+              imgEl.appendChild(img);
+              imgEl.appendChild(captionEl);
+              el.appendChild(imgEl);
+            }
+          }
+          new mapboxgl.Marker(el)
+            .setLngLat(place.coords)
+            .addTo(map);
+        })
+      }).catch(console.error);
+    });
+
+  </script>
+
+</body>
+
+</html>
