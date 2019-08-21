@@ -16,7 +16,7 @@ pygmentsCodeFences = true
 
 [[menu.main]]
   name = "Home"
-  url = "../"
+  url = "https://manishraj.dev/"
 
 [[menu.main]]
   name = "Posts"
