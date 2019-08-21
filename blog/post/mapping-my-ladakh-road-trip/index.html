@@ -38,7 +38,7 @@
 	<article class="post">
 		<h1><a href="https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/">Mapping My Ladakh Road Trip</a> </h1>
 
-		<div class="post-content"><p>Back in May, I went on a week long road trip with two of my friends and we took a ton of photos along the way. The goal of this exercise is to visualize those photos on a map.</p>
+		<div class="post-content"><p>Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on a interactive map.</p>
 
 <figure style="width: 75%; margin: auto; display: block; margin-bottom: 8px;">
   <img src="https://manishraj.dev/blog/img/08/the_plan.png" title="Image of planned route of the road trip"  >
@@ -53,7 +53,7 @@
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#719e07">const</span> allFiles <span style="color:#719e07">=</span> fs.readdirSync(path.join(__dirname, <span style="color:#2aa198">&#39;files&#39;</span>));
 <span style="color:#719e07">const</span> jpegs <span style="color:#719e07">=</span> allFiles.filter(file =&gt; <span style="color:#dc322f">/\.jpe?g$/i</span>.test(file));
 </code></pre></div>
-<p>Next we will parse data out of all the selected jpegs. Given the asynchronous nature of EXIF data extraction, we will create an array of promises that we&rsquo;d later resolve using <code>Promise.all()</code> to get EXIF data of all these files in an array.</p>
+<p>Next we will parse data out of all the selected jpegs. Given the asynchronous nature of <a href="https://github.com/gomfunkel/node-exif" target="_blank">EXIF</a> data extraction, we will create an array of promises that we&rsquo;d later resolve using <code>Promise.all()</code> to get EXIF data of all these files in an array.</p>
 
 <p>The result of these promises are structured in JSON format, that we&rsquo;d then use to render the photos back on a map.</p>
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#586e75">// require ExifImage

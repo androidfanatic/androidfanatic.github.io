@@ -4,7 +4,7 @@ date: 2019-08-21T23:30:51+05:30
 draft: false
 ---
 
-Back in May, I went on a week long road trip with two of my friends and we took a ton of photos along the way. The goal of this exercise is to visualize those photos on a map.
+Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on a interactive map.
 
 <figure style="width: 75%; margin: auto; display: block; margin-bottom: 8px;">
   <img src="/img/08/the_plan.png" title="Image of planned route of the road trip"  >
@@ -22,7 +22,7 @@ const allFiles = fs.readdirSync(path.join(__dirname, 'files'));
 const jpegs = allFiles.filter(file => /\.jpe?g$/i.test(file));
 ```
 
-Next we will parse data out of all the selected jpegs. Given the asynchronous nature of EXIF data extraction, we will create an array of promises that we'd later resolve using `Promise.all()` to get EXIF data of all these files in an array.
+Next we will parse data out of all the selected jpegs. Given the asynchronous nature of <a href="https://github.com/gomfunkel/node-exif" target="_blank">EXIF</a> data extraction, we will create an array of promises that we'd later resolve using `Promise.all()` to get EXIF data of all these files in an array.
 
 The result of these promises are structured in JSON format, that we'd then use to render the photos back on a map.
 
