@@ -103,8 +103,8 @@ Promise.all(allPromises).then(allExifData => {
       coords: exifDataToLngLat(exifData.gps),
       timestamp: moment(
         exifData.exif.CreateDate,
-        "YYYY:MM:dd hh:mm:ss"
-      ).add(330, 'minutes').valueOf(),
+        "YYYY:MM:DD hh:mm:ss"
+      ),
       img,
     })).sort((a, b) => a.timestamp - b.timestamp);
   // write the file

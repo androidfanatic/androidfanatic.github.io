@@ -126,8 +126,8 @@
       coords<span style="color:#719e07">:</span> exifDataToLngLat(exifData.gps),
       timestamp<span style="color:#719e07">:</span> moment(
         exifData.exif.CreateDate,
-        <span style="color:#2aa198">&#34;YYYY:MM:dd hh:mm:ss&#34;</span>
-      ).add(<span style="color:#2aa198">330</span>, <span style="color:#2aa198">&#39;minutes&#39;</span>).valueOf(),
+        <span style="color:#2aa198">&#34;YYYY:MM:DD hh:mm:ss&#34;</span>
+      ),
       img,
     })).sort((a, b) =&gt; a.timestamp <span style="color:#719e07">-</span> b.timestamp);
   <span style="color:#586e75">// write the file
