@@ -4,7 +4,7 @@ date: 2019-08-21T23:30:51+05:30
 draft: false
 ---
 
-Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on a interactive map.
+Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.
 
 <figure style="width: 75%; margin: auto; display: block; margin-bottom: 8px;">
   <img src="/img/08/the_plan.png" title="Image of planned route of the road trip"  >
