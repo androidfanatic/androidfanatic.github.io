@@ -31,18 +31,40 @@
     .text-large { font-size: 36px; }
     .text-huge { font-size: 64px; }
     .text-upper { text-transform: uppercase; }
-    .text-underline { text-decoration: underline; }
+    a.text-underline{ position: relative; }
+    a.text-underline:after {
+      background: none repeat scroll 0 0 transparent;
+      bottom: 0;
+      content: "";
+      display: block;
+      height: 1px;
+      left: 50%;
+      position: absolute;
+      background: #fff;
+      transition: width 0.3s ease 0s, left 0.3s ease 0s;
+      width: 0;
+    }
+    a.text-underline:hover:after {
+      width: 100%;
+      left: 0;
+    }
+    .avatar {
+      width: 196px;
+      border-radius: 50%;
+    }
     </style>
   </head>
   <body>
       <!-- card 1 -->
       <div class="card card1">
         <div class="text-center">
+          <p>
+            <img class="avatar" src="/images/me.png" alt="Manish Raj - profile image" />
+          </p>
           <h1 class="text-huge text-upper">Manish Raj</h1>
           <div class="text-center">
             <p class="text-upper" style="color: #cb4b16;">Fullstack Developer</p>
             <p>
-              <a class="link-simple text-underline" href="/blog/about" title="Coming soon">About</a> | 
               <a class="link-simple text-underline" href="/blog" title="Coming soon">Blog</a> |  
               <a class="link-simple text-underline" href="mailto:manish_raj@outlook.com" title="manish_raj@outlook.com">Connect</a>
             </p>
