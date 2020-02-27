@@ -1,25 +1,18 @@
 {{ define "main" }}
-    {{ $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
-    {{ range (.Paginate $pages).Pages }}
-    <article class="post-list">
-        <header> 
-            <h1>
-                <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            </h1>
-        </header>
 
-        <div class="content">
-            {{ .Summary | safeHTML }}
-        </div>
-<!--         {{ if .Truncated }}
-            <div class="read-more">
-                <a href="{{ .RelPermalink }}">{{ i18n "readMore" | humanize }}</a>
-            </div>
-        {{ end }} -->
-        
-        {{ partial "articleInfoFull.html" . }}
-    </article>
-    {{ end }}
-    {{ partial "pagination.html" . }}
+<section id="home">
+        <ul>
+          {{ range $index, $page := first 10 (where .Site.RegularPages "Section" "in" .Site.Params.mainSections) }}
+          <li {{if eq $index 0}}class="first"{{end}}>
+            <h1><a href="{{ .Permalink }}" title="{{ .Title }}">{{ .Title }}</a></h1> 
+            {{ partial "aside" . }}
+            <p>{{ .Summary }}</p>
+            {{ if .Truncated }}
+            <a href="{{ .RelPermalink }}">{{ T "readMore" }}</a>
+            {{ end }}
+          </li>
+          {{ end }}
+        </ul>
+      </section>
 
 {{ end }}

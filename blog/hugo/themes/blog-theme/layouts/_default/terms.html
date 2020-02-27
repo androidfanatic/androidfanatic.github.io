@@ -1,16 +1,19 @@
 {{ define "main" }}
 
-    <h1>{{ i18n .Title }}</h1>
+<section id="list">
 
-    <ul class="terms">
+    {{ $baseurl := .Site.BaseURL }}
+
+    <h2>{{ .Title }}</h2>
+
+    {{ .Content }}
+
+    <ul>
         {{ range $key, $value := .Data.Terms }}
-        <li>
-            <a href="{{ (print $.Data.Plural "/" (lower $key)) | absURL }}">
-            {{ $key }}
-            </a>
-            ({{ len $value }})
-        </li>
+            <li><a href="{{ $key | urlize }}">{{ $key }}</a> <span class="count">({{ .Count }} entries)</span></li>
         {{ end }}
     </ul>
+
+</section>
 
 {{ end }}
