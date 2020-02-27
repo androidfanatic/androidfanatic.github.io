@@ -1,49 +1,73 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Træfik, reverse proxy, HTTPs and more</title>
-		<meta name="viewport" content="width=device-width">
-		
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/hybrid.css">
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css">
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/colors-dark.css">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
 
-		
-	</head>
-	<body>
-		<header id="header">
-			<h1><a href="https://manishraj.dev/blog/">Blog</a></h1>
-			<p></p>
-		</header>
+<title>Træfik, reverse proxy, HTTPs and more  - Blog</title>
+<meta name="description" content="">
 
-		<div id="page">
-			<div id="sidebar">
-				<nav>
-	
-		<ul class="nav">
-			
-				<li><a href="https://manishraj.dev/"><span>Home</span></a></li>
-			
-				<li><a href="https://manishraj.dev/blog/post/"><span>Posts</span></a></li>
-			
-		</ul>
-	
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://manishraj.dev/blog/rss/">
+
+<link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
+
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582829134" />
+
+<meta property="og:title" content="Træfik, reverse proxy, HTTPs and more" />
+<meta property="og:description" content="I stumbled upon Træfik last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.
+Træfik is simple enough to get started with, within minutes and offers a variety of features such as:
+ Deploy Traefik using a tiny go binary or docker image. Serve as a reverse proxy for multiple micro-services. Supports several back-end systems such as Docker, Kubernetes, Consul, Amazon ECS and more." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/" />
+<meta property="article:published_time" content="2017-09-11T00:43:32+05:30" />
+<meta property="article:modified_time" content="2017-09-11T00:43:32+05:30" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Træfik, reverse proxy, HTTPs and more"/>
+<meta name="twitter:description" content="I stumbled upon Træfik last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.
+Træfik is simple enough to get started with, within minutes and offers a variety of features such as:
+ Deploy Traefik using a tiny go binary or docker image. Serve as a reverse proxy for multiple micro-services. Supports several back-end systems such as Docker, Kubernetes, Consul, Amazon ECS and more."/>
+
+
+
+
+
+
+    
+</head>
+<body>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="https://manishraj.dev/blog/">Blog</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="https://manishraj.dev/" title="">Home</a>
+    
+    <a class="" href="https://manishraj.dev/blog/post/" title="">Posts</a>
+    
 </nav>
 
-			</div>
+            
+        </header>
+        <main>
+            
 
-			<div id="content">
-				
-	<article class="post">
-		<h1><a href="https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/">Træfik, reverse proxy, HTTPs and more</a> </h1>
-
-		<div class="post-content">
-
-<p>I stumbled upon <a href="https://traefik.io/">Træfik</a> last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.</p>
-
+    <article class="post">
+        <header>
+            <h1>Træfik, reverse proxy, HTTPs and more</h1>
+        </header>
+        <div class="content">
+            <p>I stumbled upon <a href="https://traefik.io/">Træfik</a> last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.</p>
 <p>Træfik is simple enough to get started with, within minutes and offers a variety of features such as:</p>
-
 <ul>
 <li>Deploy Traefik using a tiny go binary or docker image.</li>
 <li>Serve as a reverse proxy for multiple micro-services.</li>
@@ -54,200 +78,188 @@
 <li>Provide access logs and metrics; dashboard with a clean UI</li>
 <li>Cluster mode for high availability.</li>
 </ul>
-
 <p>To sum it all up, Træfik is a great tool to serve and manage multiple micro-services or web applications while ensuring high availability, fast speed and continuous deployment.</p>
-
-<p><img src="https://manishraj.dev/blog/img/09/traefik_architecture.png" style="max-width: 80%; display: block; margin: auto;" >
-<center>&copy; <a href="https://traefik.io/">https://traefik.io/</a></center></p>
-
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
 <p>To demonstrate the robustness and simplicity of traefik, we will try to setup two services with reverse proxy and SSL support. We will host the services on different subdomain on a local machine.</p>
-
 <h3 id="what-are-we-aiming-for">What are we aiming for?</h3>
-
 <p>Setup gitlab and nextcloud on a local machine on different subdomain with SSL support to demonstrate dynamic config reload, docker backend support, proxied SSL and reverse proxy capabilities of Traefik.</p>
-
 <ul>
 <li><strong>gitlab</strong> is an open source VCS similar to github</li>
 <li><strong>nextcloud</strong> is open source file host similar to dropbox</li>
 </ul>
-
 <p>I picked up gitlab and nextcloud for this exercise because these are two prominent services often deployed within an organization for internal use and can be a nuisance to setup as both compete for port 80, gitlab offers SSL support out of the box whereas nextcloud depends on a reverse proxy for SSL support.</p>
-
 <p>As Traefik supports docker among several other back-end systems, we will attempt docker based deployment of these services.</p>
-
 <h3 id="what-do-we-need-to-begin">What do we need to begin?</h3>
-
 <p>Before we being, we&rsquo;ll need docker host up and running on the target machine, SSL certificate and key (self signed or otherwise) and some free time to glance through Traefik docs.</p>
-
 <p>To generate a self signed certificate, check out: <a href="https://devcenter.heroku.com/articles/ssl-certificate-self">https://devcenter.heroku.com/articles/ssl-certificate-self</a></p>
-
 <h3 id="start-deploying-microservices">Start deploying microservices</h3>
-
 <ol>
-<li><p>Create a traefik config file: <span id="toml"><code>traefik.toml</code> </span></p>
+<li>
+<p>Create a traefik config file: <!-- raw HTML omitted --><code>traefik.toml</code> <!-- raw HTML omitted --></p>
+<pre><code> defaultEntryPoints = [&quot;http&quot;, &quot;https&quot;]
+ [entryPoints]
+ [entryPoints.http]
+ address = &quot;:80&quot;
+     [entryPoints.http.redirect]
+     entryPoint = &quot;https&quot;
+ [entryPoints.https]
+ address = &quot;:443&quot;
+     [entryPoints.https.tls]
+     [[entryPoints.https.tls.certificates]]
+     certFile = &quot;/etc/traefik/server.crt&quot;
+     keyFile = &quot;/etc/traefik/server.key&quot;
+ [web]
+ address = &quot;:8080&quot;
 
-<pre><code>defaultEntryPoints = [&quot;http&quot;, &quot;https&quot;]
-[entryPoints]
-[entryPoints.http]
-address = &quot;:80&quot;
-    [entryPoints.http.redirect]
-    entryPoint = &quot;https&quot;
-[entryPoints.https]
-address = &quot;:443&quot;
-    [entryPoints.https.tls]
-    [[entryPoints.https.tls.certificates]]
-    certFile = &quot;/etc/traefik/server.crt&quot;
-    keyFile = &quot;/etc/traefik/server.key&quot;
-[web]
-address = &quot;:8080&quot;
-
-[docker]
-domain = &quot;docker.localhost&quot;
+ [docker]
+ domain = &quot;docker.localhost&quot;
 </code></pre>
-
 <p>The config file:</p>
-
 <ul>
-<li><p>accepts http and https traffic</p></li>
-
-<li><p>routes all http traffic to https endpoint</p></li>
-
-<li><p>adds self signed certificate and key</p></li>
-
-<li><p>Enables [web] i.e. Traefik dashboard at port 8080</p></li>
-
-<li><p>Enables [docker] backed and sets the main domain to docker.localhost</p></li>
+<li>
+<p>accepts http and https traffic</p>
+</li>
+<li>
+<p>routes all http traffic to https endpoint</p>
+</li>
+<li>
+<p>adds self signed certificate and key</p>
+</li>
+<li>
+<p>Enables [web] i.e. Traefik dashboard at port 8080</p>
+</li>
+<li>
+<p>Enables [docker] backed and sets the main domain to docker.localhost</p>
+</li>
 </ul>
+<p>More information on traefik configs can be found at: <a href="https://docs.traefik.io/configuration/commons/">https://docs.traefik.io/configuration/commons/</a></p>
+</li>
+<li>
+<p>Start the traefik docker container:</p>
+<pre><code> ssl_cert=`pwd`/server.crt
+ ssl_cert_key=`pwd`/server.key
 
-<p>More information on traefik configs can be found at: <a href="https://docs.traefik.io/configuration/commons/">https://docs.traefik.io/configuration/commons/</a></p></li>
-
-<li><p>Start the traefik docker container:</p>
-
-<pre><code>ssl_cert=`pwd`/server.crt
-ssl_cert_key=`pwd`/server.key
-
-docker run --detach \
-  --name traefik \
-  --publish 8080:8080 \
-  --publish 443:443 \
-  --publish 80:80 \
-  --restart always \
-  --volume $PWD/traefik.toml:/etc/traefik/traefik.toml \
-  --volume $ssl_cert:/etc/traefik/server.crt \
-  --volume $ssl_cert_key:/etc/traefik/server.key \
-  --volume /var/run/docker.sock:/var/run/docker.sock \
-  traefik:latest
+ docker run --detach \
+   --name traefik \
+   --publish 8080:8080 \
+   --publish 443:443 \
+   --publish 80:80 \
+   --restart always \
+   --volume $PWD/traefik.toml:/etc/traefik/traefik.toml \
+   --volume $ssl_cert:/etc/traefik/server.crt \
+   --volume $ssl_cert_key:/etc/traefik/server.key \
+   --volume /var/run/docker.sock:/var/run/docker.sock \
+   traefik:latest
 </code></pre>
-
 <p>The run command:</p>
-
 <ul>
-<li><p>Publishes port 8080 for dashboard and 80, 443 for http/https traffic</p></li>
-
-<li><p>Makes traefik.toml file available to container.</p></li>
-
-<li><p>Makes cert/key available to container. Note that <a href="#toml"><code>traefik.toml</code></a> points to this location for SSL cert/key.</p></li>
-
-<li><p>Makes docker.sock file available to container. This is how traefik automatically picks up and publishes new containers. For different back-ends, traefik supports other kinds of discovery including REST api.</p></li>
+<li>
+<p>Publishes port 8080 for dashboard and 80, 443 for http/https traffic</p>
+</li>
+<li>
+<p>Makes traefik.toml file available to container.</p>
+</li>
+<li>
+<p>Makes cert/key available to container. Note that <a href="#toml"><code>traefik.toml</code></a> points to this location for SSL cert/key.</p>
+</li>
+<li>
+<p>Makes docker.sock file available to container. This is how traefik automatically picks up and publishes new containers. For different back-ends, traefik supports other kinds of discovery including REST api.</p>
+</li>
 </ul>
-
-<p>Once docker run command executes successfully, you should be able to access traefik dashboard at <a href="http://localhost:8080">http://localhost:8080</a>.</p></li>
-
-<li><p>Start nextcloud docker container:</p>
-
-<pre><code>docker run --detach \
-  --name nextcloud \
-  --label traefik.port=80 \
-  --restart always \
-  --volume /srv/nextcloud:/var/www/html \
-  nextcloud:latest
+<p>Once docker run command executes successfully, you should be able to access traefik dashboard at http://localhost:8080.</p>
+</li>
+<li>
+<p>Start nextcloud docker container:</p>
+<pre><code> docker run --detach \
+   --name nextcloud \
+   --label traefik.port=80 \
+   --restart always \
+   --volume /srv/nextcloud:/var/www/html \
+   nextcloud:latest
 </code></pre>
-
 <p>The run command:</p>
-
 <ul>
-<li><p>&ndash;name: names the container <code>nextcloud</code>. Traefik uses container name and the domain specified in <a href="#toml"><code>traefik.toml</code></a> file to come up with subdomain for the container. In this case, the subdomain where nextcloud gets served is <code>nextcloud.docker.localhost</code></p></li>
-
-<li><p>&ndash;label: Tags port 80 to be used by traefik for routing. By default, traefik will try to get the first port exposed by container and try to route http/https traffic to it.</p></li>
-
-<li><p>&ndash;volume: Adds persistent storage to nextcloud container. More container specific options can be found at: <a href="https://github.com/nextcloud/docker">https://github.com/nextcloud/docker</a></p></li>
+<li>
+<p>&ndash;name: names the container <code>nextcloud</code>. Traefik uses container name and the domain specified in <a href="#toml"><code>traefik.toml</code></a> file to come up with subdomain for the container. In this case, the subdomain where nextcloud gets served is <code>nextcloud.docker.localhost</code></p>
+</li>
+<li>
+<p>&ndash;label: Tags port 80 to be used by traefik for routing. By default, traefik will try to get the first port exposed by container and try to route http/https traffic to it.</p>
+</li>
+<li>
+<p>&ndash;volume: Adds persistent storage to nextcloud container. More container specific options can be found at: <a href="https://github.com/nextcloud/docker">https://github.com/nextcloud/docker</a></p>
+</li>
 </ul>
-
-<p>If you visit traefik dashboard at <a href="http://localhost:8080">http://localhost:8080</a>, you should be able to see nextcloud container automatically added to <a href="https://manishraj.dev/blog/img/09/traefik_dashboard_nextcloud.png" target="_blank">dashboard</a>.</p>
-
-<p>If you head over to <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a>, you should be presented with <a href="https://manishraj.dev/blog/img/09/nextcloud_init.png" target="_blank">nextcloud UI</a>.</p></li>
-
-<li><p>Start gitlab docker container:</p>
-
+<p>If you visit traefik dashboard at http://localhost:8080, you should be able to see nextcloud container automatically added to <!-- raw HTML omitted -->dashboard<!-- raw HTML omitted -->.</p>
+<p>If you head over to <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a>, you should be presented with <!-- raw HTML omitted -->nextcloud UI<!-- raw HTML omitted -->.</p>
+</li>
+<li>
+<p>Start gitlab docker container:</p>
 <p>Alright, let&rsquo;s get the second container running to see how easy it is to route different services with traefik</p>
+<pre><code> gitlab_path=/srv/gitlab
 
-<pre><code>gitlab_path=/srv/gitlab
-
-docker run --detach \
-  --name gitlab \
-  --label traefik.port=80 \
-  --restart always \
-  --volume $gitlab_path/config:/etc/gitlab \
-  --volume $gitlab_path/logs:/var/log/gitlab \
-  --volume $gitlab_path/data:/var/opt/gitlab \
-  gitlab/gitlab-ce:latest    
+ docker run --detach \
+   --name gitlab \
+   --label traefik.port=80 \
+   --restart always \
+   --volume $gitlab_path/config:/etc/gitlab \
+   --volume $gitlab_path/logs:/var/log/gitlab \
+   --volume $gitlab_path/data:/var/opt/gitlab \
+   gitlab/gitlab-ce:latest    
 </code></pre>
-
 <p>The run command:</p>
-
 <ul>
-<li><p>&ndash;name: Names the container <code>gitlab</code> which results in target subdomain being <code>gitlab.docker.localhost</code>.</p></li>
-
-<li><p>&ndash;volume: Adds container specific options such as volume mount paths found at: <a href="http://doc.gitlab.com/omnibus/docker/">http://doc.gitlab.com/omnibus/docker/</a></p></li>
-
-<li><p>&ndash;label: Tags port 80 to be used by traefik for routing. Tagging a port was useful in this case because gitlab container exposes ports 22, 443 and 80 and traefik was picking up port 22 and forwarding all traffic from gitlab.docker.localhost to port 22 of the container which kept resulting in an ISE.</p></li>
-</ul></li>
-</ol>
-
-<p>At this point, you should have the two services being routed through traefik with SSL support available at <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a> and <a href="https://gitlab.docker.localhost">https://gitlab.docker.localhost</a> and traefik dashboard, available at localhost:8080, should look something like this:</p>
-
-<p><a href="https://manishraj.dev/blog/img/09/traefix_dashboard.png" target="_blank"><img src="https://manishraj.dev/blog/img/09/traefix_dashboard.png" style="max-width: 95%; display: block; margin: auto;" ></a></p>
-
-<p>Try exploring the &ldquo;Health&rdquo; tab on dashboard and see what kind of metrics it offers.</p>
-
-<h3 id="conclusion">Conclusion</h3>
-
-<p>With this exercise, we observed that traefix automatically picked up and published new services to a different subdomain along with SSL support and load balancing.</p>
-
-<p>Traefix shows logging and metrics about service health and status on dashboard.</p>
-
-<p>Traefix is simple enough that getting started and deploying multiple services, only takes a few minutes yet robust enough to offer wide range of features and configurations.</p>
-
-<h3 id="links">Links:</h3>
-
-<ul>
-<li><p><a href="https://traefik.io">https://traefik.io</a></p></li>
-
-<li><p><a href="https://docs.traefik.io/">https://docs.traefik.io/</a></p></li>
+<li>
+<p>&ndash;name: Names the container <code>gitlab</code> which results in target subdomain being <code>gitlab.docker.localhost</code>.</p>
+</li>
+<li>
+<p>&ndash;volume: Adds container specific options such as volume mount paths found at: <a href="http://doc.gitlab.com/omnibus/docker/">http://doc.gitlab.com/omnibus/docker/</a></p>
+</li>
+<li>
+<p>&ndash;label: Tags port 80 to be used by traefik for routing. Tagging a port was useful in this case because gitlab container exposes ports 22, 443 and 80 and traefik was picking up port 22 and forwarding all traffic from gitlab.docker.localhost to port 22 of the container which kept resulting in an ISE.</p>
+</li>
 </ul>
+</li>
+</ol>
+<p>At this point, you should have the two services being routed through traefik with SSL support available at <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a> and <a href="https://gitlab.docker.localhost">https://gitlab.docker.localhost</a> and traefik dashboard, available at localhost:8080, should look something like this:</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p>Try exploring the &ldquo;Health&rdquo; tab on dashboard and see what kind of metrics it offers.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>With this exercise, we observed that traefix automatically picked up and published new services to a different subdomain along with SSL support and load balancing.</p>
+<p>Traefix shows logging and metrics about service health and status on dashboard.</p>
+<p>Traefix is simple enough that getting started and deploying multiple services, only takes a few minutes yet robust enough to offer wide range of features and configurations.</p>
+<h3 id="links">Links:</h3>
+<ul>
+<li>
+<p><a href="https://traefik.io">https://traefik.io</a></p>
+</li>
+<li>
+<p><a href="https://docs.traefik.io/">https://docs.traefik.io/</a></p>
+</li>
+</ul>
+
+        </div>
+        <div class="article-info">
+    
+        <div class="article-date">2017-09-11</div>
+    
+    <div class="article-taxonomies">
+        
+            
+    </div>
 </div>
+    </article>
+    
 
-		<p class="meta">Posted on <span class="postdate">11. September 2017</span></p>
-	</article>
 
-			</div>
-
-			<footer id="footer">
-				<p class="copyright">
-					
-						 
-					
-				</p>
-			</footer>
-		</div>
-
-		<div style="text-align: center;">
-  <a href="https://www.linkedin.com/in/manish-raj/" target="_blank">
-    <img style="filter: invert(100%) sepia(5%) saturate(753%) hue-rotate(236deg) brightness(117%) contrast(100%); width: 20px; height: 20px;" 
-      src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI1MHB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MCA1MCIgd2lkdGg9IjUwcHgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGUvPjxkZWZzLz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIj48ZyBmaWxsPSIjMDAwMDAwIiBpZD0iTGlua2VkSW4iPjxwYXRoIGQ9Ik0yNSw1MCBDMzguODA3MTE5NCw1MCA1MCwzOC44MDcxMTk0IDUwLDI1IEM1MCwxMS4xOTI4ODA2IDM4LjgwNzExOTQsMCAyNSwwIEMxMS4xOTI4ODA2LDAgMCwxMS4xOTI4ODA2IDAsMjUgQzAsMzguODA3MTE5NCAxMS4xOTI4ODA2LDUwIDI1LDUwIFogTTI1LDQ3IEMzNy4xNTAyNjUxLDQ3IDQ3LDM3LjE1MDI2NTEgNDcsMjUgQzQ3LDEyLjg0OTczNDkgMzcuMTUwMjY1MSwzIDI1LDMgQzEyLjg0OTczNDksMyAzLDEyLjg0OTczNDkgMywyNSBDMywzNy4xNTAyNjUxIDEyLjg0OTczNDksNDcgMjUsNDcgWiBNMTQsMjAuMTE4MDQ3OSBMMTQsMzQuNjU4MTgzNCBMMTguNzEwMDg1MSwzNC42NTgxODM0IEwxOC43MTAwODUxLDIwLjExODA0NzkgTDE0LDIwLjExODA0NzkgWiBNMTYuNjY0Njk2MiwxMyBDMTUuMDUzNDA1OCwxMyAxNCwxNC4wODU4NjExIDE0LDE1LjUxMTUxMjIgQzE0LDE2LjkwNzYzMzEgMTUuMDIyMjcxMSwxOC4wMjQ3NjE0IDE2LjYwMzU1NTYsMTguMDI0NzYxNCBMMTYuNjMzNjU1NiwxOC4wMjQ3NjE0IEMxOC4yNzU5ODY3LDE4LjAyNDc2MTQgMTkuMjk4ODIyMiwxNi45MDc2MzMxIDE5LjI5ODgyMjIsMTUuNTExNTEyMiBDMTkuMjY4MjUxOSwxNC4wODU4NjExIDE4LjI3NTk4NjcsMTMgMTYuNjY0Njk2MiwxMyBaIE0zMC41NzY5MjEzLDIwLjExODA0NzkgQzI4LjA3NjE3NiwyMC4xMTgwNDc5IDI2Ljk1NjU1MDEsMjEuNTI5MzE5OSAyNi4zMzE0MTA4LDIyLjUxOTM1MjcgTDI2LjMzMTQxMDgsMjAuNDU5ODY0NCBMMjEuNjIwNzYxNCwyMC40NTk4NjQ0IEMyMS42ODI4NDI3LDIxLjgyNDIzNTYgMjEuNjIwNzYxNCwzNSAyMS42MjA3NjE0LDM1IEwyNi4zMzE0MTA4LDM1IEwyNi4zMzE0MTA4LDI2Ljg3OTU4ODcgQzI2LjMzMTQxMDgsMjYuNDQ1MDMyIDI2LjM2MTk4MTIsMjYuMDExNTM2OCAyNi40ODY1MTk5LDI1LjcwMDQwODQgQzI2LjgyNjkzMiwyNC44MzIyNiAyNy42MDIwMDY5LDIzLjkzMzQyMzMgMjguOTAzMjY3NCwyMy45MzM0MjMzIEMzMC42MDgzMzgxLDIzLjkzMzQyMzMgMzEuMjg5OTE0OSwyNS4yNjY3MjAyIDMxLjI4OTkxNDksMjcuMjIwNjMzMyBMMzEuMjg5OTE0OSwzNC45OTk2MTQgTDM1Ljk5OTgxMTksMzQuOTk5NjE0IEwzNiwyNi42NjI3NDQ2IEMzNiwyMi4xOTY2NDM5IDMzLjY3NjM3NDMsMjAuMTE4MDQ3OSAzMC41NzY5MjEzLDIwLjExODA0NzkgWiBNMzAuNTc2OTIxMywyMC4xMTgwNDc5IiBpZD0iT3ZhbC0xIi8+PC9nPjwvZz48L3N2Zz4=" 
-      alt="Linkedin"
-    />
-  </a>
-</div>
-	</body>
+        </main>
+        <footer>
+            
+                <p>© 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
 </html>

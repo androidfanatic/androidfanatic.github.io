@@ -1,118 +1,121 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Setting up Slash commands for Slack workspace</title>
-		<meta name="viewport" content="width=device-width">
-		
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/hybrid.css">
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css">
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/colors-dark.css">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
 
-		
-	</head>
-	<body>
-		<header id="header">
-			<h1><a href="https://manishraj.dev/blog/">Blog</a></h1>
-			<p></p>
-		</header>
+<title>Setting up Slash commands for Slack workspace  - Blog</title>
+<meta name="description" content="">
 
-		<div id="page">
-			<div id="sidebar">
-				<nav>
-	
-		<ul class="nav">
-			
-				<li><a href="https://manishraj.dev/"><span>Home</span></a></li>
-			
-				<li><a href="https://manishraj.dev/blog/post/"><span>Posts</span></a></li>
-			
-		</ul>
-	
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://manishraj.dev/blog/rss/">
+
+<link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
+
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582829134" />
+
+<meta property="og:title" content="Setting up Slash commands for Slack workspace" />
+<meta property="og:description" content="Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.
+In this post, we will try to set up a slash command /hello for our slack workspace that makes a request to a REST API and displays response back on the slack channel.
+The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/" />
+<meta property="article:published_time" content="2017-10-12T22:11:46+05:30" />
+<meta property="article:modified_time" content="2017-10-12T22:11:46+05:30" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Setting up Slash commands for Slack workspace"/>
+<meta name="twitter:description" content="Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.
+In this post, we will try to set up a slash command /hello for our slack workspace that makes a request to a REST API and displays response back on the slack channel.
+The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber."/>
+
+
+
+
+
+
+    
+</head>
+<body>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="https://manishraj.dev/blog/">Blog</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="https://manishraj.dev/" title="">Home</a>
+    
+    <a class="" href="https://manishraj.dev/blog/post/" title="">Posts</a>
+    
 </nav>
 
-			</div>
+            
+        </header>
+        <main>
+            
 
-			<div id="content">
-				
-	<article class="post">
-		<h1><a href="https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/">Setting up Slash commands for Slack workspace</a> </h1>
-
-		<div class="post-content">
-
-<p>Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.</p>
-
+    <article class="post">
+        <header>
+            <h1>Setting up Slash commands for Slack workspace</h1>
+        </header>
+        <div class="content">
+            <p>Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.</p>
 <p>In this post, we will try to set up a slash command <code>/hello</code> for our slack workspace that makes a request to a REST API and displays response back on the slack channel.</p>
-
 <p>The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.</p>
-
 <p>Here&rsquo;s how the slash command is supposed to works once we&rsquo;re done with setup:</p>
-
-<p><img src="https://manishraj.dev/blog/img/10/slash_command_output.gif" style="width:100%; display: block; margin: auto;" />
-<div style="font-size: 12px; text-align: center">Figure: Invoking slash command</div></p>
-
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
 <p>Alright, let&rsquo;s get started.</p>
-
 <h3 id="deploy-api-service">Deploy API service</h3>
-
 <p>Begin by deploying your API service on the Internet. I used heroku since it offers five free dynos (application containers).</p>
-
 <p>I forked the sample nodejs app and built a dummy API service that leverages heroku&rsquo;s one-click deploy.</p>
-
 <p>The project is available at: <a href="https://github.com/androidfanatic/slash-cmd-api">https://github.com/androidfanatic/slash-cmd-api</a></p>
-
 <p>It is a simple API service that returns <strong><code>hello from api</code></strong> when one makes a GET request to <strong><code>/hello</code></strong> endpoint.</p>
-
 <p>The deployed service is available at: <a href="http://slash-cmd-api.herokuapp.com/hello">http://slash-cmd-api.herokuapp.com/hello</a></p>
-
 <h3 id="add-a-slash-command-to-slack-workspace">Add a slash command to slack workspace</h3>
-
 <p>Now that you have your API service deployed on cloud, let&rsquo;s begin configuring slack workspace and add a slash command that calls the API.</p>
-
 <p>If you don&rsquo;t already have a workspace on slack, signing up for one is very easy and quick.</p>
-
 <p>Once you&rsquo;re inside the workspace, click on workspace name on top left and go to: <strong>Workspace Settings</strong> &gt; <strong>Configure App</strong> &gt; <strong>Browse the App Directory</strong>.</p>
-
 <p>Search for &ldquo;<strong>Slash Commands</strong>&rdquo; and click on it.</p>
-
-<p><img src="https://manishraj.dev/blog/img/10/slash_command_search.png" style="width:100%; display: block; margin: auto;" />
-<div style="font-size: 12px; text-align: center">Figure: Slash Commands for slack</div></p>
-
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
 <p>Add a new config for &ldquo;slash commands&rdquo; app based on your API specs such as url endpoint, request method, slash command name etc.</p>
-
 <p>For me, config looks something like this:</p>
-
-<p><img src="https://manishraj.dev/blog/img/10/slash_commands_config.png" style="width:100%" />
-<div style="font-size: 12px; text-align: center">Figure: Configurations for slash command</div></p>
-
+<p><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
 <p>Make sure to get the HTTP URL and request method right. Slack also displays a randomly generated token which can be used to verify and accept requests to your API originating only from slack.</p>
-
 <p>Click on save integration and go back to any channel to test if the slash command works.</p>
-
 <p>Congrats, you just set up a very basic slash command.</p>
+
+        </div>
+        <div class="article-info">
+    
+        <div class="article-date">2017-10-12</div>
+    
+    <div class="article-taxonomies">
+        
+            
+    </div>
 </div>
+    </article>
+    
 
-		<p class="meta">Posted on <span class="postdate">12. October 2017</span></p>
-	</article>
 
-			</div>
-
-			<footer id="footer">
-				<p class="copyright">
-					
-						 
-					
-				</p>
-			</footer>
-		</div>
-
-		<div style="text-align: center;">
-  <a href="https://www.linkedin.com/in/manish-raj/" target="_blank">
-    <img style="filter: invert(100%) sepia(5%) saturate(753%) hue-rotate(236deg) brightness(117%) contrast(100%); width: 20px; height: 20px;" 
-      src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI1MHB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MCA1MCIgd2lkdGg9IjUwcHgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGUvPjxkZWZzLz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIj48ZyBmaWxsPSIjMDAwMDAwIiBpZD0iTGlua2VkSW4iPjxwYXRoIGQ9Ik0yNSw1MCBDMzguODA3MTE5NCw1MCA1MCwzOC44MDcxMTk0IDUwLDI1IEM1MCwxMS4xOTI4ODA2IDM4LjgwNzExOTQsMCAyNSwwIEMxMS4xOTI4ODA2LDAgMCwxMS4xOTI4ODA2IDAsMjUgQzAsMzguODA3MTE5NCAxMS4xOTI4ODA2LDUwIDI1LDUwIFogTTI1LDQ3IEMzNy4xNTAyNjUxLDQ3IDQ3LDM3LjE1MDI2NTEgNDcsMjUgQzQ3LDEyLjg0OTczNDkgMzcuMTUwMjY1MSwzIDI1LDMgQzEyLjg0OTczNDksMyAzLDEyLjg0OTczNDkgMywyNSBDMywzNy4xNTAyNjUxIDEyLjg0OTczNDksNDcgMjUsNDcgWiBNMTQsMjAuMTE4MDQ3OSBMMTQsMzQuNjU4MTgzNCBMMTguNzEwMDg1MSwzNC42NTgxODM0IEwxOC43MTAwODUxLDIwLjExODA0NzkgTDE0LDIwLjExODA0NzkgWiBNMTYuNjY0Njk2MiwxMyBDMTUuMDUzNDA1OCwxMyAxNCwxNC4wODU4NjExIDE0LDE1LjUxMTUxMjIgQzE0LDE2LjkwNzYzMzEgMTUuMDIyMjcxMSwxOC4wMjQ3NjE0IDE2LjYwMzU1NTYsMTguMDI0NzYxNCBMMTYuNjMzNjU1NiwxOC4wMjQ3NjE0IEMxOC4yNzU5ODY3LDE4LjAyNDc2MTQgMTkuMjk4ODIyMiwxNi45MDc2MzMxIDE5LjI5ODgyMjIsMTUuNTExNTEyMiBDMTkuMjY4MjUxOSwxNC4wODU4NjExIDE4LjI3NTk4NjcsMTMgMTYuNjY0Njk2MiwxMyBaIE0zMC41NzY5MjEzLDIwLjExODA0NzkgQzI4LjA3NjE3NiwyMC4xMTgwNDc5IDI2Ljk1NjU1MDEsMjEuNTI5MzE5OSAyNi4zMzE0MTA4LDIyLjUxOTM1MjcgTDI2LjMzMTQxMDgsMjAuNDU5ODY0NCBMMjEuNjIwNzYxNCwyMC40NTk4NjQ0IEMyMS42ODI4NDI3LDIxLjgyNDIzNTYgMjEuNjIwNzYxNCwzNSAyMS42MjA3NjE0LDM1IEwyNi4zMzE0MTA4LDM1IEwyNi4zMzE0MTA4LDI2Ljg3OTU4ODcgQzI2LjMzMTQxMDgsMjYuNDQ1MDMyIDI2LjM2MTk4MTIsMjYuMDExNTM2OCAyNi40ODY1MTk5LDI1LjcwMDQwODQgQzI2LjgyNjkzMiwyNC44MzIyNiAyNy42MDIwMDY5LDIzLjkzMzQyMzMgMjguOTAzMjY3NCwyMy45MzM0MjMzIEMzMC42MDgzMzgxLDIzLjkzMzQyMzMgMzEuMjg5OTE0OSwyNS4yNjY3MjAyIDMxLjI4OTkxNDksMjcuMjIwNjMzMyBMMzEuMjg5OTE0OSwzNC45OTk2MTQgTDM1Ljk5OTgxMTksMzQuOTk5NjE0IEwzNiwyNi42NjI3NDQ2IEMzNiwyMi4xOTY2NDM5IDMzLjY3NjM3NDMsMjAuMTE4MDQ3OSAzMC41NzY5MjEzLDIwLjExODA0NzkgWiBNMzAuNTc2OTIxMywyMC4xMTgwNDc5IiBpZD0iT3ZhbC0xIi8+PC9nPjwvZz48L3N2Zz4=" 
-      alt="Linkedin"
-    />
-  </a>
-</div>
-	</body>
+        </main>
+        <footer>
+            
+                <p>© 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
 </html>

@@ -1,7 +1,7 @@
 baseurl = "https://manishraj.dev/blog/"
 languageCode = "en-us"
 title = "Blog"
-theme = "solar-theme-hugo"
+theme = "blog-theme"
 author = "Manish Raj"
 copyright = " "
 canonifyurls = true

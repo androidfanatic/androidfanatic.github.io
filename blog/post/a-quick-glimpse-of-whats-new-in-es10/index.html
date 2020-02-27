@@ -1,214 +1,228 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>A quick glimpse of what&#39;s new in ES10</title>
-		<meta name="viewport" content="width=device-width">
-		
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/hybrid.css">
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css">
-		<link rel="stylesheet" href="https://manishraj.dev/blog/css/colors-dark.css">
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
 
-		
-	</head>
-	<body>
-		<header id="header">
-			<h1><a href="https://manishraj.dev/blog/">Blog</a></h1>
-			<p></p>
-		</header>
+<title>A quick glimpse of what&#39;s new in ES10  - Blog</title>
+<meta name="description" content="">
 
-		<div id="page">
-			<div id="sidebar">
-				<nav>
-	
-		<ul class="nav">
-			
-				<li><a href="https://manishraj.dev/"><span>Home</span></a></li>
-			
-				<li><a href="https://manishraj.dev/blog/post/"><span>Posts</span></a></li>
-			
-		</ul>
-	
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://manishraj.dev/blog/rss/">
+
+<link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
+
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582829134" />
+
+<meta property="og:title" content="A quick glimpse of what&#39;s new in ES10" />
+<meta property="og:description" content="Here&rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:
+  Trim whitespaces only from start of a string
+&quot; My String &quot;.trimStart() // Produces: &quot;My String &quot;   Trim whitespaces only from end of a string:
+&quot; My String &quot;.trimEnd() // Produces: &quot; My String&quot;   Flatten an array:
+[1, 2, 3, [4, [5, 6]]]." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/" />
+<meta property="article:published_time" content="2019-03-27T05:30:31+05:30" />
+<meta property="article:modified_time" content="2019-03-27T05:30:31+05:30" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="A quick glimpse of what&#39;s new in ES10"/>
+<meta name="twitter:description" content="Here&rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:
+  Trim whitespaces only from start of a string
+&quot; My String &quot;.trimStart() // Produces: &quot;My String &quot;   Trim whitespaces only from end of a string:
+&quot; My String &quot;.trimEnd() // Produces: &quot; My String&quot;   Flatten an array:
+[1, 2, 3, [4, [5, 6]]]."/>
+
+
+
+
+
+
+    
+</head>
+<body>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="https://manishraj.dev/blog/">Blog</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="https://manishraj.dev/" title="">Home</a>
+    
+    <a class="" href="https://manishraj.dev/blog/post/" title="">Posts</a>
+    
 </nav>
 
-			</div>
+            
+        </header>
+        <main>
+            
 
-			<div id="content">
-				
-	<article class="post">
-		<h1><a href="https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/">A quick glimpse of what&#39;s new in ES10</a> </h1>
-
-		<div class="post-content">
-
-<p>Here&rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:</p>
-
+    <article class="post">
+        <header>
+            <h1>A quick glimpse of what&#39;s new in ES10</h1>
+        </header>
+        <div class="content">
+            <p>Here&rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:</p>
 <ol>
-<li><p>Trim whitespaces only from start of a string</p>
-
+<li>
+<p>Trim whitespaces only from start of a string</p>
 <pre><code>&quot; My String &quot;.trimStart()
 
 // Produces:
 &quot;My String &quot;
 </code></pre></li>
-
-<li><p>Trim whitespaces only from end of a string:</p>
-
+<li>
+<p>Trim whitespaces only from end of a string:</p>
 <pre><code>&quot; My String &quot;.trimEnd()
 
 // Produces:
 &quot; My String&quot;
 </code></pre></li>
+<li>
+<p>Flatten an array:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">[<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, [<span style="color:#2aa198">4</span>, [<span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>]]].flat()
 
-<li><p>Flatten an array:</p>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  [<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, [<span style="color:#2aa198">4</span>, [<span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>]]].flat()
-
-  <span style="color:#586e75">// Produces:
-</span><span style="color:#586e75"></span>  [<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, <span style="color:#2aa198">4</span>, [<span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>]]
-</code></pre></div>
-<ol>
-<li>Flatten an array to depth of 2:</li>
-</ol>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  [<span style="color:#2aa198">1</span>, [<span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>], <span style="color:#2aa198">4</span>, <span style="color:#2aa198">5</span>, [<span style="color:#2aa198">6</span>, [<span style="color:#2aa198">7</span> , <span style="color:#2aa198">8</span>]]].flat(<span style="color:#2aa198">2</span>)
-
-  <span style="color:#586e75">// Produces:
-</span><span style="color:#586e75"></span>  [<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, <span style="color:#2aa198">4</span>, <span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>, <span style="color:#2aa198">7</span>, <span style="color:#2aa198">8</span>]
+<span style="color:#586e75">// Produces:
+</span><span style="color:#586e75"></span>[<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, <span style="color:#2aa198">4</span>, [<span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>]]
 </code></pre></div></li>
+<li>
+<p>Flatten an array to depth of 2:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">[<span style="color:#2aa198">1</span>, [<span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>], <span style="color:#2aa198">4</span>, <span style="color:#2aa198">5</span>, [<span style="color:#2aa198">6</span>, [<span style="color:#2aa198">7</span> , <span style="color:#2aa198">8</span>]]].flat(<span style="color:#2aa198">2</span>)
 
-<li><p>Flatten the whole array:</p>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  [<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, [<span style="color:#2aa198">3</span>], [
-    [[<span style="color:#2aa198">4</span>, <span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>]],
-    [[[[<span style="color:#2aa198">7</span>, <span style="color:#2aa198">8</span>]], <span style="color:#2aa198">9</span>]]
-  ]].flat(<span style="color:#cb4b16">Infinity</span>)
-
-  <span style="color:#586e75">// Produces:
-</span><span style="color:#586e75"></span>  [<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, <span style="color:#2aa198">4</span>, <span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>, <span style="color:#2aa198">7</span>, <span style="color:#2aa198">8</span>, <span style="color:#2aa198">9</span>]
-</code></pre></div>
-<ol>
-<li>Create objects from array like representation of the object:</li>
-</ol>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  <span style="color:#b58900">Object</span>.fromEntries(
-    [
-      [<span style="color:#2aa198">&#34;key1&#34;</span>, <span style="color:#2aa198">&#34;value&#34;</span>], 
-      [<span style="color:#2aa198">&#34;key2&#34;</span>, <span style="color:#2aa198">37</span>]
-    ]
-  )
-
-  <span style="color:#586e75">// Produces:
-</span><span style="color:#586e75"></span>  <span style="color:#b58900">Object</span> { key1<span style="color:#719e07">:</span> <span style="color:#2aa198">&#34;value&#34;</span>, key2<span style="color:#719e07">:</span> <span style="color:#2aa198">37</span> }
+<span style="color:#586e75">// Produces:
+</span><span style="color:#586e75"></span>[<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, <span style="color:#2aa198">4</span>, <span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>, <span style="color:#2aa198">7</span>, <span style="color:#2aa198">8</span>]
 </code></pre></div></li>
+<li>
+<p>Flatten the whole array:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">[<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, [<span style="color:#2aa198">3</span>], [
+  [[<span style="color:#2aa198">4</span>, <span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>]],
+  [[[[<span style="color:#2aa198">7</span>, <span style="color:#2aa198">8</span>]], <span style="color:#2aa198">9</span>]]
+]].flat(<span style="color:#cb4b16">Infinity</span>)
 
-<li><p>Create objects from a map:</p>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  <span style="color:#b58900">Object</span>.fromEntries(
-    <span style="color:#719e07">new</span> Map([
-      [<span style="color:#2aa198">&#34;key1&#34;</span>, <span style="color:#2aa198">&#34;value&#34;</span>], 
-      [<span style="color:#2aa198">&#34;key2&#34;</span>, <span style="color:#2aa198">37</span>]
-    ])
-  )
-
-  <span style="color:#586e75">// Produces:
-</span><span style="color:#586e75"></span>  <span style="color:#b58900">Object</span> { key1<span style="color:#719e07">:</span> <span style="color:#2aa198">&#34;value&#34;</span>, key2<span style="color:#719e07">:</span> <span style="color:#2aa198">37</span> }
-</code></pre></div>
-<ol>
-<li>Get symbol description from read-only property <code>.description</code>:</li>
-</ol>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  <span style="color:#719e07">const</span> sym <span style="color:#719e07">=</span> Symbol(<span style="color:#2aa198">&#39;foo&#39;</span>);
-  console.log(sym.description);
-
-  <span style="color:#586e75">// Outputs:
-</span><span style="color:#586e75"></span>  foo
+<span style="color:#586e75">// Produces:
+</span><span style="color:#586e75"></span>[<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, <span style="color:#2aa198">4</span>, <span style="color:#2aa198">5</span>, <span style="color:#2aa198">6</span>, <span style="color:#2aa198">7</span>, <span style="color:#2aa198">8</span>, <span style="color:#2aa198">9</span>]
 </code></pre></div></li>
+<li>
+<p>Create objects from array like representation of the object:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#b58900">Object</span>.fromEntries(
+  [
+    [<span style="color:#2aa198">&#34;key1&#34;</span>, <span style="color:#2aa198">&#34;value&#34;</span>], 
+    [<span style="color:#2aa198">&#34;key2&#34;</span>, <span style="color:#2aa198">37</span>]
+  ]
+)
 
-<li><p>Catch without the once-mandatory parameter in catch block:</p>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  <span style="color:#719e07">try</span> {
-    <span style="color:#719e07">throw</span> <span style="color:#719e07">new</span> <span style="color:#b58900">Error</span>(<span style="color:#2aa198">&#34;Some error&#34;</span>);
-  } <span style="color:#719e07">catch</span> {
-    console.log(<span style="color:#2aa198">&#39;An error occured&#39;</span>);
-  }
-
-  <span style="color:#586e75">// Outputs:
-</span><span style="color:#586e75"></span>  An error occured
-</code></pre></div>
-<ol>
-<li>Return source code of a function, verbatim, using <code>toString()</code> method:</li>
-</ol>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  <span style="color:#719e07">const</span> fn <span style="color:#719e07">=</span> (param1, param2) =&gt; {
-    console.log(param1, param2);
-  }
-
-  console.log(fn.toString())
-
-  <span style="color:#586e75">// Outputs:
-</span><span style="color:#586e75"></span>  (param1, param2) =&gt; {
-    console.log(param1, param2);
-  }
+<span style="color:#586e75">// Produces:
+</span><span style="color:#586e75"></span><span style="color:#b58900">Object</span> { key1<span style="color:#719e07">:</span> <span style="color:#2aa198">&#34;value&#34;</span>, key2<span style="color:#719e07">:</span> <span style="color:#2aa198">37</span> }
 </code></pre></div></li>
+<li>
+<p>Create objects from a map:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#b58900">Object</span>.fromEntries(
+  <span style="color:#719e07">new</span> Map([
+    [<span style="color:#2aa198">&#34;key1&#34;</span>, <span style="color:#2aa198">&#34;value&#34;</span>], 
+    [<span style="color:#2aa198">&#34;key2&#34;</span>, <span style="color:#2aa198">37</span>]
+  ])
+)
 
-<li><p>Return all matches (and capturing group) of a string against given regular expression:</p>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  <span style="color:#719e07">const</span> regexp <span style="color:#719e07">=</span> <span style="color:#b58900">RegExp</span>(<span style="color:#2aa198">&#39;l&#39;</span>,<span style="color:#2aa198">&#39;g&#39;</span>); 
-  <span style="color:#719e07">const</span> str <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;Hello world&#39;</span>;
-  <span style="color:#268bd2">let</span> matches <span style="color:#719e07">=</span> str.matchAll(regexp);
+<span style="color:#586e75">// Produces:
+</span><span style="color:#586e75"></span><span style="color:#b58900">Object</span> { key1<span style="color:#719e07">:</span> <span style="color:#2aa198">&#34;value&#34;</span>, key2<span style="color:#719e07">:</span> <span style="color:#2aa198">37</span> }
+</code></pre></div></li>
+<li>
+<p>Get symbol description from read-only property <code>.description</code>:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#268bd2">const</span> sym <span style="color:#719e07">=</span> Symbol(<span style="color:#2aa198">&#39;foo&#39;</span>);
+console.log(sym.description);
 
-  <span style="color:#719e07">for</span> (<span style="color:#719e07">const</span> match <span style="color:#719e07">of</span> matches) {
-    console.log(match); 
-  }
+<span style="color:#586e75">// Outputs:
+</span><span style="color:#586e75"></span>foo
+</code></pre></div></li>
+<li>
+<p>Catch without the once-mandatory parameter in catch block:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#719e07">try</span> {
+  <span style="color:#719e07">throw</span> <span style="color:#719e07">new</span> <span style="color:#b58900">Error</span>(<span style="color:#2aa198">&#34;Some error&#34;</span>);
+} <span style="color:#719e07">catch</span> {
+  console.log(<span style="color:#2aa198">&#39;An error occured&#39;</span>);
+}
 
-  <span style="color:#586e75">// Outputs:
-</span><span style="color:#586e75"></span>  <span style="color:#b58900">Array</span> [<span style="color:#2aa198">&#34;l&#34;</span>]
-  <span style="color:#b58900">Array</span> [<span style="color:#2aa198">&#34;l&#34;</span>]
-  <span style="color:#b58900">Array</span> [<span style="color:#2aa198">&#34;l&#34;</span>]
-</code></pre></div>
-<ol>
-<li>Map then flatten the array using <code>flatMap</code></li>
-</ol>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">  [<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, <span style="color:#2aa198">4</span>].flatMap(elem =&gt; [elem <span style="color:#719e07">*</span> <span style="color:#2aa198">2</span>])
+<span style="color:#586e75">// Outputs:
+</span><span style="color:#586e75"></span>An error occured
+</code></pre></div></li>
+<li>
+<p>Return source code of a function, verbatim, using <code>toString()</code> method:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#268bd2">const</span> fn <span style="color:#719e07">=</span> (param1, param2) =&gt; {
+  console.log(param1, param2);
+}
 
-  <span style="color:#586e75">// Produces:
-</span><span style="color:#586e75"></span>  [<span style="color:#2aa198">2</span>, <span style="color:#2aa198">4</span>, <span style="color:#2aa198">6</span>, <span style="color:#2aa198">8</span>]
+console.log(fn.toString())
+
+<span style="color:#586e75">// Outputs:
+</span><span style="color:#586e75"></span>(param1, param2) =&gt; {
+  console.log(param1, param2);
+}
+</code></pre></div></li>
+<li>
+<p>Return all matches (and capturing group) of a string against given regular expression:</p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#268bd2">const</span> regexp <span style="color:#719e07">=</span> <span style="color:#b58900">RegExp</span>(<span style="color:#2aa198">&#39;l&#39;</span>,<span style="color:#2aa198">&#39;g&#39;</span>); 
+<span style="color:#268bd2">const</span> str <span style="color:#719e07">=</span> <span style="color:#2aa198">&#39;Hello world&#39;</span>;
+<span style="color:#268bd2">let</span> matches <span style="color:#719e07">=</span> str.matchAll(regexp);
+
+<span style="color:#719e07">for</span> (<span style="color:#268bd2">const</span> match <span style="color:#719e07">of</span> matches) {
+  console.log(match); 
+}
+
+<span style="color:#586e75">// Outputs:
+</span><span style="color:#586e75"></span><span style="color:#b58900">Array</span> [<span style="color:#2aa198">&#34;l&#34;</span>]
+<span style="color:#b58900">Array</span> [<span style="color:#2aa198">&#34;l&#34;</span>]
+<span style="color:#b58900">Array</span> [<span style="color:#2aa198">&#34;l&#34;</span>]
+</code></pre></div></li>
+<li>
+<p>Map then flatten the array using <code>flatMap</code></p>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">[<span style="color:#2aa198">1</span>, <span style="color:#2aa198">2</span>, <span style="color:#2aa198">3</span>, <span style="color:#2aa198">4</span>].flatMap(elem =&gt; [elem <span style="color:#719e07">*</span> <span style="color:#2aa198">2</span>])
+
+<span style="color:#586e75">// Produces:
+</span><span style="color:#586e75"></span>[<span style="color:#2aa198">2</span>, <span style="color:#2aa198">4</span>, <span style="color:#2aa198">6</span>, <span style="color:#2aa198">8</span>]
 </code></pre></div></li>
 </ol>
-
 <h4 id="are-these-features-ready-to-be-used">Are these features ready to be used?</h4>
-
 <p>Well, some are and some are not. You can check for browser or nodejs compatibility by looking up features on MDN.</p>
-
 <p>For example:</p>
-
 <ul>
-<li>Array.prototype.flat()<sup>[1]</sup> is available in NodeJS 11, Chrome 69 and Firefox 62 and above.</li>
+<li>Array.prototype.flat()<!-- raw HTML omitted -->[1]<!-- raw HTML omitted --> is available in NodeJS 11, Chrome 69 and Firefox 62 and above.</li>
 </ul>
-
 <p>Nevertheless these are some really interesting additions to JavaScript and more is on the way.</p>
-
 <p>Links and more:</p>
-
 <p>[1] <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat#Browser_compatibility">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat#Browser_compatibility</a></p>
-
 <p>[2] <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt</a></p>
-
 <p>[3] <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap</a></p>
+
+        </div>
+        <div class="article-info">
+    
+        <div class="article-date">2019-03-27</div>
+    
+    <div class="article-taxonomies">
+        
+            
+    </div>
 </div>
+    </article>
+    
 
-		<p class="meta">Posted on <span class="postdate">27. March 2019</span></p>
-	</article>
 
-			</div>
-
-			<footer id="footer">
-				<p class="copyright">
-					
-						 
-					
-				</p>
-			</footer>
-		</div>
-
-		<div style="text-align: center;">
-  <a href="https://www.linkedin.com/in/manish-raj/" target="_blank">
-    <img style="filter: invert(100%) sepia(5%) saturate(753%) hue-rotate(236deg) brightness(117%) contrast(100%); width: 20px; height: 20px;" 
-      src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSI1MHB4IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCA1MCA1MCIgd2lkdGg9IjUwcHgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6c2tldGNoPSJodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2gvbnMiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGUvPjxkZWZzLz48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGlkPSJQYWdlLTEiIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIj48ZyBmaWxsPSIjMDAwMDAwIiBpZD0iTGlua2VkSW4iPjxwYXRoIGQ9Ik0yNSw1MCBDMzguODA3MTE5NCw1MCA1MCwzOC44MDcxMTk0IDUwLDI1IEM1MCwxMS4xOTI4ODA2IDM4LjgwNzExOTQsMCAyNSwwIEMxMS4xOTI4ODA2LDAgMCwxMS4xOTI4ODA2IDAsMjUgQzAsMzguODA3MTE5NCAxMS4xOTI4ODA2LDUwIDI1LDUwIFogTTI1LDQ3IEMzNy4xNTAyNjUxLDQ3IDQ3LDM3LjE1MDI2NTEgNDcsMjUgQzQ3LDEyLjg0OTczNDkgMzcuMTUwMjY1MSwzIDI1LDMgQzEyLjg0OTczNDksMyAzLDEyLjg0OTczNDkgMywyNSBDMywzNy4xNTAyNjUxIDEyLjg0OTczNDksNDcgMjUsNDcgWiBNMTQsMjAuMTE4MDQ3OSBMMTQsMzQuNjU4MTgzNCBMMTguNzEwMDg1MSwzNC42NTgxODM0IEwxOC43MTAwODUxLDIwLjExODA0NzkgTDE0LDIwLjExODA0NzkgWiBNMTYuNjY0Njk2MiwxMyBDMTUuMDUzNDA1OCwxMyAxNCwxNC4wODU4NjExIDE0LDE1LjUxMTUxMjIgQzE0LDE2LjkwNzYzMzEgMTUuMDIyMjcxMSwxOC4wMjQ3NjE0IDE2LjYwMzU1NTYsMTguMDI0NzYxNCBMMTYuNjMzNjU1NiwxOC4wMjQ3NjE0IEMxOC4yNzU5ODY3LDE4LjAyNDc2MTQgMTkuMjk4ODIyMiwxNi45MDc2MzMxIDE5LjI5ODgyMjIsMTUuNTExNTEyMiBDMTkuMjY4MjUxOSwxNC4wODU4NjExIDE4LjI3NTk4NjcsMTMgMTYuNjY0Njk2MiwxMyBaIE0zMC41NzY5MjEzLDIwLjExODA0NzkgQzI4LjA3NjE3NiwyMC4xMTgwNDc5IDI2Ljk1NjU1MDEsMjEuNTI5MzE5OSAyNi4zMzE0MTA4LDIyLjUxOTM1MjcgTDI2LjMzMTQxMDgsMjAuNDU5ODY0NCBMMjEuNjIwNzYxNCwyMC40NTk4NjQ0IEMyMS42ODI4NDI3LDIxLjgyNDIzNTYgMjEuNjIwNzYxNCwzNSAyMS42MjA3NjE0LDM1IEwyNi4zMzE0MTA4LDM1IEwyNi4zMzE0MTA4LDI2Ljg3OTU4ODcgQzI2LjMzMTQxMDgsMjYuNDQ1MDMyIDI2LjM2MTk4MTIsMjYuMDExNTM2OCAyNi40ODY1MTk5LDI1LjcwMDQwODQgQzI2LjgyNjkzMiwyNC44MzIyNiAyNy42MDIwMDY5LDIzLjkzMzQyMzMgMjguOTAzMjY3NCwyMy45MzM0MjMzIEMzMC42MDgzMzgxLDIzLjkzMzQyMzMgMzEuMjg5OTE0OSwyNS4yNjY3MjAyIDMxLjI4OTkxNDksMjcuMjIwNjMzMyBMMzEuMjg5OTE0OSwzNC45OTk2MTQgTDM1Ljk5OTgxMTksMzQuOTk5NjE0IEwzNiwyNi42NjI3NDQ2IEMzNiwyMi4xOTY2NDM5IDMzLjY3NjM3NDMsMjAuMTE4MDQ3OSAzMC41NzY5MjEzLDIwLjExODA0NzkgWiBNMzAuNTc2OTIxMywyMC4xMTgwNDc5IiBpZD0iT3ZhbC0xIi8+PC9nPjwvZz48L3N2Zz4=" 
-      alt="Linkedin"
-    />
-  </a>
-</div>
-	</body>
+        </main>
+        <footer>
+            
+                <p>© 2020<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
 </html>
