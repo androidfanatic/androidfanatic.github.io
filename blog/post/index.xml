@@ -19,7 +19,7 @@
       
       <guid>https://manishraj.dev/blog/post/react-slim-builds/</guid>
       <description>&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
-&lt;figure style=&#34;width: 75%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
+&lt;figure style=&#34;width: 40%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
   &lt;img src=&#34;https://manishraj.dev/blog/img/02/react_app.png&#34; title=&#34;Containerizing a React app&#34;  &gt;
   &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
     Containerizing a React app

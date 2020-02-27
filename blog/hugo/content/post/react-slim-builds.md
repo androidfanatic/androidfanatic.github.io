@@ -6,7 +6,7 @@ draft: false
 
 In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.
 
-<figure style="width: 75%; margin: auto; display: block; margin-bottom: 8px;">
+<figure style="width: 40%; margin: auto; display: block; margin-bottom: 8px;">
   <img src="/img/02/react_app.png" title="Containerizing a React app"  >
   <figcaption style="font-size: 11px">
     Containerizing a React app
