@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582832706" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582832993" />
 
 <meta property="og:title" content="Creating slim docker images for react apps" />
 <meta property="og:description" content="In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.
@@ -65,6 +65,7 @@ To do so, we will leverage multi-stageddocker builds and to keep the image size 
         </header>
         <div class="content">
             <p>In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.</p>
+<!-- raw HTML omitted -->
 <p>To do so, we will leverage <!-- raw HTML omitted -->multi-staged<!-- raw HTML omitted --> docker builds and to keep the image size smaller, we will use <!-- raw HTML omitted -->alpine variant<!-- raw HTML omitted --> of popular docker containers.</p>
 <p>Let&rsquo;s get started.</p>
 <h3 id="ignore-files-with-dockerignore">Ignore files with .dockerignore</h3>
@@ -79,6 +80,7 @@ build
 <p>Docker image instructions are stored in a file called <code>Dockerfile</code>. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output.</p>
 <p>For us, the first stage is going to be a node process that installs dependencies and then does builds react applications using something along the lines of <code>npm install &amp;&amp; npm run build</code>. These instructions are pretty straightforward and React developers should feel right at home.</p>
 <p>Let&rsquo;s see how the first stage looks like in a Dockerfile:</p>
+<h4 id="dockerfile"><strong><code>Dockerfile</code></strong></h4>
 <pre><code># build
 FROM node:10-alpine as build_stage
 WORKDIR /src

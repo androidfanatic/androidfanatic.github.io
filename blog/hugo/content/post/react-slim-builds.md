@@ -6,6 +6,14 @@ draft: false
 
 In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.
 
+<figure style="width: 75%; margin: auto; display: block; margin-bottom: 8px;">
+  <img src="/img/02/react_app.png" title="Containerizing a React app"  >
+  <figcaption style="font-size: 11px">
+    Containerizing a React app
+  <figcaption>
+</figure>
+
+
 To do so, we will leverage <a href="https://docs.docker.com/develop/develop-images/multistage-build/" target="_blank">multi-staged</a> docker builds and to keep the image size smaller, we will use <a href="https://github.com/docker-library/docs/blob/master/.template-helpers/variant-alpine.md" target="_blank">alpine variant</a> of popular docker containers.
 
 Let's get started.
@@ -34,6 +42,8 @@ For us, the first stage is going to be a node process that installs dependencies
 
 Let's see how the first stage looks like in a Dockerfile:
 
+
+#### **`Dockerfile`**
 ```
 # build
 FROM node:10-alpine as build_stage

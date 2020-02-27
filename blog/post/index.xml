@@ -19,6 +19,7 @@
       
       <guid>https://manishraj.dev/blog/post/react-slim-builds/</guid>
       <description>&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;To do so, we will leverage &lt;!-- raw HTML omitted --&gt;multi-staged&lt;!-- raw HTML omitted --&gt; docker builds and to keep the image size smaller, we will use &lt;!-- raw HTML omitted --&gt;alpine variant&lt;!-- raw HTML omitted --&gt; of popular docker containers.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s get started.&lt;/p&gt;
 &lt;h3 id=&#34;ignore-files-with-dockerignore&#34;&gt;Ignore files with .dockerignore&lt;/h3&gt;
@@ -33,6 +34,7 @@ build
 &lt;p&gt;Docker image instructions are stored in a file called &lt;code&gt;Dockerfile&lt;/code&gt;. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output.&lt;/p&gt;
 &lt;p&gt;For us, the first stage is going to be a node process that installs dependencies and then does builds react applications using something along the lines of &lt;code&gt;npm install &amp;amp;&amp;amp; npm run build&lt;/code&gt;. These instructions are pretty straightforward and React developers should feel right at home.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s see how the first stage looks like in a Dockerfile:&lt;/p&gt;
+&lt;h4 id=&#34;dockerfile&#34;&gt;&lt;strong&gt;&lt;code&gt;Dockerfile&lt;/code&gt;&lt;/strong&gt;&lt;/h4&gt;
 &lt;pre&gt;&lt;code&gt;# build
 FROM node:10-alpine as build_stage
 WORKDIR /src
