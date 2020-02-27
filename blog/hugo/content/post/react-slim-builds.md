@@ -28,7 +28,7 @@ We want to ignore the `node_modules` folder because we want to fetch npm depende
 
 We also want to ignore the `build` folder which is something specific to react applications and it contains the generated application bundles. We want to create an application build within image and hence can ignore the local build folders.
 
-#### **`.dockerignore`**
+#### **.dockerignore**
 ``` 
 node_modules
 build
@@ -43,7 +43,7 @@ For us, the first stage is going to be a node process that installs dependencies
 Let's see how the first stage looks like in a Dockerfile:
 
 
-#### **`Dockerfile`**
+#### **Dockerfile**
 ```
 # build
 FROM node:10-alpine as build_stage
@@ -81,13 +81,13 @@ And that's it.
 
 To build, run the docker build command:
 
-```bash
+```
 docker build -t react-starter-2020:latest .
 ```
 
 And to run the application:
 
-```bash
+```
 docker run -p 9090:80 react-starter-2020
 ```
 

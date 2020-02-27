@@ -1,78 +1,55 @@
-<!doctype html>
-
-<html lang="en-us">
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en-us">
 <head>
-  <title>Blog</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="The HTML5 Herald" />
-  <meta name="author" content="" /><meta name="generator" content="Hugo 0.65.3" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
-  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
-  <link rel="stylesheet" type="text/css" href="https://manishraj.dev/blog/css/styles.css" /></head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+<title>Creating slim docker images for react apps | Blog</title>
+
+
+
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://manishraj.dev/blog/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://manishraj.dev/blog/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://manishraj.dev/blog/favicon-16x16.png">
+<link rel="manifest" href="https://manishraj.dev/blog/site.webmanifest">
+<link rel="mask-icon" href="https://manishraj.dev/blog/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://manishraj.dev/blog/post/react-slim-builds/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
 <body>
-  <div id="container">
-    <header>
-      <h1>
-                <a href="https://manishraj.dev/blog/">Blog</a>
-            </h1>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://manishraj.dev/blog/">
+          <h1 id="nav-heading" class="title is-4">Blog</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
 
-      <ul id="social-media">
-        
-        
-             
-      </ul>
+    <nav class="nav">
       
-    </header>
 
+      
+    </nav>
+
+  </div>
+  <script src="https://manishraj.dev/blog/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="subtitle tags is-6 is-pulled-right">
+      
+    </div>
+    <h2 class="subtitle is-6">February 28, 2020</h2>
+    <h1 class="title">Creating slim docker images for react apps</h1>
     
-<nav>
-    <ul>
-        
-        <li>
-            <a class="" href="https://manishraj.dev/">
-                <i class="fa-li fa  fa-lg"></i><span>Home</span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="" href="https://manishraj.dev/blog/post/">
-                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
-            </a>
-        </li>
-        
-    </ul>
-</nav>
-
-    <main>
-
-
-
-
-<article>
-
-    <h1>Creating slim docker images for react apps</h1>
-
-    
-        <aside>
-    <ul>
-        <li>
-            <time class="post-date" datetime="2020-02-28T00:21:37&#43;05:30">Feb 28, 2020</time>
-        </li>
-        
-
-        
-
-        <li>4 minutes read</li>
-    </ul>
-</aside>
-
-    
-
-    <p>In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.</p>
+    <div class="content">
+      <p>In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.</p>
 <figure style="width: 40%; margin: auto; display: block; margin-bottom: 8px;">
   <img src="https://manishraj.dev/blog/img/02/react_app.png" title="Containerizing a React app"  >
   <figcaption style="font-size: 11px">
@@ -86,14 +63,14 @@
 <p>Let&rsquo;s create a file named <code>.dockerignore</code> with a list of files or folders to ignore.</p>
 <p>We want to ignore the <code>node_modules</code> folder because we want to fetch npm dependencies again while building docker images instead of using existing dependencies on a developer&rsquo;s machine. This ensures that correct dependencies are installed on the image.</p>
 <p>We also want to ignore the <code>build</code> folder which is something specific to react applications and it contains the generated application bundles. We want to create an application build within image and hence can ignore the local build folders.</p>
-<h4 id="dockerignore"><strong><code>.dockerignore</code></strong></h4>
+<h4 id="dockerignore"><strong>.dockerignore</strong></h4>
 <pre><code>node_modules
 build
 </code></pre><h3 id="create-a-dockerfile">Create a Dockerfile</h3>
 <p>Docker image instructions are stored in a file called <code>Dockerfile</code>. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output.</p>
 <p>For us, the first stage is going to be a node process that installs dependencies and then does builds react applications using something along the lines of <code>npm install &amp;&amp; npm run build</code>. These instructions are pretty straightforward and React developers should feel right at home.</p>
 <p>Let&rsquo;s see how the first stage looks like in a Dockerfile:</p>
-<h4 id="dockerfile"><strong><code>Dockerfile</code></strong></h4>
+<h4 id="dockerfile"><strong>Dockerfile</strong></h4>
 <pre><code># build
 FROM node:10-alpine as build_stage
 WORKDIR /src
@@ -116,41 +93,29 @@ CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]
 <p>We copy the outcome of <code>build_stage</code> i.e. our react application bundles into nginx&rsquo;s html directory; then expose port 80 and setup a command to be executed when the container is spun off. At this point, the first stage i.e. <code>build_stage</code> is discarded and the final docker image only includes whatever we did with the <code>prod_stage</code>.</p>
 <p>And that&rsquo;s it.</p>
 <p>To build, run the docker build command:</p>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker build -t react-starter-2020:latest .
-</code></pre></div><p>And to run the application:</p>
-<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -p 9090:80 react-starter-2020
-</code></pre></div><p>With that, we are able to build production ready docker image for our react application. The docker image size for me  <code>25.9 MB</code>. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - <a href="https://github.com/androidfanatic/react-starter-2020">https://github.com/androidfanatic/react-starter-2020</a>.</p>
+<pre><code>docker build -t react-starter-2020:latest .
+</code></pre><p>And to run the application:</p>
+<pre><code>docker run -p 9090:80 react-starter-2020
+</code></pre><p>With that, we are able to build production ready docker image for our react application. The docker image size for me  <code>25.9 MB</code>. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - <a href="https://github.com/androidfanatic/react-starter-2020">https://github.com/androidfanatic/react-starter-2020</a>.</p>
 <p>Thanks for reading.</p>
 
-
-</article>
-
-
-<section class="post-nav">
-    <ul>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/"><i class="fa fa-chevron-circle-left"></i> Mapping My Ladakh Road Trip</a>
-        </li>
-        
-        
-    </ul>
-</section>
+      
+    </div>
     
+  </div>
+</section>
 
 
 
+<section class="section">
+  <div class="container has-text-centered">
+    <p> </p>
+    
+  </div>
+</section>
 
 
-</main>
-    <footer>
-        <h6> |
-            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
-            <a href="https://manishraj.dev/blog/index.xml">Subscribe</a></h6>
-    </footer>
-</div>
-<script src="https://manishraj.dev/blog/js/scripts.js"></script>
 
 </body>
-
 </html>
+

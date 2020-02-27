@@ -1,150 +1,204 @@
-# Kiera Theme for Hugo
+# Kiss
 
-Kiera is the theme specialized in presenting writing layout like long essay or technical writing.
+![](https://www.ribice.ba/img/2/hugo-kiss.png)
 
-It was originally developed by [b. avianto](https://github.com/avianto/hugo-kiera) and now maintained by [funkydan2](//github.com/funkdan2/)
+Kiss is a stupidly simple blog theme for Hugo. It's a fork of [Hemingway theme](https://github.com/tanksuzuki/hemingway) - [read why](https://www.ribice.ba/hugo-kiss/).
 
-## Main Features
+![](https://github.com/ribice/kiss/blob/master/images/screenshot.png)
 
-* 4 image placements with `figure` support using shortcodes.
-* Excellent code highlight support thanks to Hugo Chroma.
-* Use Font Awesome for icons (Cloudflare CDN)
-* Utilize normalize.css for consistent styling (Cloudflare CDN)
-* Use Google Fonts: Ruda (serif) and Roboto Slab (sans-serif)
-* Disqus comment loaded on demand
+## Getting Started
 
-## Demo
+Clone this repository to your hugo theme directory.
 
-Live demo: https://themes.gohugo.io/theme/hugo-kiera/
-
-## Installation
-
-Change into Hugo directory then:
-
-```console
-$ cd themes
-$ git clone https://github.com/funkydan2/hugo-kiera.git kiera
+```bash
+mkdir themes
+cd themes
+git clone https://github.com/ribice/kiss.git
 ```
 
-More detailed instruction at [Hugo Docs](http://gohugo.io/themes/installing-and-using-themes/).
+## Site Configuration
 
-Using `git submodule` is recommended instead of `git clone` as per recommendation from [Netlify](https://gohugo.io/hosting-and-deployment/hosting-on-netlify/#use-hugo-themes-with-netlify).
+Take a look in the [exampleSite](https://github.com/ribice/kiss/tree/master/exampleSite) folder.
 
-```console
-$ cd themes
-$ git submodule add https://github.com/avianto/hugo-kiera.git kiera
-```
+This directory contains an example config file and the content for the demo.
+It serves as an example setup for your documentation.
 
-## Configuration
+Copy the `config.toml` in the root directory of your website. Overwrite the existing config file if necessary.
 
-For reference look inside folder `exampleSite` for content example and `config.toml`.
-
-*Important*: don't delete or move `archetypes` folder from root unless it is necessary. Current Hugo priority lookup will look into this folder first before any other `archetypes` folder and could cause problem.
-
-Recommended optional `config.toml`:
+__[config.toml](https://github.com/ribice/kiss/blob/master/exampleSite/config.toml)__:
 
 ```toml
-pygmentsCodeFences = true
+baseurl = "https://example.com"
+languageCode = "en"
+title = "Hugo Kiss theme"
+theme = "kiss"
+copyright = "&copy; <a href=\"https://github.com/ribice\">Emir Ribic</a> 2017"
+disqusShortname = "shortname"
+googleAnalytics = ""
+Paginate = 5 # Number of posts per page
+enableRobotsTXT = true
 
-disqusShortname = "" #Disqus shortname
-googleAnalytics = "" #Google Analytics ID
+[params.rss] # Adding this tag enables RSS feed
+includeContent = true # Includes whole content in rss
+authorName = "Emir Ribic" # Author full name
+authorEmail = "ribice@gmail.com" # Author email
 
-[author]
-    name = ""       #Author name
-    github = ""     #Github username
-    gitlab = ""     #Gitlab username
-    linkedin = ""   #LinkedIn username
-    facebook = ""   #Facebook username
-    twitter = ""    #Twitter username
-    instagram = ""  #Instagram username
+[params.assets]
+customCSS = ["css/custom.css"]
 
-[params]
-    tagline = "the tagline for this website"
+[params.info]
+adsense = "" # Adsense ID (ID only, without ca-pub-)
+enableSocial = true # Adds OpenGraph and Twitter cards
+homeTitle = "" # Title for home page
+poweredby = true # Adds powered by hugo and kiss below Copyright
+related = true # Includes related articles at the bottom of the article
+codeCopy = true # Add copy button above code blocks
+
+[params.features]
+disqusOnDemand = true  # Load Disqus comments on click
+
+
+[params.opengraph.facebook]
+admins = [] # array of Facebook IDs
+appID = ""
+pageID = ""
+
+[params.opengraph.twitter]
+page = "" # Twitter Page username. If not set, params.social.twitter will be used.
+
+[params.social]
+twitter = "ribicemir"
+github = "ribice"
+email = "ribice@gmail.com"
+linkedin = "ribice"
+facebook = "ribice"
+instagram = ""
+codepen = ""
+rss = "index.xml" # Add this to show RSS button in social.
+
+[params.social.config]
+platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin"]
+
+[params.matomoAnalytics]
+siteID = 1
+rootURL = "//matomo.example.com/"
+
+[params.fathomAnalytics]
+rootURL = "//fathom.example.com/"
+
+[taxonomies]
+tag ="tags"
+
+[blackfriday]
+hrefTargetBlank = true
 ```
 
-## Main Menu
+To change color of titles, add in static/css/custom.css
 
-Add regular non-posts related page (eq. About page) to main menu by adding these lines to the page front matter:
+```css
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+    color: #F52AA3; // Custom Color
+}
+```
 
-TOML:
+To align images, add #c for center, #r/l for right/left.
+
+```md
+![](/img/1/image.jpg#c)
+```
+
+#### Changing Social Menu Icons Order
+
+If you want to change the order of the social menu icons, modify the `[params.social.config]` section of your `config.toml` file:
 
 ```toml
-menu = "main"
-meta = "false"
+[params.social.config]
+platforms = ["github","facebook","twitter","instagram","email","codepen","linkedin"]
 ```
 
-YAML:
+The social menu icons will appear in the order you specify in the `platforms` array.
 
-```yml
-menu: "main"
-meta: "false"
-```
+## Add sections
+Links can be added to the navbar (below the blog name and social links).
+There are two positions:
 
-```meta``` refers to time, categories, tags and reading time which are not necessary for this kind of page.
-
-For posts listing page, add `_index.md` file inside `content\posts` folder with these front matter:
-
-TOML:
+- `[params.sections_left]` that will add links in the left side (under the blog title)
+- `[params.sections_right]` that will add links in the right side (under the social links)
 
 ```toml
-+++
-title = "Posts"
-menu = "main"
-weight = "10"
-+++
+[params.sections_left]
+"/special-page" = "Special page"
+"https://example.com" = "Example"
+
+[params.sections_right]
+"http://example.com/special-page" = "Example"
 ```
 
-## Categories & Tags
+## Favicons, Browserconfig, Manifest
 
-Both can be used, also can use only one of them or neither.
+It is recommended to put your own favicons
 
-## Images
+- `apple-touch-icon.png` (180x180)
+- `favicon-32x32.png` (32x32)
+- `favicon-16x16.png` (16x16)
+- `mstile-150x150.png` (150x150)
+- `android-chrome-192x192.png` (192x192)
+- `android-chrome-512x512.png` (512x512)
 
-Kiera supports adding image as `img` tag with standard Markdown:
+in `/static` directory. They're easily created via [Favicon Generator](https://realfavicongenerator.net/).
 
-`![Image Title](link/to/image)`
+Customize `browserconfig.xml` and `site.webmanifest` to set `theme-color` and `background-color` for example.
 
-to wrap it with `figure` use:
+## Related Articles
 
-`{{< figure src="/link/to/image" >}}`
+To include related articles in the bottom of the content, set params.info.related to true.
+By default up to 5 articles will be shown (can be changed by cloning related.html) and only older ones.
 
-The basic placement is 100% width within content and scaled accordingly in smaller screen. Recommended width for image is 600 pixels minimum.
+To change the behaviour of how related articles are generated, check [official docs on Related Content](https://gohugo.io/content-management/related/).
 
-Kiera supports different placement by adding:
+## Disqus Comments
 
-* For `img`, use `![Image Title](link/to/image#placement)`
-* For `figure`, use `{{< figure src="/link/to/image" class="placement" >}}`
+Hugo has a built-in support for [Disqus comments](https://gohugo.io/content-management/comments/#configure-disqus).
+In order to speed up your site full loading time you could load comments only after visitor
+requests them via clicking on the "Show comments" button. Use the following in the configuration to enable
+on demand loading:
 
-There are 4 configured placements
+```toml
+[params.features]
+disqusOnDemand = true 
+```
 
-* `#full` or `class="full"` for full width.
-![](images/screenshots/full-image.png)
-* `#mid` or `class="mid"` for middle:
-![](images/screenshots/mid.png)
-* `#float` or `class="float"` for float left:
-![](images/screenshots/float-left.png)
-* `#float-right` or `class="float-right"` for float right:
-![](images/screenshots/float-right.png)
+## Single Page Configuration
 
-## Code Hightlight
+```
+tags: ["Android", "Apple", "iPhone"] # Adds tags to the post
+image: https://example.com/img/1/image.jpg # Cover used for OpenGraph and Twitter Cards
+adsenseTop: true # If adsense property is set (params.info.adsense) include an ad above content
+adsenseBottom: true # If adsense property is set (params.info.adsense) include an ad below content
+hidden: true # If true, page will not be shown in the list view
+```
 
-Using fenced code with Chroma support.
+## Build
 
-## Font Awesome icons
+```
+hugo server
+```
 
-For usage, refer to [Font Awesome](https://fontawesome.io).
+You can go to localhost:1313 and this theme should be visible.
 
-## Disqus On Demand
+## License
 
-Disqus comments are loaded on demand, by clicking <kbd>View Comments</kbd> button.
+Kiss is licensed under the MIT license. Check the [LICENSE](LICENSE.md) file for details.
 
-## Support and Pull Requests
+The following resources are included in the theme:
 
-Please use GitHub issues to file bugs. If you can help fixing bugs, optimize the theme or adding features, please do pull requests, I really love to see what others can come up with.
+- [Feather](https://feather.netlify.com/) by Cole Bemis - Licensed under the [MIT License](https://github.com/colebemis/feather/blob/master/LICENSE).
 
-## TO DO
+## Author
 
-* /layout/_default/terms.html needs some works, it functions now, barely.
-* Adding some user-oriented behavior using JavaScripts.
-* Lazyload images.
-* i18n support
+[Emir Ribic](https://github.com/ribice)

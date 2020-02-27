@@ -1,147 +1,218 @@
-<!doctype html>
-
-<html lang="en-us">
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="en-us">
 <head>
-  <title>Blog</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="The HTML5 Herald" />
-  <meta name="author" content="" /><link rel="alternate" type="application/rss+xml+xml" href="https://manishraj.dev/blog/post/index.xml" title="Blog" /><meta name="generator" content="Hugo 0.65.3" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
-  <script src="https://kit.fontawesome.com/b76b73e8e8.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
-  <link rel="stylesheet" type="text/css" href="https://manishraj.dev/blog/css/styles.css" /></head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+<title>Posts | Blog</title>
+
+
+
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css"/><link rel="apple-touch-icon" sizes="180x180" href="https://manishraj.dev/blog/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://manishraj.dev/blog/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://manishraj.dev/blog/favicon-16x16.png">
+<link rel="manifest" href="https://manishraj.dev/blog/site.webmanifest">
+<link rel="mask-icon" href="https://manishraj.dev/blog/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="canonical" href="https://manishraj.dev/blog/post/">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+</head>
 <body>
-  <div id="container">
-    <header>
-      <h1>
-                <a href="https://manishraj.dev/blog/">Blog</a>
-            </h1>
+<section class="section">
+  <div class="container">
+    <nav id="nav-main" class="nav">
+      <div id="nav-name" class="nav-left">
+        <a id="nav-anchor" class="nav-item" href="https://manishraj.dev/blog/">
+          <h1 id="nav-heading" class="title is-4">Blog</h1>
+        </a>
+      </div>
+      <div class="nav-right">
+        <nav id="nav-items" class="nav-item level is-mobile"></nav>
+      </div>
+    </nav>
 
-      <ul id="social-media">
-        
-        
-             
-      </ul>
+    <nav class="nav">
       
-    </header>
 
+      
+    </nav>
+
+  </div>
+  <script src="https://manishraj.dev/blog/js/navicon-shift.js"></script>
+</section>
+<section class="section">
+  <div class="container">
     
-<nav>
-    <ul>
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
         
-        <li>
-            <a class="" href="https://manishraj.dev/">
-                <i class="fa-li fa  fa-lg"></i><span>Home</span>
-            </a>
-        </li>
+      </div>
+      <h2 class="subtitle is-6 date">February 28, 2020</h2>
+      <h1 class="title"><a href="https://manishraj.dev/blog/post/react-slim-builds/">Creating slim docker images for react apps</a></h1>
+      <div class="content">
+        In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.
+Containerizing a React app   To do so, we will leverage multi-staged docker builds and to keep the image size smaller, we will use alpine variant of popular docker containers.
         
-        <li>
-            <a class="active" href="https://manishraj.dev/blog/post/">
-                <i class="fa-li fa  fa-lg"></i><span>Posts</span>
-            </a>
-        </li>
+        <a class="button is-link" href="https://manishraj.dev/blog/post/react-slim-builds/" style="height:28px">
+          Read more
+        </a>
         
-    </ul>
-</nav>
-
-    <main>
-
-
-
-
-<section id="list">
-
+      </div>
+    </article>
     
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">August 21, 2019</h2>
+      <h1 class="title"><a href="https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/">Mapping My Ladakh Road Trip</a></h1>
+      <div class="content">
+        Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.
+Planned route starting from Delhi and ending at Pangong Lake.   I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.
+        
+        <a class="button is-link" href="https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">March 27, 2019</h2>
+      <h1 class="title"><a href="https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/">A quick glimpse of what&#39;s new in ES10</a></h1>
+      <div class="content">
+        Here&rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:
+  Trim whitespaces only from start of a string
+&quot; My String &quot;.trimStart() // Produces: &quot;My String &quot;   Trim whitespaces only from end of a string:
+&quot; My String &quot;.trimEnd() // Produces: &quot; My String&quot;   Flatten an array:
+[1, 2, 3, [4, [5, 6]]].
+        
+        <a class="button is-link" href="https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">February 3, 2019</h2>
+      <h1 class="title"><a href="https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/">Generate vector tiles with built-in postgis functions</a></h1>
+      <div class="content">
+        This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
+1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services.
+        
+        <a class="button is-link" href="https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">October 12, 2017</h2>
+      <h1 class="title"><a href="https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/">Setting up Slash commands for Slack workspace</a></h1>
+      <div class="content">
+        Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.
+In this post, we will try to set up a slash command /hello for our slack workspace that makes a request to a REST API and displays response back on the slack channel.
+The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.
+        
+        <a class="button is-link" href="https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">September 23, 2017</h2>
+      <h1 class="title"><a href="https://manishraj.dev/blog/post/webvr-with-aframe/">WebVR With A-Frame</a></h1>
+      <div class="content">
+        WebVR WebVR is an emerging technology that enables virtual reality experience to be delivered and experienced from within a web browser. WebVR is mostly composed of experimental Javascript APIs supported by browsers such as Firefox and Chrome and VR headsets such as Oculus Rift, Google Daydream etc.
+WebVR can be used to build all kinds of VR experiences such as presentations, stories, walk-through guides, maps, architectural design demos, games and anything else one can envision.
+        
+        <a class="button is-link" href="https://manishraj.dev/blog/post/webvr-with-aframe/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">September 11, 2017</h2>
+      <h1 class="title"><a href="https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/">Træfik, reverse proxy, HTTPs and more</a></h1>
+      <div class="content">
+        I stumbled upon Træfik last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.
+Træfik is simple enough to get started with, within minutes and offers a variety of features such as:
+ Deploy Traefik using a tiny go binary or docker image. Serve as a reverse proxy for multiple micro-services. Supports several back-end systems such as Docker, Kubernetes, Consul, Amazon ECS and more.
+        
+        <a class="button is-link" href="https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+    <article>
+      <div class="subtitle tags is-6 is-pulled-right">
+        
+      </div>
+      <h2 class="subtitle is-6 date">September 1, 2017</h2>
+      <h1 class="title"><a href="https://manishraj.dev/blog/post/puppeteer-quick-start/">Puppeteer - quick start guide</a></h1>
+      <div class="content">
+        Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
+This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.
+Quick start Begin by installing nodejs version 7.6 or later. I use nvm to install and manage different versions of nodejs and it works great!
+        
+        <a class="button is-link" href="https://manishraj.dev/blog/post/puppeteer-quick-start/" style="height:28px">
+          Read more
+        </a>
+        
+      </div>
+    </article>
+    
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <nav class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          
+        </div>
+      </div>
+      <div class="level-right is-marginless">
+        <div class="level-item">
+          
+        </div>
+      </div>
+    </nav>
+  </div>
+</section>
 
+<section class="section">
+  <div class="container has-text-centered">
+    <p> </p>
     
-        <h2>Posts</h2>
-    
-
-    
-
-    
-
-    <h3>2020</h3>
-    <ul>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/react-slim-builds/">Creating slim docker images for react apps</a>
-            <time class="date-meta">Feb 28</time>
-        </li>
-        
-    </ul>
-    
-    
-
-    <h3>2019</h3>
-    <ul>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/">Mapping My Ladakh Road Trip</a>
-            <time class="date-meta">Aug 21</time>
-        </li>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/">A quick glimpse of what&rsquo;s new in ES10</a>
-            <time class="date-meta">Mar 27</time>
-        </li>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/">Generate vector tiles with built-in postgis functions</a>
-            <time class="date-meta">Feb 3</time>
-        </li>
-        
-    </ul>
-    
-    
-
-    <h3>2017</h3>
-    <ul>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/">Setting up Slash commands for Slack workspace</a>
-            <time class="date-meta">Oct 12</time>
-        </li>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/webvr-with-aframe/">WebVR With A-Frame</a>
-            <time class="date-meta">Sep 23</time>
-        </li>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/">Træfik, reverse proxy, HTTPs and more</a>
-            <time class="date-meta">Sep 11</time>
-        </li>
-        
-        <li>
-            <a href="https://manishraj.dev/blog/post/puppeteer-quick-start/">Puppeteer - quick start guide</a>
-            <time class="date-meta">Sep 1</time>
-        </li>
-        
-    </ul>
-    
-    
-
+  </div>
 </section>
 
 
 
-
-
-
-
-</main>
-    <footer>
-        <h6> |
-            Rendered by <a href="https://gohugo.io" title="Hugo">Hugo</a> |
-            <a href="https://manishraj.dev/blog/index.xml">Subscribe</a></h6>
-    </footer>
-</div>
-<script src="https://manishraj.dev/blog/js/scripts.js"></script>
-
 </body>
-
 </html>
+
