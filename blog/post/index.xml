@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Blog</title>
@@ -19,7 +19,8 @@
       
       <guid>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</guid>
       <description>Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.
-Planned route starting from Delhi and ending at Pangong Lake.   I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.</description>
+I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.
+To begin with, we will lists all the files in target folder and filters out jpegs.</description>
     </item>
     
     <item>
@@ -29,9 +30,9 @@ Planned route starting from Delhi and ending at Pangong Lake.   I started by cur
       
       <guid>https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/</guid>
       <description>Here&amp;rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:
- Trim whitespaces only from start of a string
-&amp;quot; My String &amp;quot;.trimStart() // Produces: &amp;quot;My String &amp;quot;  Trim whitespaces only from end of a string:
-&amp;quot; My String &amp;quot;.trimEnd() // Produces: &amp;quot; My String&amp;quot;  Flatten an array:
+  Trim whitespaces only from start of a string
+&amp;quot; My String &amp;quot;.trimStart() // Produces: &amp;quot;My String &amp;quot;   Trim whitespaces only from end of a string:
+&amp;quot; My String &amp;quot;.trimEnd() // Produces: &amp;quot; My String&amp;quot;   Flatten an array:
 [1, 2, 3, [4, [5, 6]]].</description>
     </item>
     
@@ -41,7 +42,7 @@ Planned route starting from Delhi and ending at Pangong Lake.   I started by cur
       <pubDate>Sun, 03 Feb 2019 02:30:47 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/</guid>
-      <description>This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
+      <description>This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVTand ST_MakeEnvelope.
 1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services.</description>
     </item>
     
@@ -85,7 +86,7 @@ Træfik is simple enough to get started with, within minutes and offers a variet
       <guid>https://manishraj.dev/blog/post/puppeteer-quick-start/</guid>
       <description>Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
 This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.
-Quick start Begin by installing nodejs version 7.6 or later.</description>
+Quick start Begin by installing nodejs version 7.6 or later. I use nvm to install and manage different versions of nodejs and it works great!</description>
     </item>
     
   </channel>
