@@ -5,7 +5,7 @@
     <description>Recent content on Blog</description>
     <generator>Hugo - gohugo.io</generator>
     <language>en</language>
-    <contact></contact>
+    <contact>manish_raj@outlook.com</contact>
     <copyright> </copyright>
     
         <atom:link href="https://manishraj.dev/blog/index.xml" rel="self" type="application/rss+xml" />
@@ -15,9 +15,11 @@
       <title>Posts</title>
       <link>https://manishraj.dev/blog/post/</link>
       <pubDate>Fri, 28 Feb 2020 00:21:37 +0530</pubDate>
-      <author></author>
+      <author>Manish Raj</author>
       <guid>https://manishraj.dev/blog/post/</guid>
       <description></description>
+      
+      <content></content>
       
     </item>
     
@@ -25,9 +27,14 @@
       <title>About</title>
       <link>https://manishraj.dev/blog/about/</link>
       <pubDate>Fri, 18 Aug 2017 16:25:11 +0530</pubDate>
-      <author></author>
+      <author>Manish Raj</author>
       <guid>https://manishraj.dev/blog/about/</guid>
       <description></description>
+      
+      <content>&lt;p&gt;I enjoy solving all kinds of problems using one of many programming languages. Got fascinated with programming back in 2008-09 while building download sites meant to work over 2G networks. From 2010 to 2012, I developed, co-owned and moderated a popular forum and downloads site powered by PHP and MySQL. I got into computer engineering in 2012 and graduated in 2016. I&amp;rsquo;ve been working as a software engineer since then, taking up multiple roles and responsibilities as a fullstack developer.&lt;/p&gt;
+&lt;p&gt;My current toolset includes some python for data processing, React and Vue.js for UI and JavaScript for the rest.&lt;/p&gt;
+&lt;p&gt;When I&amp;rsquo;m not staring at screens or mashing keys, I enjoy hiking, camping, photography and some occasional blogging.&lt;/p&gt;
+</content>
       
     </item>
     
