@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833289" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833833" />
 
 <meta property="og:title" content="Setting up Slash commands for Slack workspace" />
 <meta property="og:description" content="Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.
@@ -70,8 +70,8 @@ The REST API can then trigger other APIs, automate something trivial like initia
 <p>In this post, we will try to set up a slash command <code>/hello</code> for our slack workspace that makes a request to a REST API and displays response back on the slack channel.</p>
 <p>The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.</p>
 <p>Here&rsquo;s how the slash command is supposed to works once we&rsquo;re done with setup:</p>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p><img src="https://manishraj.dev/blog/img/10/slash_command_output.gif" style="width:100%; display: block; margin: auto;" /></p>
+<div style="font-size: 12px; text-align: center">Figure: Invoking slash command</div>
 <p>Alright, let&rsquo;s get started.</p>
 <h3 id="deploy-api-service">Deploy API service</h3>
 <p>Begin by deploying your API service on the Internet. I used heroku since it offers five free dynos (application containers).</p>
@@ -84,12 +84,12 @@ The REST API can then trigger other APIs, automate something trivial like initia
 <p>If you don&rsquo;t already have a workspace on slack, signing up for one is very easy and quick.</p>
 <p>Once you&rsquo;re inside the workspace, click on workspace name on top left and go to: <strong>Workspace Settings</strong> &gt; <strong>Configure App</strong> &gt; <strong>Browse the App Directory</strong>.</p>
 <p>Search for &ldquo;<strong>Slash Commands</strong>&rdquo; and click on it.</p>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p><img src="https://manishraj.dev/blog/img/10/slash_command_search.png" style="width:100%; display: block; margin: auto;" /></p>
+<div style="font-size: 12px; text-align: center">Figure: Slash Commands for slack</div>
 <p>Add a new config for &ldquo;slash commands&rdquo; app based on your API specs such as url endpoint, request method, slash command name etc.</p>
 <p>For me, config looks something like this:</p>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p><img src="https://manishraj.dev/blog/img/10/slash_commands_config.png" style="width:100%" /></p>
+<div style="font-size: 12px; text-align: center">Figure: Configurations for slash command</div>
 <p>Make sure to get the HTTP URL and request method right. Slack also displays a randomly generated token which can be used to verify and accept requests to your API originating only from slack.</p>
 <p>Click on save integration and go back to any channel to test if the slash command works.</p>
 <p>Congrats, you just set up a very basic slash command.</p>

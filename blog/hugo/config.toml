@@ -25,3 +25,6 @@ pygmentsCodeFences = true
 [params]
   scheme = "dark"
   description = ""
+
+[markup.goldmark.renderer]
+unsafe= true

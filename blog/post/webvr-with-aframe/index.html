@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833289" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833833" />
 
 <meta property="og:title" content="WebVR With A-Frame" />
 <meta property="og:description" content="WebVR WebVR is an emerging technology that enables virtual reality experience to be delivered and experienced from within a web browser. WebVR is mostly composed of experimental Javascript APIs supported by browsers such as Firefox and Chrome and VR headsets such as Oculus Rift, Google Daydream etc.
@@ -123,7 +123,7 @@ python -m SimpleHTTPServer
     &lt;/a-scene&gt;
 </code></pre>
 <p>At this point, we should have a basic scene with ground, sky and user should be able to move using mouse and W-A-S-D keys. Something like this:</p>
-<!-- raw HTML omitted -->
+<img src="https://manishraj.dev/blog/img/09/aframe_maze_vr_boot.gif"  style="width: 70%; margin: auto; display: block;">
 <h2 id="build-and-render-a-maze">Build and render a maze</h2>
 <p>Folks at rosettacode.org have an entire page dedicated to maze generation algorithms so we used one of their JS implementation and modified it a bit. <a href="https://rosettacode.org/wiki/Maze_generation#JavaScript">https://rosettacode.org/wiki/Maze_generation#JavaScript</a></p>
 <p>We also added two more functions to <code>game.js</code></p>
@@ -164,14 +164,14 @@ function addWall(x, y, z, h, w, d) {
 </code></pre>
 <p>And thus we&rsquo;ve finished composing a 3D scene for maze game with shapes, texture, physics and user controls with few lines of code!</p>
 <p>Go ahead and give it a try. Click below to start. Press <code>esc</code> to exit.</p>
-<!-- raw HTML omitted -->
-<p>Play in <!-- raw HTML omitted -->fullscreen<!-- raw HTML omitted -->.</p>
+<iframe src="https://manishraj.dev/blog/html/aframe" style="width: 640px; height: 320px; border: 0px; margin: auto; display: block;" id="play_iframe"></iframe>
+<p>Play in <a href="https://manishraj.dev/blog/html/aframe">fullscreen</a>.</p>
 <p>Check this project at: <a href="https://github.com/androidfanatic/aframe-maze-vr">https://github.com/androidfanatic/aframe-maze-vr</a></p>
 <h2 id="tips-for-debugging">Tips for debugging:</h2>
 <ul>
 <li>Use the inspector bundled wit A-Frame by pressing <code>ctrl + alt + i</code>. You can then pick elements and modify/debug their properties. Once happy with the scene,  you can also export it to HTML from the inspector.</li>
 </ul>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><video src="https://manishraj.dev/blog/vid/aframe_debug.mp4" id="inspector_vid" loop style="width: 100%; display: block; margin: auto;"></video></p>
 <ul>
 <li>
 <p>Add <code>stats</code> attribute to a-scene to keep an eye on framerate and other params.</p>
@@ -192,9 +192,18 @@ function addWall(x, y, z, h, w, d) {
 <p><a href="https://github.com/donmccurdy/aframe-extras">https://github.com/donmccurdy/aframe-extras</a></p>
 </li>
 </ul>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<blockquote>
+<script>
+window.addEventListener('load', function() {      
+    var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+
+    if (isMobile.matches) {
+        document.querySelector("#play_iframe").remove();
+        document.querySelector("#inspector_vid").setAttribute('controls', 'true');
+    } else {
+        document.querySelector("#inspector_vid").play();
+    }
+ });
+</script><blockquote>
 </blockquote>
 
         </div>

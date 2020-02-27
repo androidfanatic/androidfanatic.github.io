@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833289" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833833" />
 
 <meta property="og:title" content="Træfik, reverse proxy, HTTPs and more" />
 <meta property="og:description" content="I stumbled upon Træfik last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.
@@ -79,8 +79,8 @@ Træfik is simple enough to get started with, within minutes and offers a variet
 <li>Cluster mode for high availability.</li>
 </ul>
 <p>To sum it all up, Træfik is a great tool to serve and manage multiple micro-services or web applications while ensuring high availability, fast speed and continuous deployment.</p>
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<p><img src="https://manishraj.dev/blog/img/09/traefik_architecture.png" style="max-width: 80%; display: block; margin: auto;" ></p>
+<center>&copy; https://traefik.io/</center>
 <p>To demonstrate the robustness and simplicity of traefik, we will try to setup two services with reverse proxy and SSL support. We will host the services on different subdomain on a local machine.</p>
 <h3 id="what-are-we-aiming-for">What are we aiming for?</h3>
 <p>Setup gitlab and nextcloud on a local machine on different subdomain with SSL support to demonstrate dynamic config reload, docker backend support, proxied SSL and reverse proxy capabilities of Traefik.</p>
@@ -96,7 +96,7 @@ Træfik is simple enough to get started with, within minutes and offers a variet
 <h3 id="start-deploying-microservices">Start deploying microservices</h3>
 <ol>
 <li>
-<p>Create a traefik config file: <!-- raw HTML omitted --><code>traefik.toml</code> <!-- raw HTML omitted --></p>
+<p>Create a traefik config file: <span id="toml"><code>traefik.toml</code> </span></p>
 <pre><code> defaultEntryPoints = [&quot;http&quot;, &quot;https&quot;]
  [entryPoints]
  [entryPoints.http]
@@ -190,8 +190,8 @@ Træfik is simple enough to get started with, within minutes and offers a variet
 <p>&ndash;volume: Adds persistent storage to nextcloud container. More container specific options can be found at: <a href="https://github.com/nextcloud/docker">https://github.com/nextcloud/docker</a></p>
 </li>
 </ul>
-<p>If you visit traefik dashboard at http://localhost:8080, you should be able to see nextcloud container automatically added to <!-- raw HTML omitted -->dashboard<!-- raw HTML omitted -->.</p>
-<p>If you head over to <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a>, you should be presented with <!-- raw HTML omitted -->nextcloud UI<!-- raw HTML omitted -->.</p>
+<p>If you visit traefik dashboard at http://localhost:8080, you should be able to see nextcloud container automatically added to <a href="https://manishraj.dev/blog/img/09/traefik_dashboard_nextcloud.png" target="_blank">dashboard</a>.</p>
+<p>If you head over to <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a>, you should be presented with <a href="https://manishraj.dev/blog/img/09/nextcloud_init.png" target="_blank">nextcloud UI</a>.</p>
 </li>
 <li>
 <p>Start gitlab docker container:</p>
@@ -222,7 +222,7 @@ Træfik is simple enough to get started with, within minutes and offers a variet
 </li>
 </ol>
 <p>At this point, you should have the two services being routed through traefik with SSL support available at <a href="https://nextcloud.docker.localhost">https://nextcloud.docker.localhost</a> and <a href="https://gitlab.docker.localhost">https://gitlab.docker.localhost</a> and traefik dashboard, available at localhost:8080, should look something like this:</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><a href="https://manishraj.dev/blog/img/09/traefix_dashboard.png" target="_blank"><img src="https://manishraj.dev/blog/img/09/traefix_dashboard.png" style="max-width: 95%; display: block; margin: auto;" ></a></p>
 <p>Try exploring the &ldquo;Health&rdquo; tab on dashboard and see what kind of metrics it offers.</p>
 <h3 id="conclusion">Conclusion</h3>
 <p>With this exercise, we observed that traefix automatically picked up and published new services to a different subdomain along with SSL support and load balancing.</p>

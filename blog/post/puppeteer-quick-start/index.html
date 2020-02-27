@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833289" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833833" />
 
 <meta property="og:title" content="Puppeteer - quick start guide" />
 <meta property="og:description" content="Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
@@ -67,7 +67,7 @@ Quick start Begin by installing nodejs version 7.6 or later. I use nvm to instal
         </header>
         <div class="content">
             <h1 id="puppeteer-quick-start-guide">Puppeteer: quick start guide</h1>
-<p>The team behind Google chrome has recently released <!-- raw HTML omitted -->puppeteer<!-- raw HTML omitted -->, a nodejs library for controlling <!-- raw HTML omitted -->Chrome headless<!-- raw HTML omitted -->. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing  community.</p>
+<p>The team behind Google chrome has recently released <a target="_blank" href="https://github.com/GoogleChrome/puppeteer">puppeteer</a>, a nodejs library for controlling <a href="https://developers.google.com/web/updates/2017/04/headless-chrome" target="_blank">Chrome headless</a>. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing  community.</p>
 <p>This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.</p>
 <h2 id="quick-start">Quick start</h2>
 <p>Begin by installing nodejs version 7.6 or later. I use <a href="https://github.com/creationix/nvm/blob/master/README.md">nvm</a> to install and manage different versions of nodejs and it works great!</p>
@@ -104,7 +104,7 @@ npm i puppeteer --save
 <pre><code>node example.js
 </code></pre>
 <p><strong>Output:</strong></p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="https://manishraj.dev/blog/img/09/puppeteer_load_example_com.gif" style="max-width: 80%; margin: auto; display: block;" /></p>
 <p>If everything goes well, you should be able to see a new chromium window pop up and load <code>www.example.com</code>.</p>
 <p>Notice how we commented out <code>browser.close()</code> and set headless to false.</p>
 <ul>
@@ -147,7 +147,7 @@ npm i puppeteer --save
 <pre><code>node cats.js
 </code></pre>
 <p><strong>Output</strong>:</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="https://manishraj.dev/blog/img/09/puppeteer_cat_gifs.gif" style="max-width: 80%; margin: auto; display: block;" /></p>
 <p>We just added a few function calls - <code>page.focus</code>, <code>page.type</code>, <code>page.press</code> and got some cats in return. Sweet!</p>
 <h3 id="so-how-exactly-did-we-look-up-cats">So how exactly did we look up cats?</h3>
 <ol>
@@ -167,7 +167,9 @@ npm i puppeteer --save
  await page.focus('input[name=q]');
 </code></pre>
 <p>I was able to find the selector for the search box by using inspector (F12).</p>
-<!-- raw HTML omitted -->
+ <a href="https://manishraj.dev/blog/img/google_inspector.png" target="_blank" title="Click to open in a new window">
+ <img src="https://manishraj.dev/blog/img/google_inspector.png" style="max-width: 90%; height: auto;" />
+ </a>
 </li>
 <li>
 <p>Now that search box is in focus, all we need to do is type &lsquo;cats gif&rsquo; and press &lsquo;enter&rsquo; which puppeteer provides simple APIs for.</p>
@@ -183,12 +185,12 @@ npm i puppeteer --save
 <h2 id="conclusion">Conclusion</h2>
 <p>Puppeteer is extremely easy to start with and offers a comprehensive set of APIs. The library comes from team behind Google chrome and is under active development. It has the potential to become widely used for UI testing, web scrapping and browser based automation.</p>
 <p><strong>Some links:</strong></p>
-<p><!-- raw HTML omitted -->Puppeteer<!-- raw HTML omitted -->
+<p><a href="https://github.com/GoogleChrome/puppeteer" target="_blank">Puppeteer</a>
  &gt; 
-<!-- raw HTML omitted -->Examples<!-- raw HTML omitted -->
+<a href="https://github.com/GoogleChrome/puppeteer/tree/master/examples" target="_blank">Examples</a>
  &gt; 
-<!-- raw HTML omitted -->API reference<!-- raw HTML omitted --></p>
-<p>Here&rsquo;s a good tutorial if you&rsquo;re confused about all that async await stuff like I was: <!-- raw HTML omitted --><a href="https://blog.risingstack.com/mastering-async-await-in-nodejs/">https://blog.risingstack.com/mastering-async-await-in-nodejs/</a><!-- raw HTML omitted --></p>
+<a href="https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md" target="_blank">API reference</a></p>
+<p>Here&rsquo;s a good tutorial if you&rsquo;re confused about all that async await stuff like I was: <a href="https://blog.risingstack.com/mastering-async-await-in-nodejs/" target="_blank"><a href="https://blog.risingstack.com/mastering-async-await-in-nodejs/">https://blog.risingstack.com/mastering-async-await-in-nodejs/</a></a></p>
 
         </div>
         <div class="article-info">

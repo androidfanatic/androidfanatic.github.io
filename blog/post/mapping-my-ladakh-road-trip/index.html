@@ -16,12 +16,11 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833289" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833833" />
 
 <meta property="og:title" content="Mapping My Ladakh Road Trip" />
 <meta property="og:description" content="Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.
-I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.
-To begin with, we will lists all the files in target folder and filters out jpegs." />
+Planned route starting from Delhi and ending at Pangong Lake.   I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/" />
 <meta property="article:published_time" content="2019-08-21T23:30:51+05:30" />
@@ -30,8 +29,7 @@ To begin with, we will lists all the files in target folder and filters out jpeg
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Mapping My Ladakh Road Trip"/>
 <meta name="twitter:description" content="Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.
-I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.
-To begin with, we will lists all the files in target folder and filters out jpegs."/>
+Planned route starting from Delhi and ending at Pangong Lake.   I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files."/>
 
 
 
@@ -67,12 +65,17 @@ To begin with, we will lists all the files in target folder and filters out jpeg
         </header>
         <div class="content">
             <p>Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.</p>
-<!-- raw HTML omitted -->
+<figure style="width: 75%; margin: auto; display: block; margin-bottom: 8px;">
+  <img src="https://manishraj.dev/blog/img/08/the_plan.png" title="Image of planned route of the road trip"  >
+  <figcaption style="font-size: 11px">
+    Planned route starting from Delhi and ending at Pangong Lake.
+  <figcaption>
+</figure>
 <p>I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.</p>
 <p>To begin with, we will lists all the files in target folder and filters out jpegs. This is done to discard any png or mp4 files in the folder.</p>
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#268bd2">const</span> allFiles <span style="color:#719e07">=</span> fs.readdirSync(path.join(__dirname, <span style="color:#2aa198">&#39;files&#39;</span>));
 <span style="color:#268bd2">const</span> jpegs <span style="color:#719e07">=</span> allFiles.filter(file =&gt; <span style="color:#719e07">/</span>\.jpe<span style="color:#719e07">?</span>g$<span style="color:#719e07">/</span>i.test(file));
-</code></pre></div><p>Next we will parse data out of all the selected jpegs. Given the asynchronous nature of <!-- raw HTML omitted -->EXIF<!-- raw HTML omitted --> data extraction, we will create an array of promises that we&rsquo;d later resolve using <code>Promise.all()</code> to get EXIF data of all these files in an array.</p>
+</code></pre></div><p>Next we will parse data out of all the selected jpegs. Given the asynchronous nature of <a href="https://github.com/gomfunkel/node-exif" target="_blank">EXIF</a> data extraction, we will create an array of promises that we&rsquo;d later resolve using <code>Promise.all()</code> to get EXIF data of all these files in an array.</p>
 <p>The result of these promises are structured in JSON format, that we&rsquo;d then use to render the photos back on a map.</p>
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#586e75">// require ExifImage
 </span><span style="color:#586e75"></span><span style="color:#268bd2">const</span> ExifImage <span style="color:#719e07">=</span> require(<span style="color:#2aa198">&#39;exif&#39;</span>).ExifImage;
@@ -93,7 +96,7 @@ To begin with, we will lists all the files in target folder and filters out jpeg
   });
 });
 </code></pre></div><p>To add these images on a map, we also need to either host the images somewhere and add a link to the JSON or base64 encode the image, include the encoded image in the JSON structure and then serve them on the map using HTML data URLs.</p>
-<p>I picked the second approach because of its simplicity and used <!-- raw HTML omitted -->sharp<!-- raw HTML omitted --> npm module to do so.</p>
+<p>I picked the second approach because of its simplicity and used <a href="https://www.npmjs.com/package/sharp" target="_blank" title="Sharp NPM module">sharp</a> npm module to do so.</p>
 <p>Instead of storing encoded values of full size images, we will resize the images to a maximum of 180 pixels using sharp, which works well enough for the visualization.</p>
 <p>I also used the command <code>mogrify -auto-orient *.jpg</code> to auto orient some of the images in the folder that were oriented incorrectly but had the correct orientation information embedded in their exif data.</p>
 <p>The modified script looks something like this:</p>
@@ -122,7 +125,7 @@ To begin with, we will lists all the files in target folder and filters out jpeg
     } <span style="color:#719e07">catch</span> (err) { reject(err); }
   });
 });
-</code></pre></div><p>Finally we need to wait for all the promises to resolve with an array containing exif information of all images. I used <!-- raw HTML omitted --><code>Promise.all()</code><!-- raw HTML omitted --> which does just that.</p>
+</code></pre></div><p>Finally we need to wait for all the promises to resolve with an array containing exif information of all images. I used <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank"><code>Promise.all()</code></a> which does just that.</p>
 <p>I also wrote two helper functions to convert GPS data from Exif tags into latitude and longitude coordinates. I also used moment.js to parse the date-time of images and convert them into JavaScript timestamp. It worked out well with a bit of timezone correction.</p>
 <p>After filtering the array to only include images that have meaningful GPS information
 and also sorting the result by timestamp, we have our final JSON ready to be served on a map.</p>
@@ -171,7 +174,7 @@ and also sorting the result by timestamp, we have our final JSON ready to be ser
   <span style="color:#268bd2">const</span> lng <span style="color:#719e07">=</span> convertDMSToDD(lngDegree, lngMinute, lngSecond, lngDirection);
   <span style="color:#719e07">return</span> { lng, lat };
 };
-</code></pre></div><p>Once the JSON is ready, visualizing the data on map is pretty straightforward. Using <!-- raw HTML omitted -->mapbox-gl-js<!-- raw HTML omitted --> and following snippet, we were able to visualize the data on maps.</p>
+</code></pre></div><p>Once the JSON is ready, visualizing the data on map is pretty straightforward. Using <a href="https://docs.mapbox.com/mapbox-gl-js/example/custom-marker-icons/" target="_blank">mapbox-gl-js</a> and following snippet, we were able to visualize the data on maps.</p>
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">fetch(<span style="color:#2aa198">&#39;places.json&#39;</span>).then(res =&gt; res.json()).then(places =&gt; {
   places.forEach(place =&gt; {
     <span style="color:#268bd2">const</span> el <span style="color:#719e07">=</span> <span style="color:#b58900">document</span>.createElement(<span style="color:#2aa198">&#39;div&#39;</span>);
@@ -203,10 +206,12 @@ and also sorting the result by timestamp, we have our final JSON ready to be ser
   })
 }).<span style="color:#719e07">catch</span>(console.error);
 </code></pre></div><p>And here&rsquo;s the final interactive map. Click on the pins to view photos and the time when they were taken.</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<iframe src="https://manishraj.dev/blog/html/ladakh" style="width: 640px; height: 320px; border: 0px; margin: auto; display: block;"></iframe>
+<p style="margin-top: 4px;">
+  <a href="https://manishraj.dev/blog/html/ladakh" target="_blank"><strong>Click here to view this map in fullscreen</strong></a>
+</p>
 <p>In the end, I&rsquo;d say it was a fun exercise for me to create this app and re-explore these vast cold deserts and picturesque locations, using random photos clicked throughout the road trip. I hope you enjoyed the write-up.</p>
-<!-- raw HTML omitted -->
+<hr >
 <p>Here&rsquo;s the HTML part of this app that renders the map and the pins on map.</p>
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#719e07">&lt;!DOCTYPE html&gt;</span>
 &lt;<span style="color:#268bd2">html</span> lang<span style="color:#719e07">=</span><span style="color:#2aa198">&#34;en&#34;</span>&gt;

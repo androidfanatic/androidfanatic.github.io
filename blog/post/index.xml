@@ -19,8 +19,13 @@
       
       <guid>https://manishraj.dev/blog/post/react-slim-builds/</guid>
       <description>&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;To do so, we will leverage &lt;!-- raw HTML omitted --&gt;multi-staged&lt;!-- raw HTML omitted --&gt; docker builds and to keep the image size smaller, we will use &lt;!-- raw HTML omitted --&gt;alpine variant&lt;!-- raw HTML omitted --&gt; of popular docker containers.&lt;/p&gt;
+&lt;figure style=&#34;width: 75%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
+  &lt;img src=&#34;https://manishraj.dev/blog/img/02/react_app.png&#34; title=&#34;Containerizing a React app&#34;  &gt;
+  &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
+    Containerizing a React app
+  &lt;figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;To do so, we will leverage &lt;a href=&#34;https://docs.docker.com/develop/develop-images/multistage-build/&#34; target=&#34;_blank&#34;&gt;multi-staged&lt;/a&gt; docker builds and to keep the image size smaller, we will use &lt;a href=&#34;https://github.com/docker-library/docs/blob/master/.template-helpers/variant-alpine.md&#34; target=&#34;_blank&#34;&gt;alpine variant&lt;/a&gt; of popular docker containers.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s get started.&lt;/p&gt;
 &lt;h3 id=&#34;ignore-files-with-dockerignore&#34;&gt;Ignore files with .dockerignore&lt;/h3&gt;
 &lt;p&gt;First thing first, we want to reduce the size of the build context i.e. make some of the files invisible to docker daemon when running docker commands. By default, build context is a list of files residing in the same directory as that of &lt;code&gt;Dockerfile&lt;/code&gt;. A smaller build context means docker can start building images faster.&lt;/p&gt;
@@ -72,12 +77,17 @@ CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&am
       
       <guid>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</guid>
       <description>&lt;p&gt;Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;figure style=&#34;width: 75%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
+  &lt;img src=&#34;https://manishraj.dev/blog/img/08/the_plan.png&#34; title=&#34;Image of planned route of the road trip&#34;  &gt;
+  &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
+    Planned route starting from Delhi and ending at Pangong Lake.
+  &lt;figcaption&gt;
+&lt;/figure&gt;
 &lt;p&gt;I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.&lt;/p&gt;
 &lt;p&gt;To begin with, we will lists all the files in target folder and filters out jpegs. This is done to discard any png or mp4 files in the folder.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; allFiles &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; fs.readdirSync(path.join(__dirname, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;files&amp;#39;&lt;/span&gt;));
 &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; jpegs &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; allFiles.filter(file =&amp;gt; &lt;span style=&#34;color:#719e07&#34;&gt;/&lt;/span&gt;\.jpe&lt;span style=&#34;color:#719e07&#34;&gt;?&lt;/span&gt;g$&lt;span style=&#34;color:#719e07&#34;&gt;/&lt;/span&gt;i.test(file));
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next we will parse data out of all the selected jpegs. Given the asynchronous nature of &lt;!-- raw HTML omitted --&gt;EXIF&lt;!-- raw HTML omitted --&gt; data extraction, we will create an array of promises that we&amp;rsquo;d later resolve using &lt;code&gt;Promise.all()&lt;/code&gt; to get EXIF data of all these files in an array.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next we will parse data out of all the selected jpegs. Given the asynchronous nature of &lt;a href=&#34;https://github.com/gomfunkel/node-exif&#34; target=&#34;_blank&#34;&gt;EXIF&lt;/a&gt; data extraction, we will create an array of promises that we&amp;rsquo;d later resolve using &lt;code&gt;Promise.all()&lt;/code&gt; to get EXIF data of all these files in an array.&lt;/p&gt;
 &lt;p&gt;The result of these promises are structured in JSON format, that we&amp;rsquo;d then use to render the photos back on a map.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// require ExifImage
 &lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; ExifImage &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;exif&amp;#39;&lt;/span&gt;).ExifImage;
@@ -98,7 +108,7 @@ CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&am
   });
 });
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To add these images on a map, we also need to either host the images somewhere and add a link to the JSON or base64 encode the image, include the encoded image in the JSON structure and then serve them on the map using HTML data URLs.&lt;/p&gt;
-&lt;p&gt;I picked the second approach because of its simplicity and used &lt;!-- raw HTML omitted --&gt;sharp&lt;!-- raw HTML omitted --&gt; npm module to do so.&lt;/p&gt;
+&lt;p&gt;I picked the second approach because of its simplicity and used &lt;a href=&#34;https://www.npmjs.com/package/sharp&#34; target=&#34;_blank&#34; title=&#34;Sharp NPM module&#34;&gt;sharp&lt;/a&gt; npm module to do so.&lt;/p&gt;
 &lt;p&gt;Instead of storing encoded values of full size images, we will resize the images to a maximum of 180 pixels using sharp, which works well enough for the visualization.&lt;/p&gt;
 &lt;p&gt;I also used the command &lt;code&gt;mogrify -auto-orient *.jpg&lt;/code&gt; to auto orient some of the images in the folder that were oriented incorrectly but had the correct orientation information embedded in their exif data.&lt;/p&gt;
 &lt;p&gt;The modified script looks something like this:&lt;/p&gt;
@@ -127,7 +137,7 @@ CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&am
     } &lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt; (err) { reject(err); }
   });
 });
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally we need to wait for all the promises to resolve with an array containing exif information of all images. I used &lt;!-- raw HTML omitted --&gt;&lt;code&gt;Promise.all()&lt;/code&gt;&lt;!-- raw HTML omitted --&gt; which does just that.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally we need to wait for all the promises to resolve with an array containing exif information of all images. I used &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;Promise.all()&lt;/code&gt;&lt;/a&gt; which does just that.&lt;/p&gt;
 &lt;p&gt;I also wrote two helper functions to convert GPS data from Exif tags into latitude and longitude coordinates. I also used moment.js to parse the date-time of images and convert them into JavaScript timestamp. It worked out well with a bit of timezone correction.&lt;/p&gt;
 &lt;p&gt;After filtering the array to only include images that have meaningful GPS information
 and also sorting the result by timestamp, we have our final JSON ready to be served on a map.&lt;/p&gt;
@@ -176,7 +186,7 @@ and also sorting the result by timestamp, we have our final JSON ready to be ser
   &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; lng &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; convertDMSToDD(lngDegree, lngMinute, lngSecond, lngDirection);
   &lt;span style=&#34;color:#719e07&#34;&gt;return&lt;/span&gt; { lng, lat };
 };
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once the JSON is ready, visualizing the data on map is pretty straightforward. Using &lt;!-- raw HTML omitted --&gt;mapbox-gl-js&lt;!-- raw HTML omitted --&gt; and following snippet, we were able to visualize the data on maps.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once the JSON is ready, visualizing the data on map is pretty straightforward. Using &lt;a href=&#34;https://docs.mapbox.com/mapbox-gl-js/example/custom-marker-icons/&#34; target=&#34;_blank&#34;&gt;mapbox-gl-js&lt;/a&gt; and following snippet, we were able to visualize the data on maps.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;fetch(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;places.json&amp;#39;&lt;/span&gt;).then(res =&amp;gt; res.json()).then(places =&amp;gt; {
   places.forEach(place =&amp;gt; {
     &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; el &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;);
@@ -208,10 +218,12 @@ and also sorting the result by timestamp, we have our final JSON ready to be ser
   })
 }).&lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt;(console.error);
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And here&amp;rsquo;s the final interactive map. Click on the pins to view photos and the time when they were taken.&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;iframe src=&#34;https://manishraj.dev/blog/html/ladakh&#34; style=&#34;width: 640px; height: 320px; border: 0px; margin: auto; display: block;&#34;&gt;&lt;/iframe&gt;
+&lt;p style=&#34;margin-top: 4px;&#34;&gt;
+  &lt;a href=&#34;https://manishraj.dev/blog/html/ladakh&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;Click here to view this map in fullscreen&lt;/strong&gt;&lt;/a&gt;
+&lt;/p&gt;
 &lt;p&gt;In the end, I&amp;rsquo;d say it was a fun exercise for me to create this app and re-explore these vast cold deserts and picturesque locations, using random photos clicked throughout the road trip. I hope you enjoyed the write-up.&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;hr &gt;
 &lt;p&gt;Here&amp;rsquo;s the HTML part of this app that renders the map and the pins on map.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
 &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;html&lt;/span&gt; lang&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;en&amp;#34;&lt;/span&gt;&amp;gt;
@@ -433,7 +445,7 @@ console.log(fn.toString())
 &lt;p&gt;Well, some are and some are not. You can check for browser or nodejs compatibility by looking up features on MDN.&lt;/p&gt;
 &lt;p&gt;For example:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Array.prototype.flat()&lt;!-- raw HTML omitted --&gt;[1]&lt;!-- raw HTML omitted --&gt; is available in NodeJS 11, Chrome 69 and Firefox 62 and above.&lt;/li&gt;
+&lt;li&gt;Array.prototype.flat()&lt;sup&gt;[1]&lt;/sup&gt; is available in NodeJS 11, Chrome 69 and Firefox 62 and above.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Nevertheless these are some really interesting additions to JavaScript and more is on the way.&lt;/p&gt;
 &lt;p&gt;Links and more:&lt;/p&gt;
@@ -449,7 +461,7 @@ console.log(fn.toString())
       <pubDate>Sun, 03 Feb 2019 02:30:47 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/</guid>
-      <description>&lt;p&gt;This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions &lt;!-- raw HTML omitted --&gt;ST_AsMVT&lt;!-- raw HTML omitted --&gt; and  &lt;!-- raw HTML omitted --&gt;ST_MakeEnvelope&lt;!-- raw HTML omitted --&gt;.&lt;/p&gt;
+      <description>&lt;p&gt;This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions &lt;a href=&#34;https://postgis.net/docs/ST_AsMVT.html&#34; target=&#34;_blank&#34;&gt;ST_AsMVT&lt;/a&gt; and  &lt;a href=&#34;https://postgis.net/docs/ST_MakeEnvelope.html&#34; target=&#34;_blank&#34;&gt;ST_MakeEnvelope&lt;/a&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;1-setup-a-test-database&#34;&gt;1. Setup a test database&lt;/h3&gt;
 &lt;p&gt;Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services. For now, we will get started with a single docker image which gives us a Postgres instance with PostGIS extension installed.&lt;/p&gt;
 &lt;p&gt;File: &lt;code&gt;docker-compose.yml&lt;/code&gt;&lt;/p&gt;
@@ -469,10 +481,10 @@ services:
 &lt;pre&gt;&lt;code&gt;docker-compose exec db psql -U postgres -c &#39;CREATE DATABASE roads&#39;
 docker-compose exec db psql -U postgres roads -c &#39;CREATE EXTENSION POSTGIS&#39;
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I exported road data of the Pune city, the city I live in, and hosted it on the github repo:&lt;/p&gt;
-&lt;p&gt;Download and extract test data &lt;!-- raw HTML omitted --&gt;[1]&lt;!-- raw HTML omitted --&gt;:&lt;/p&gt;
+&lt;p&gt;Download and extract test data &lt;sup&gt;[1]&lt;/sup&gt;:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;wget https://github.com/androidfanatic/tiles_with_st_asmvt/raw/master/data/pune_roads.tar.gz
 tar -xvf pune_roads.tar.gz
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will extract a GeoJSON file in the current directory. We want to be able to import this data into our database. In comes &lt;code&gt;GDAL&lt;/code&gt;. I call it the swiss-knife of GIS data. GDAL allows one to work with GIS datasets of all sizes and formats and offers wide variety of features for data translation. Head over to &lt;!-- raw HTML omitted --&gt;&lt;a href=&#34;https://www.gdal.org/&#34;&gt;https://www.gdal.org/&lt;/a&gt;&lt;!-- raw HTML omitted --&gt; for quick installation steps and to read more about it.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will extract a GeoJSON file in the current directory. We want to be able to import this data into our database. In comes &lt;code&gt;GDAL&lt;/code&gt;. I call it the swiss-knife of GIS data. GDAL allows one to work with GIS datasets of all sizes and formats and offers wide variety of features for data translation. Head over to &lt;a href=&#34;https://www.gdal.org/&#34; target=&#34;_blank&#34;&gt;&lt;a href=&#34;https://www.gdal.org/&#34;&gt;https://www.gdal.org/&lt;/a&gt;&lt;/a&gt; for quick installation steps and to read more about it.&lt;/p&gt;
 &lt;p&gt;Once installed, we can begin importing the data from the GeoJSON file into our database with this simple one-liner:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ogr2ogr -f &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;PostgreSQL&amp;#34;&lt;/span&gt; PG:&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;dbname=roads user=postgres host=localhost password=pass&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;\
 &lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;pune_roads.geojson&amp;#34;&lt;/span&gt; -nln pune_roads -append &lt;span style=&#34;color:#cb4b16&#34;&gt;\
@@ -482,9 +494,9 @@ tar -xvf pune_roads.tar.gz
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Now that we&amp;rsquo;ve the test database setup with some test data seeded in, let&amp;rsquo;s work on generting the vector tiles on the fly.&lt;/p&gt;
 &lt;h3 id=&#34;3-create-a-tile-service&#34;&gt;3. Create a tile service&lt;/h3&gt;
 &lt;p&gt;To display the data back, we begin by creating a HTTP service that returns vector tiles. To do so, we use a combination of ST_AsMVT, ST_AsMVTGeom and ST_MakeEnvelope functions provided by PostGIS.&lt;/p&gt;
-&lt;p&gt;Here&amp;rsquo;s a NodeJS script, inspired by Chris&amp;rsquo;s blog post &lt;!-- raw HTML omitted --&gt;[2]&lt;!-- raw HTML omitted --&gt;:&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s a NodeJS script, inspired by Chris&amp;rsquo;s blog post &lt;sup&gt;[2]&lt;/sup&gt;:&lt;/p&gt;
 &lt;p&gt;The interesting bit here is the translation of &lt;code&gt;/z/x/y&lt;/code&gt; parameters to a bounding box that gets consumed by the function ST_MakeEnvelope(). We also set &lt;code&gt;clipping = True&lt;/code&gt; for the function ST_AsMVTGeom and select additional database columns (id, name and highway in this case) that get translated to feature properties.&lt;/p&gt;
-&lt;p&gt;These feature properties can be used for data-driven styling &lt;!-- raw HTML omitted --&gt;[3]&lt;!-- raw HTML omitted --&gt;, displaying additional information on map and more.&lt;/p&gt;
+&lt;p&gt;These feature properties can be used for data-driven styling &lt;sup&gt;[3]&lt;/sup&gt;, displaying additional information on map and more.&lt;/p&gt;
 &lt;p&gt;File: &lt;code&gt;app.js&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// mercator
 &lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; SphericalMercator &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;@mapbox/sphericalmercator&amp;#39;&lt;/span&gt;);
@@ -533,7 +545,7 @@ app.get(&lt;span style=&#34;color:#586e75&#34;&gt;`/tiles/&lt;/span&gt;&lt;span 
 
 app.listen(&lt;span style=&#34;color:#2aa198&#34;&gt;8080&lt;/span&gt;);
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;4-add-the-new-vector-layer&#34;&gt;4. Add the new vector layer&lt;/h3&gt;
-&lt;p&gt;Let&amp;rsquo;s add the tile layer to the map. We used mapbox &lt;!-- raw HTML omitted --&gt;[4]&lt;!-- raw HTML omitted --&gt; which is our web map of choice because of it&amp;rsquo;s performance, data-sets and robustness when it comes to configuring and styling the map.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s add the tile layer to the map. We used mapbox &lt;sup&gt;[4]&lt;/sup&gt; which is our web map of choice because of it&amp;rsquo;s performance, data-sets and robustness when it comes to configuring and styling the map.&lt;/p&gt;
 &lt;p&gt;Add the layer to map with this snippet:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;map.addLayer({
   &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;road&amp;#34;&lt;/span&gt;,
@@ -550,9 +562,9 @@ app.listen(&lt;span style=&#34;color:#2aa198&#34;&gt;8080&lt;/span&gt;);
   }
 });
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point, you should be able to see road data being rendered on the map.&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;center&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/androidfanatic/tiles_with_st_asmvt/master/img/img3.png&#34; style=&#34;max-width: 100%;&#34; /&gt;&lt;/p&gt;
+&lt;/center&gt;
 &lt;p&gt;Next steps to work on and explore:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Cache tiles for sometime, say an hour, instead of re-generating again&lt;/li&gt;
@@ -577,8 +589,8 @@ app.listen(&lt;span style=&#34;color:#2aa198&#34;&gt;8080&lt;/span&gt;);
 &lt;p&gt;In this post, we will try to set up a slash command &lt;code&gt;/hello&lt;/code&gt; for our slack workspace that makes a request to a REST API and displays response back on the slack channel.&lt;/p&gt;
 &lt;p&gt;The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s how the slash command is supposed to works once we&amp;rsquo;re done with setup:&lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/10/slash_command_output.gif&#34; style=&#34;width:100%; display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;div style=&#34;font-size: 12px; text-align: center&#34;&gt;Figure: Invoking slash command&lt;/div&gt;
 &lt;p&gt;Alright, let&amp;rsquo;s get started.&lt;/p&gt;
 &lt;h3 id=&#34;deploy-api-service&#34;&gt;Deploy API service&lt;/h3&gt;
 &lt;p&gt;Begin by deploying your API service on the Internet. I used heroku since it offers five free dynos (application containers).&lt;/p&gt;
@@ -591,12 +603,12 @@ app.listen(&lt;span style=&#34;color:#2aa198&#34;&gt;8080&lt;/span&gt;);
 &lt;p&gt;If you don&amp;rsquo;t already have a workspace on slack, signing up for one is very easy and quick.&lt;/p&gt;
 &lt;p&gt;Once you&amp;rsquo;re inside the workspace, click on workspace name on top left and go to: &lt;strong&gt;Workspace Settings&lt;/strong&gt; &amp;gt; &lt;strong&gt;Configure App&lt;/strong&gt; &amp;gt; &lt;strong&gt;Browse the App Directory&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;Search for &amp;ldquo;&lt;strong&gt;Slash Commands&lt;/strong&gt;&amp;rdquo; and click on it.&lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/10/slash_command_search.png&#34; style=&#34;width:100%; display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;div style=&#34;font-size: 12px; text-align: center&#34;&gt;Figure: Slash Commands for slack&lt;/div&gt;
 &lt;p&gt;Add a new config for &amp;ldquo;slash commands&amp;rdquo; app based on your API specs such as url endpoint, request method, slash command name etc.&lt;/p&gt;
 &lt;p&gt;For me, config looks something like this:&lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/10/slash_commands_config.png&#34; style=&#34;width:100%&#34; /&gt;&lt;/p&gt;
+&lt;div style=&#34;font-size: 12px; text-align: center&#34;&gt;Figure: Configurations for slash command&lt;/div&gt;
 &lt;p&gt;Make sure to get the HTTP URL and request method right. Slack also displays a randomly generated token which can be used to verify and accept requests to your API originating only from slack.&lt;/p&gt;
 &lt;p&gt;Click on save integration and go back to any channel to test if the slash command works.&lt;/p&gt;
 &lt;p&gt;Congrats, you just set up a very basic slash command.&lt;/p&gt;
@@ -668,7 +680,7 @@ python -m SimpleHTTPServer
     &amp;lt;/a-scene&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;At this point, we should have a basic scene with ground, sky and user should be able to move using mouse and W-A-S-D keys. Something like this:&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;img src=&#34;https://manishraj.dev/blog/img/09/aframe_maze_vr_boot.gif&#34;  style=&#34;width: 70%; margin: auto; display: block;&#34;&gt;
 &lt;h2 id=&#34;build-and-render-a-maze&#34;&gt;Build and render a maze&lt;/h2&gt;
 &lt;p&gt;Folks at rosettacode.org have an entire page dedicated to maze generation algorithms so we used one of their JS implementation and modified it a bit. &lt;a href=&#34;https://rosettacode.org/wiki/Maze_generation#JavaScript&#34;&gt;https://rosettacode.org/wiki/Maze_generation#JavaScript&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;We also added two more functions to &lt;code&gt;game.js&lt;/code&gt;&lt;/p&gt;
@@ -709,14 +721,14 @@ function addWall(x, y, z, h, w, d) {
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;And thus we&amp;rsquo;ve finished composing a 3D scene for maze game with shapes, texture, physics and user controls with few lines of code!&lt;/p&gt;
 &lt;p&gt;Go ahead and give it a try. Click below to start. Press &lt;code&gt;esc&lt;/code&gt; to exit.&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;p&gt;Play in &lt;!-- raw HTML omitted --&gt;fullscreen&lt;!-- raw HTML omitted --&gt;.&lt;/p&gt;
+&lt;iframe src=&#34;https://manishraj.dev/blog/html/aframe&#34; style=&#34;width: 640px; height: 320px; border: 0px; margin: auto; display: block;&#34; id=&#34;play_iframe&#34;&gt;&lt;/iframe&gt;
+&lt;p&gt;Play in &lt;a href=&#34;https://manishraj.dev/blog/html/aframe&#34;&gt;fullscreen&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Check this project at: &lt;a href=&#34;https://github.com/androidfanatic/aframe-maze-vr&#34;&gt;https://github.com/androidfanatic/aframe-maze-vr&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;tips-for-debugging&#34;&gt;Tips for debugging:&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Use the inspector bundled wit A-Frame by pressing &lt;code&gt;ctrl + alt + i&lt;/code&gt;. You can then pick elements and modify/debug their properties. Once happy with the scene,  you can also export it to HTML from the inspector.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;video src=&#34;https://manishraj.dev/blog/vid/aframe_debug.mp4&#34; id=&#34;inspector_vid&#34; loop style=&#34;width: 100%; display: block; margin: auto;&#34;&gt;&lt;/video&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;Add &lt;code&gt;stats&lt;/code&gt; attribute to a-scene to keep an eye on framerate and other params.&lt;/p&gt;
@@ -737,9 +749,18 @@ function addWall(x, y, z, h, w, d) {
 &lt;p&gt;&lt;a href=&#34;https://github.com/donmccurdy/aframe-extras&#34;&gt;https://github.com/donmccurdy/aframe-extras&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;blockquote&gt;
+&lt;script&gt;
+window.addEventListener(&#39;load&#39;, function() {      
+    var isMobile = window.matchMedia(&#34;only screen and (max-width: 760px)&#34;);
+
+    if (isMobile.matches) {
+        document.querySelector(&#34;#play_iframe&#34;).remove();
+        document.querySelector(&#34;#inspector_vid&#34;).setAttribute(&#39;controls&#39;, &#39;true&#39;);
+    } else {
+        document.querySelector(&#34;#inspector_vid&#34;).play();
+    }
+ });
+&lt;/script&gt;&lt;blockquote&gt;
 &lt;/blockquote&gt;
 </description>
     </item>
@@ -763,8 +784,8 @@ function addWall(x, y, z, h, w, d) {
 &lt;li&gt;Cluster mode for high availability.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;To sum it all up, Træfik is a great tool to serve and manage multiple micro-services or web applications while ensuring high availability, fast speed and continuous deployment.&lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/09/traefik_architecture.png&#34; style=&#34;max-width: 80%; display: block; margin: auto;&#34; &gt;&lt;/p&gt;
+&lt;center&gt;&amp;copy; https://traefik.io/&lt;/center&gt;
 &lt;p&gt;To demonstrate the robustness and simplicity of traefik, we will try to setup two services with reverse proxy and SSL support. We will host the services on different subdomain on a local machine.&lt;/p&gt;
 &lt;h3 id=&#34;what-are-we-aiming-for&#34;&gt;What are we aiming for?&lt;/h3&gt;
 &lt;p&gt;Setup gitlab and nextcloud on a local machine on different subdomain with SSL support to demonstrate dynamic config reload, docker backend support, proxied SSL and reverse proxy capabilities of Traefik.&lt;/p&gt;
@@ -780,7 +801,7 @@ function addWall(x, y, z, h, w, d) {
 &lt;h3 id=&#34;start-deploying-microservices&#34;&gt;Start deploying microservices&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;Create a traefik config file: &lt;!-- raw HTML omitted --&gt;&lt;code&gt;traefik.toml&lt;/code&gt; &lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;Create a traefik config file: &lt;span id=&#34;toml&#34;&gt;&lt;code&gt;traefik.toml&lt;/code&gt; &lt;/span&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt; defaultEntryPoints = [&amp;quot;http&amp;quot;, &amp;quot;https&amp;quot;]
  [entryPoints]
  [entryPoints.http]
@@ -874,8 +895,8 @@ function addWall(x, y, z, h, w, d) {
 &lt;p&gt;&amp;ndash;volume: Adds persistent storage to nextcloud container. More container specific options can be found at: &lt;a href=&#34;https://github.com/nextcloud/docker&#34;&gt;https://github.com/nextcloud/docker&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;If you visit traefik dashboard at http://localhost:8080, you should be able to see nextcloud container automatically added to &lt;!-- raw HTML omitted --&gt;dashboard&lt;!-- raw HTML omitted --&gt;.&lt;/p&gt;
-&lt;p&gt;If you head over to &lt;a href=&#34;https://nextcloud.docker.localhost&#34;&gt;https://nextcloud.docker.localhost&lt;/a&gt;, you should be presented with &lt;!-- raw HTML omitted --&gt;nextcloud UI&lt;!-- raw HTML omitted --&gt;.&lt;/p&gt;
+&lt;p&gt;If you visit traefik dashboard at http://localhost:8080, you should be able to see nextcloud container automatically added to &lt;a href=&#34;https://manishraj.dev/blog/img/09/traefik_dashboard_nextcloud.png&#34; target=&#34;_blank&#34;&gt;dashboard&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you head over to &lt;a href=&#34;https://nextcloud.docker.localhost&#34;&gt;https://nextcloud.docker.localhost&lt;/a&gt;, you should be presented with &lt;a href=&#34;https://manishraj.dev/blog/img/09/nextcloud_init.png&#34; target=&#34;_blank&#34;&gt;nextcloud UI&lt;/a&gt;.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Start gitlab docker container:&lt;/p&gt;
@@ -906,7 +927,7 @@ function addWall(x, y, z, h, w, d) {
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;At this point, you should have the two services being routed through traefik with SSL support available at &lt;a href=&#34;https://nextcloud.docker.localhost&#34;&gt;https://nextcloud.docker.localhost&lt;/a&gt; and &lt;a href=&#34;https://gitlab.docker.localhost&#34;&gt;https://gitlab.docker.localhost&lt;/a&gt; and traefik dashboard, available at localhost:8080, should look something like this:&lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://manishraj.dev/blog/img/09/traefix_dashboard.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/09/traefix_dashboard.png&#34; style=&#34;max-width: 95%; display: block; margin: auto;&#34; &gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Try exploring the &amp;ldquo;Health&amp;rdquo; tab on dashboard and see what kind of metrics it offers.&lt;/p&gt;
 &lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
 &lt;p&gt;With this exercise, we observed that traefix automatically picked up and published new services to a different subdomain along with SSL support and load balancing.&lt;/p&gt;
@@ -931,7 +952,7 @@ function addWall(x, y, z, h, w, d) {
       
       <guid>https://manishraj.dev/blog/post/puppeteer-quick-start/</guid>
       <description>&lt;h1 id=&#34;puppeteer-quick-start-guide&#34;&gt;Puppeteer: quick start guide&lt;/h1&gt;
-&lt;p&gt;The team behind Google chrome has recently released &lt;!-- raw HTML omitted --&gt;puppeteer&lt;!-- raw HTML omitted --&gt;, a nodejs library for controlling &lt;!-- raw HTML omitted --&gt;Chrome headless&lt;!-- raw HTML omitted --&gt;. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing  community.&lt;/p&gt;
+&lt;p&gt;The team behind Google chrome has recently released &lt;a target=&#34;_blank&#34; href=&#34;https://github.com/GoogleChrome/puppeteer&#34;&gt;puppeteer&lt;/a&gt;, a nodejs library for controlling &lt;a href=&#34;https://developers.google.com/web/updates/2017/04/headless-chrome&#34; target=&#34;_blank&#34;&gt;Chrome headless&lt;/a&gt;. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing  community.&lt;/p&gt;
 &lt;p&gt;This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.&lt;/p&gt;
 &lt;h2 id=&#34;quick-start&#34;&gt;Quick start&lt;/h2&gt;
 &lt;p&gt;Begin by installing nodejs version 7.6 or later. I use &lt;a href=&#34;https://github.com/creationix/nvm/blob/master/README.md&#34;&gt;nvm&lt;/a&gt; to install and manage different versions of nodejs and it works great!&lt;/p&gt;
@@ -968,7 +989,7 @@ npm i puppeteer --save
 &lt;pre&gt;&lt;code&gt;node example.js
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/09/puppeteer_load_example_com.gif&#34; style=&#34;max-width: 80%; margin: auto; display: block;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;If everything goes well, you should be able to see a new chromium window pop up and load &lt;code&gt;www.example.com&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;Notice how we commented out &lt;code&gt;browser.close()&lt;/code&gt; and set headless to false.&lt;/p&gt;
 &lt;ul&gt;
@@ -1011,7 +1032,7 @@ npm i puppeteer --save
 &lt;pre&gt;&lt;code&gt;node cats.js
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;strong&gt;Output&lt;/strong&gt;:&lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/09/puppeteer_cat_gifs.gif&#34; style=&#34;max-width: 80%; margin: auto; display: block;&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We just added a few function calls - &lt;code&gt;page.focus&lt;/code&gt;, &lt;code&gt;page.type&lt;/code&gt;, &lt;code&gt;page.press&lt;/code&gt; and got some cats in return. Sweet!&lt;/p&gt;
 &lt;h3 id=&#34;so-how-exactly-did-we-look-up-cats&#34;&gt;So how exactly did we look up cats?&lt;/h3&gt;
 &lt;ol&gt;
@@ -1031,7 +1052,9 @@ npm i puppeteer --save
  await page.focus(&#39;input[name=q]&#39;);
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;I was able to find the selector for the search box by using inspector (F12).&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+ &lt;a href=&#34;https://manishraj.dev/blog/img/google_inspector.png&#34; target=&#34;_blank&#34; title=&#34;Click to open in a new window&#34;&gt;
+ &lt;img src=&#34;https://manishraj.dev/blog/img/google_inspector.png&#34; style=&#34;max-width: 90%; height: auto;&#34; /&gt;
+ &lt;/a&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Now that search box is in focus, all we need to do is type &amp;lsquo;cats gif&amp;rsquo; and press &amp;lsquo;enter&amp;rsquo; which puppeteer provides simple APIs for.&lt;/p&gt;
@@ -1047,12 +1070,12 @@ npm i puppeteer --save
 &lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;Puppeteer is extremely easy to start with and offers a comprehensive set of APIs. The library comes from team behind Google chrome and is under active development. It has the potential to become widely used for UI testing, web scrapping and browser based automation.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Some links:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;!-- raw HTML omitted --&gt;Puppeteer&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/GoogleChrome/puppeteer&#34; target=&#34;_blank&#34;&gt;Puppeteer&lt;/a&gt;
  &amp;gt; 
-&lt;!-- raw HTML omitted --&gt;Examples&lt;!-- raw HTML omitted --&gt;
+&lt;a href=&#34;https://github.com/GoogleChrome/puppeteer/tree/master/examples&#34; target=&#34;_blank&#34;&gt;Examples&lt;/a&gt;
  &amp;gt; 
-&lt;!-- raw HTML omitted --&gt;API reference&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;p&gt;Here&amp;rsquo;s a good tutorial if you&amp;rsquo;re confused about all that async await stuff like I was: &lt;!-- raw HTML omitted --&gt;&lt;a href=&#34;https://blog.risingstack.com/mastering-async-await-in-nodejs/&#34;&gt;https://blog.risingstack.com/mastering-async-await-in-nodejs/&lt;/a&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;a href=&#34;https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md&#34; target=&#34;_blank&#34;&gt;API reference&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s a good tutorial if you&amp;rsquo;re confused about all that async await stuff like I was: &lt;a href=&#34;https://blog.risingstack.com/mastering-async-await-in-nodejs/&#34; target=&#34;_blank&#34;&gt;&lt;a href=&#34;https://blog.risingstack.com/mastering-async-await-in-nodejs/&#34;&gt;https://blog.risingstack.com/mastering-async-await-in-nodejs/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

@@ -16,10 +16,10 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833289" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582833833" />
 
 <meta property="og:title" content="Generate vector tiles with built-in postgis functions" />
-<meta property="og:description" content="This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVTand ST_MakeEnvelope.
+<meta property="og:description" content="This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
 1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/" />
@@ -28,7 +28,7 @@
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Generate vector tiles with built-in postgis functions"/>
-<meta name="twitter:description" content="This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVTand ST_MakeEnvelope.
+<meta name="twitter:description" content="This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
 1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services."/>
 
 
@@ -64,7 +64,7 @@
             <h1>Generate vector tiles with built-in postgis functions</h1>
         </header>
         <div class="content">
-            <p>This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions <!-- raw HTML omitted -->ST_AsMVT<!-- raw HTML omitted --> and  <!-- raw HTML omitted -->ST_MakeEnvelope<!-- raw HTML omitted -->.</p>
+            <p>This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions <a href="https://postgis.net/docs/ST_AsMVT.html" target="_blank">ST_AsMVT</a> and  <a href="https://postgis.net/docs/ST_MakeEnvelope.html" target="_blank">ST_MakeEnvelope</a>.</p>
 <h3 id="1-setup-a-test-database">1. Setup a test database</h3>
 <p>Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services. For now, we will get started with a single docker image which gives us a Postgres instance with PostGIS extension installed.</p>
 <p>File: <code>docker-compose.yml</code></p>
@@ -84,10 +84,10 @@ services:
 <pre><code>docker-compose exec db psql -U postgres -c 'CREATE DATABASE roads'
 docker-compose exec db psql -U postgres roads -c 'CREATE EXTENSION POSTGIS'
 </code></pre><p>I exported road data of the Pune city, the city I live in, and hosted it on the github repo:</p>
-<p>Download and extract test data <!-- raw HTML omitted -->[1]<!-- raw HTML omitted -->:</p>
+<p>Download and extract test data <sup>[1]</sup>:</p>
 <pre><code>wget https://github.com/androidfanatic/tiles_with_st_asmvt/raw/master/data/pune_roads.tar.gz
 tar -xvf pune_roads.tar.gz
-</code></pre><p>This will extract a GeoJSON file in the current directory. We want to be able to import this data into our database. In comes <code>GDAL</code>. I call it the swiss-knife of GIS data. GDAL allows one to work with GIS datasets of all sizes and formats and offers wide variety of features for data translation. Head over to <!-- raw HTML omitted --><a href="https://www.gdal.org/">https://www.gdal.org/</a><!-- raw HTML omitted --> for quick installation steps and to read more about it.</p>
+</code></pre><p>This will extract a GeoJSON file in the current directory. We want to be able to import this data into our database. In comes <code>GDAL</code>. I call it the swiss-knife of GIS data. GDAL allows one to work with GIS datasets of all sizes and formats and offers wide variety of features for data translation. Head over to <a href="https://www.gdal.org/" target="_blank"><a href="https://www.gdal.org/">https://www.gdal.org/</a></a> for quick installation steps and to read more about it.</p>
 <p>Once installed, we can begin importing the data from the GeoJSON file into our database with this simple one-liner:</p>
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ogr2ogr -f <span style="color:#2aa198">&#34;PostgreSQL&#34;</span> PG:<span style="color:#2aa198">&#34;dbname=roads user=postgres host=localhost password=pass&#34;</span> <span style="color:#cb4b16">\
 </span><span style="color:#cb4b16"></span>  <span style="color:#2aa198">&#34;pune_roads.geojson&#34;</span> -nln pune_roads -append <span style="color:#cb4b16">\
@@ -97,9 +97,9 @@ tar -xvf pune_roads.tar.gz
 </code></pre><p>Now that we&rsquo;ve the test database setup with some test data seeded in, let&rsquo;s work on generting the vector tiles on the fly.</p>
 <h3 id="3-create-a-tile-service">3. Create a tile service</h3>
 <p>To display the data back, we begin by creating a HTTP service that returns vector tiles. To do so, we use a combination of ST_AsMVT, ST_AsMVTGeom and ST_MakeEnvelope functions provided by PostGIS.</p>
-<p>Here&rsquo;s a NodeJS script, inspired by Chris&rsquo;s blog post <!-- raw HTML omitted -->[2]<!-- raw HTML omitted -->:</p>
+<p>Here&rsquo;s a NodeJS script, inspired by Chris&rsquo;s blog post <sup>[2]</sup>:</p>
 <p>The interesting bit here is the translation of <code>/z/x/y</code> parameters to a bounding box that gets consumed by the function ST_MakeEnvelope(). We also set <code>clipping = True</code> for the function ST_AsMVTGeom and select additional database columns (id, name and highway in this case) that get translated to feature properties.</p>
-<p>These feature properties can be used for data-driven styling <!-- raw HTML omitted -->[3]<!-- raw HTML omitted -->, displaying additional information on map and more.</p>
+<p>These feature properties can be used for data-driven styling <sup>[3]</sup>, displaying additional information on map and more.</p>
 <p>File: <code>app.js</code></p>
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#586e75">// mercator
 </span><span style="color:#586e75"></span><span style="color:#268bd2">const</span> SphericalMercator <span style="color:#719e07">=</span> require(<span style="color:#2aa198">&#39;@mapbox/sphericalmercator&#39;</span>);
@@ -148,7 +148,7 @@ app.get(<span style="color:#586e75">`/tiles/</span><span style="color:#2aa198">$
 
 app.listen(<span style="color:#2aa198">8080</span>);
 </code></pre></div><h3 id="4-add-the-new-vector-layer">4. Add the new vector layer</h3>
-<p>Let&rsquo;s add the tile layer to the map. We used mapbox <!-- raw HTML omitted -->[4]<!-- raw HTML omitted --> which is our web map of choice because of it&rsquo;s performance, data-sets and robustness when it comes to configuring and styling the map.</p>
+<p>Let&rsquo;s add the tile layer to the map. We used mapbox <sup>[4]</sup> which is our web map of choice because of it&rsquo;s performance, data-sets and robustness when it comes to configuring and styling the map.</p>
 <p>Add the layer to map with this snippet:</p>
 <div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">map.addLayer({
   <span style="color:#2aa198">&#34;id&#34;</span><span style="color:#719e07">:</span> <span style="color:#2aa198">&#34;road&#34;</span>,
@@ -165,9 +165,9 @@ app.listen(<span style="color:#2aa198">8080</span>);
   }
 });
 </code></pre></div><p>At this point, you should be able to see road data being rendered on the map.</p>
-<!-- raw HTML omitted -->
-<p><!-- raw HTML omitted --></p>
-<!-- raw HTML omitted -->
+<center>
+<p><img src="https://raw.githubusercontent.com/androidfanatic/tiles_with_st_asmvt/master/img/img3.png" style="max-width: 100%;" /></p>
+</center>
 <p>Next steps to work on and explore:</p>
 <ul>
 <li>Cache tiles for sometime, say an hour, instead of re-generating again</li>
