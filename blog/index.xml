@@ -13,6 +13,57 @@
     
     
     <item>
+      <title>Creating slim docker images for react apps</title>
+      <link>https://manishraj.dev/blog/post/react-slim-builds/</link>
+      <pubDate>Fri, 28 Feb 2020 00:21:37 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/react-slim-builds/</guid>
+      <description>&lt;h1 id=&#34;creating-slim-docker-images-for-react-apps&#34;&gt;Creating slim docker images for react apps&lt;/h1&gt;
+&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
+&lt;p&gt;To do so, we will leverage &lt;!-- raw HTML omitted --&gt;multi-staged&lt;!-- raw HTML omitted --&gt; docker builds and to keep the image size smaller, we will use &lt;!-- raw HTML omitted --&gt;alpine variant&lt;!-- raw HTML omitted --&gt; of popular docker containers.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s get started.&lt;/p&gt;
+&lt;h3 id=&#34;ignore-files-with-dockerignore&#34;&gt;Ignore files with .dockerignore&lt;/h3&gt;
+&lt;p&gt;First thing first, we want to reduce the size of the build context i.e. make some of the files invisible to docker daemon when running docker commands. By default, build context is a list of files residing in the same directory as that of &lt;code&gt;Dockerfile&lt;/code&gt;. A smaller build context means docker can start building images faster.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s create a file named &lt;code&gt;.dockerignore&lt;/code&gt; with a list of files or folders to ignore.&lt;/p&gt;
+&lt;p&gt;We want to ignore the &lt;code&gt;node_modules&lt;/code&gt; folder because we want to fetch npm dependencies again while building docker images instead of using existing dependencies on a developer&amp;rsquo;s machine. This ensures that correct dependencies are installed on the image.&lt;/p&gt;
+&lt;p&gt;We also want to ignore the &lt;code&gt;build&lt;/code&gt; folder which is something specific to react applications and it contains the generated application bundles. We want to create an application build within image and hence can ignore the local build folders.&lt;/p&gt;
+&lt;h4 id=&#34;dockerignore&#34;&gt;&lt;strong&gt;&lt;code&gt;.dockerignore&lt;/code&gt;&lt;/strong&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;node_modules
+build
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;create-a-dockerfile&#34;&gt;Create a Dockerfile&lt;/h3&gt;
+&lt;p&gt;Docker image instructions are stored in a file called &lt;code&gt;Dockerfile&lt;/code&gt;. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output.&lt;/p&gt;
+&lt;p&gt;For us, the first stage is going to be a node process that installs dependencies and then does builds react applications using something along the lines of &lt;code&gt;npm install &amp;amp;&amp;amp; npm run build&lt;/code&gt;. These instructions are pretty straightforward and React developers should feel right at home.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s see how the first stage looks like in a Dockerfile:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# build
+FROM node:10-alpine as build_stage
+WORKDIR /src
+COPY package.json .
+COPY package-lock.json .
+RUN npm ci
+COPY . .
+RUN npm run build
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This set of instructions in the Dockerfile describes our first stage called the build_stage in this case.&lt;/p&gt;
+&lt;p&gt;What we did here was copy package-lock and &lt;code&gt;package.json&lt;/code&gt; first and then run &lt;code&gt;npm ci&lt;/code&gt;. We used &lt;code&gt;npm ci&lt;/code&gt; instead of &lt;code&gt;npm install&lt;/code&gt; because npm ci does a few more checks and makes sure the dependencies installed are from the lock file. This helps prevent accident upgrades of packages leading to breaking changes. If there&amp;rsquo;s a discrepancy between lock and package.json, &lt;code&gt;npm ci&lt;/code&gt; may choose to fail which helps catch errors earlier our build process.&lt;/p&gt;
+&lt;p&gt;After dependencies are installed, we make sure that source code for the application is available to the build stage by copying current directory into the container. &lt;code&gt;.dockerignore&lt;/code&gt; also comes into play. Instructions like &lt;code&gt;COPY . .&lt;/code&gt; use &lt;code&gt;.dockerignore&lt;/code&gt; to skip copying files and folders into the container.&lt;/p&gt;
+&lt;p&gt;And finally we ran the &lt;code&gt;npm run build&lt;/code&gt; which creates the distribution bundle for our react application in &lt;code&gt;build&lt;/code&gt; directory.&lt;/p&gt;
+&lt;p&gt;Next, let&amp;rsquo;s create the second stage of our multi-stage Dockerfile&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# deploy
+FROM nginx:stable-alpine as prod_stage
+COPY --from=build_stage /src/build /usr/share/nginx/html
+EXPOSE 80
+CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We have used &lt;code&gt;nginx:stable-alpine&lt;/code&gt; as the base image for the next stage because this is the production stage that exposes our application to the web. The alpine variant makes sure we get super slim build images, which can reduce network bandwidth, docker repository storage costs and in some cases increase the performance of containers.&lt;/p&gt;
+&lt;p&gt;We copy the outcome of &lt;code&gt;build_stage&lt;/code&gt; i.e. our react application bundles into nginx&amp;rsquo;s html directory; then expose port 80 and setup a command to be executed when the container is spun off. At this point, the first stage i.e. &lt;code&gt;build_stage&lt;/code&gt; is discarded and the final docker image only includes whatever we did with the &lt;code&gt;prod_stage&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;And that&amp;rsquo;s it.&lt;/p&gt;
+&lt;p&gt;To build, run the docker build command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;docker build -t react-starter-2020:latest .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And to run the application:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;docker run -p 9090:80 react-starter-2020
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me  &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;. Thanks for reading.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Mapping My Ladakh Road Trip</title>
       <link>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</link>
       <pubDate>Wed, 21 Aug 2019 23:30:51 +0530</pubDate>
