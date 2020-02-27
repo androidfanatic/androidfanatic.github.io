@@ -1,6 +1,16 @@
 {{ define "main" }}
 
-{{ partial "article" . }}
-{{ partial "single_footer" . }}
+    <article class="post">
+        <header>
+            <h1>{{ .Title }}</h1>
+        </header>
+        <div class="content">
+            {{ .Content }}
+        </div>
+        {{ partial "articleInfoFull.html" . }}
+    </article>
+    {{ if .Site.DisqusShortname }}
+        {{ template "_internal/disqus.html" . }}
+    {{ end }}
 
 {{ end }}

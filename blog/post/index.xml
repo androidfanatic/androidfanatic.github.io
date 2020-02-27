@@ -1,24 +1,24 @@
-
-   <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-     <channel>
-       <title>Posts on Blog</title>
-       <link>https://manishraj.dev/blog/post/</link>
-       <description>Recent content in Posts on Blog</description>
-       <generator>Hugo -- gohugo.io</generator>
-       <language>en-us</language>
-       <copyright> </copyright>
-       <lastBuildDate>Fri, 28 Feb 2020 00:21:37 +0530</lastBuildDate>
-       
-           <atom:link href="https://manishraj.dev/blog/post/index.xml" rel="self" type="application/rss+xml" />
-       
-       
-       <item>
-         <title>Creating slim docker images for react apps</title>
-         <link>https://manishraj.dev/blog/post/react-slim-builds/</link>
-         <pubDate>Fri, 28 Feb 2020 00:21:37 +0530</pubDate>
-         
-         <guid>https://manishraj.dev/blog/post/react-slim-builds/</guid>
-         <description>&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Blog</title>
+    <link>https://manishraj.dev/blog/post/</link>
+    <description>Blog (Posts)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright> </copyright>
+    <lastBuildDate>Fri, 28 Feb 2020 00:21:37 +0530</lastBuildDate>
+    
+    <atom:link href="https://manishraj.dev/blog/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Creating slim docker images for react apps</title>
+      <link>https://manishraj.dev/blog/post/react-slim-builds/</link>
+      <pubDate>Fri, 28 Feb 2020 00:21:37 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/react-slim-builds/</guid>
+      <description>&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
 &lt;figure style=&#34;width: 40%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
   &lt;img src=&#34;https://manishraj.dev/blog/img/02/react_app.png&#34; title=&#34;Containerizing a React app&#34;  &gt;
   &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
@@ -68,15 +68,15 @@ CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&am
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me  &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Thanks for reading.&lt;/p&gt;
 </description>
-       </item>
-       
-       <item>
-         <title>Mapping My Ladakh Road Trip</title>
-         <link>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</link>
-         <pubDate>Wed, 21 Aug 2019 23:30:51 +0530</pubDate>
-         
-         <guid>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</guid>
-         <description>&lt;p&gt;Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.&lt;/p&gt;
+    </item>
+    
+    <item>
+      <title>Mapping My Ladakh Road Trip</title>
+      <link>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</link>
+      <pubDate>Wed, 21 Aug 2019 23:30:51 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</guid>
+      <description>&lt;p&gt;Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.&lt;/p&gt;
 &lt;figure style=&#34;width: 75%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
   &lt;img src=&#34;https://manishraj.dev/blog/img/08/the_plan.png&#34; title=&#34;Image of planned route of the road trip&#34;  &gt;
   &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
@@ -314,15 +314,15 @@ and also sorting the result by timestamp, we have our final JSON ready to be ser
 &amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;body&lt;/span&gt;&amp;gt;
 &amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;html&lt;/span&gt;&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-       </item>
-       
-       <item>
-         <title>A quick glimpse of what&#39;s new in ES10</title>
-         <link>https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/</link>
-         <pubDate>Wed, 27 Mar 2019 05:30:31 +0530</pubDate>
-         
-         <guid>https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/</guid>
-         <description>&lt;p&gt;Here&amp;rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:&lt;/p&gt;
+    </item>
+    
+    <item>
+      <title>A quick glimpse of what&#39;s new in ES10</title>
+      <link>https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/</link>
+      <pubDate>Wed, 27 Mar 2019 05:30:31 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/</guid>
+      <description>&lt;p&gt;Here&amp;rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;Trim whitespaces only from start of a string&lt;/p&gt;
@@ -453,15 +453,15 @@ console.log(fn.toString())
 &lt;p&gt;[2] &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;[3] &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap&lt;/a&gt;&lt;/p&gt;
 </description>
-       </item>
-       
-       <item>
-         <title>Generate vector tiles with built-in postgis functions</title>
-         <link>https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/</link>
-         <pubDate>Sun, 03 Feb 2019 02:30:47 +0530</pubDate>
-         
-         <guid>https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/</guid>
-         <description>&lt;p&gt;This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions &lt;a href=&#34;https://postgis.net/docs/ST_AsMVT.html&#34; target=&#34;_blank&#34;&gt;ST_AsMVT&lt;/a&gt; and  &lt;a href=&#34;https://postgis.net/docs/ST_MakeEnvelope.html&#34; target=&#34;_blank&#34;&gt;ST_MakeEnvelope&lt;/a&gt;.&lt;/p&gt;
+    </item>
+    
+    <item>
+      <title>Generate vector tiles with built-in postgis functions</title>
+      <link>https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/</link>
+      <pubDate>Sun, 03 Feb 2019 02:30:47 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/</guid>
+      <description>&lt;p&gt;This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions &lt;a href=&#34;https://postgis.net/docs/ST_AsMVT.html&#34; target=&#34;_blank&#34;&gt;ST_AsMVT&lt;/a&gt; and  &lt;a href=&#34;https://postgis.net/docs/ST_MakeEnvelope.html&#34; target=&#34;_blank&#34;&gt;ST_MakeEnvelope&lt;/a&gt;.&lt;/p&gt;
 &lt;h3 id=&#34;1-setup-a-test-database&#34;&gt;1. Setup a test database&lt;/h3&gt;
 &lt;p&gt;Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services. For now, we will get started with a single docker image which gives us a Postgres instance with PostGIS extension installed.&lt;/p&gt;
 &lt;p&gt;File: &lt;code&gt;docker-compose.yml&lt;/code&gt;&lt;/p&gt;
@@ -577,15 +577,15 @@ app.listen(&lt;span style=&#34;color:#2aa198&#34;&gt;8080&lt;/span&gt;);
 &lt;p&gt;[3] &lt;a href=&#34;https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/&#34;&gt;https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;[4] &lt;a href=&#34;https://docs.mapbox.com/mapbox-gl-js/api/&#34;&gt;https://docs.mapbox.com/mapbox-gl-js/api/&lt;/a&gt;&lt;/p&gt;
 </description>
-       </item>
-       
-       <item>
-         <title>Setting up Slash commands for Slack workspace</title>
-         <link>https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/</link>
-         <pubDate>Thu, 12 Oct 2017 22:11:46 +0530</pubDate>
-         
-         <guid>https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/</guid>
-         <description>&lt;p&gt;Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.&lt;/p&gt;
+    </item>
+    
+    <item>
+      <title>Setting up Slash commands for Slack workspace</title>
+      <link>https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/</link>
+      <pubDate>Thu, 12 Oct 2017 22:11:46 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/</guid>
+      <description>&lt;p&gt;Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.&lt;/p&gt;
 &lt;p&gt;In this post, we will try to set up a slash command &lt;code&gt;/hello&lt;/code&gt; for our slack workspace that makes a request to a REST API and displays response back on the slack channel.&lt;/p&gt;
 &lt;p&gt;The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s how the slash command is supposed to works once we&amp;rsquo;re done with setup:&lt;/p&gt;
@@ -613,15 +613,15 @@ app.listen(&lt;span style=&#34;color:#2aa198&#34;&gt;8080&lt;/span&gt;);
 &lt;p&gt;Click on save integration and go back to any channel to test if the slash command works.&lt;/p&gt;
 &lt;p&gt;Congrats, you just set up a very basic slash command.&lt;/p&gt;
 </description>
-       </item>
-       
-       <item>
-         <title>WebVR With A-Frame</title>
-         <link>https://manishraj.dev/blog/post/webvr-with-aframe/</link>
-         <pubDate>Sat, 23 Sep 2017 13:41:37 +0530</pubDate>
-         
-         <guid>https://manishraj.dev/blog/post/webvr-with-aframe/</guid>
-         <description>&lt;h2 id=&#34;webvr&#34;&gt;WebVR&lt;/h2&gt;
+    </item>
+    
+    <item>
+      <title>WebVR With A-Frame</title>
+      <link>https://manishraj.dev/blog/post/webvr-with-aframe/</link>
+      <pubDate>Sat, 23 Sep 2017 13:41:37 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/webvr-with-aframe/</guid>
+      <description>&lt;h2 id=&#34;webvr&#34;&gt;WebVR&lt;/h2&gt;
 &lt;p&gt;WebVR is an emerging technology that enables virtual reality experience to be delivered and experienced from within a web browser. WebVR is mostly composed of experimental Javascript APIs supported by browsers such as Firefox and Chrome and VR headsets such as Oculus Rift, Google Daydream etc.&lt;/p&gt;
 &lt;p&gt;WebVR can be used to build all kinds of VR experiences such as presentations, stories, walk-through guides, maps, architectural design demos, games and anything else one can envision.&lt;/p&gt;
 &lt;h2 id=&#34;a-frame&#34;&gt;A-Frame&lt;/h2&gt;
@@ -763,15 +763,15 @@ window.addEventListener(&#39;load&#39;, function() {
 &lt;/script&gt;&lt;blockquote&gt;
 &lt;/blockquote&gt;
 </description>
-       </item>
-       
-       <item>
-         <title>Træfik, reverse proxy, HTTPs and more</title>
-         <link>https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/</link>
-         <pubDate>Mon, 11 Sep 2017 00:43:32 +0530</pubDate>
-         
-         <guid>https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/</guid>
-         <description>&lt;p&gt;I stumbled upon &lt;a href=&#34;https://traefik.io/&#34;&gt;Træfik&lt;/a&gt; last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.&lt;/p&gt;
+    </item>
+    
+    <item>
+      <title>Træfik, reverse proxy, HTTPs and more</title>
+      <link>https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/</link>
+      <pubDate>Mon, 11 Sep 2017 00:43:32 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/</guid>
+      <description>&lt;p&gt;I stumbled upon &lt;a href=&#34;https://traefik.io/&#34;&gt;Træfik&lt;/a&gt; last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.&lt;/p&gt;
 &lt;p&gt;Træfik is simple enough to get started with, within minutes and offers a variety of features such as:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Deploy Traefik using a tiny go binary or docker image.&lt;/li&gt;
@@ -943,15 +943,15 @@ window.addEventListener(&#39;load&#39;, function() {
 &lt;/li&gt;
 &lt;/ul&gt;
 </description>
-       </item>
-       
-       <item>
-         <title>Puppeteer - quick start guide</title>
-         <link>https://manishraj.dev/blog/post/puppeteer-quick-start/</link>
-         <pubDate>Fri, 01 Sep 2017 13:43:32 +0530</pubDate>
-         
-         <guid>https://manishraj.dev/blog/post/puppeteer-quick-start/</guid>
-         <description>&lt;h1 id=&#34;puppeteer-quick-start-guide&#34;&gt;Puppeteer: quick start guide&lt;/h1&gt;
+    </item>
+    
+    <item>
+      <title>Puppeteer - quick start guide</title>
+      <link>https://manishraj.dev/blog/post/puppeteer-quick-start/</link>
+      <pubDate>Fri, 01 Sep 2017 13:43:32 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/puppeteer-quick-start/</guid>
+      <description>&lt;h1 id=&#34;puppeteer-quick-start-guide&#34;&gt;Puppeteer: quick start guide&lt;/h1&gt;
 &lt;p&gt;The team behind Google chrome has recently released &lt;a target=&#34;_blank&#34; href=&#34;https://github.com/GoogleChrome/puppeteer&#34;&gt;puppeteer&lt;/a&gt;, a nodejs library for controlling &lt;a href=&#34;https://developers.google.com/web/updates/2017/04/headless-chrome&#34; target=&#34;_blank&#34;&gt;Chrome headless&lt;/a&gt;. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing  community.&lt;/p&gt;
 &lt;p&gt;This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.&lt;/p&gt;
 &lt;h2 id=&#34;quick-start&#34;&gt;Quick start&lt;/h2&gt;
@@ -1077,7 +1077,7 @@ npm i puppeteer --save
 &lt;a href=&#34;https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md&#34; target=&#34;_blank&#34;&gt;API reference&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Here&amp;rsquo;s a good tutorial if you&amp;rsquo;re confused about all that async await stuff like I was: &lt;a href=&#34;https://blog.risingstack.com/mastering-async-await-in-nodejs/&#34; target=&#34;_blank&#34;&gt;&lt;a href=&#34;https://blog.risingstack.com/mastering-async-await-in-nodejs/&#34;&gt;https://blog.risingstack.com/mastering-async-await-in-nodejs/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-       </item>
-       
-     </channel>
-   </rss>
+    </item>
+    
+  </channel>
+</rss>
