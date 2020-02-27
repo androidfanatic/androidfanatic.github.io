@@ -91,6 +91,7 @@ And to run the application:
 docker run -p 9090:80 react-starter-2020
 ```
 
-With that, we are able to build production ready docker image for our react application. The docker image size for me  `25.9 MB`. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - https://github.com/androidfanatic/react-starter-2020. Thanks for reading.
+With that, we are able to build production ready docker image for our react application. The docker image size for me  `25.9 MB`. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - https://github.com/androidfanatic/react-starter-2020. 
 
+Thanks for reading.
 

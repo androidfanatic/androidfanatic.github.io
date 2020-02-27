@@ -60,7 +60,8 @@ CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&am
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;docker build -t react-starter-2020:latest .
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And to run the application:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;docker run -p 9090:80 react-starter-2020
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me  &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;. Thanks for reading.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me  &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Thanks for reading.&lt;/p&gt;
 </description>
     </item>
     
