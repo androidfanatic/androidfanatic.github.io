@@ -18,8 +18,7 @@
       <pubDate>Fri, 28 Feb 2020 00:21:37 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/react-slim-builds/</guid>
-      <description>&lt;h1 id=&#34;creating-slim-docker-images-for-react-apps&#34;&gt;Creating slim docker images for react apps&lt;/h1&gt;
-&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
+      <description>&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
 &lt;p&gt;To do so, we will leverage &lt;!-- raw HTML omitted --&gt;multi-staged&lt;!-- raw HTML omitted --&gt; docker builds and to keep the image size smaller, we will use &lt;!-- raw HTML omitted --&gt;alpine variant&lt;!-- raw HTML omitted --&gt; of popular docker containers.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s get started.&lt;/p&gt;
 &lt;h3 id=&#34;ignore-files-with-dockerignore&#34;&gt;Ignore files with .dockerignore&lt;/h3&gt;
