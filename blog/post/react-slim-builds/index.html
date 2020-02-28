@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582880432" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1582880487" />
 
 <meta property="og:title" content="Creating slim docker images for react apps" />
 <meta property="og:description" content="In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.
@@ -108,10 +108,10 @@ CMD [&quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot;]
 <p>We copy the outcome of <code>build_stage</code> i.e. our react application bundles into nginx&rsquo;s html directory; then expose port 80 and setup a command to be executed when the container is spun off. At this point, the first stage i.e. <code>build_stage</code> is discarded and the final docker image only includes whatever we did within the final stage i.e. the <code>prod_stage</code>.</p>
 <p>And that&rsquo;s it.</p>
 <p>To build, run the docker build command:</p>
-<p><code>docker build -t react-starter-2020:latest .</code></p>
-<p>And to run the application:</p>
-<p><code>docker run -p 9090:80 react-starter-2020</code></p>
-<p>With that, we are able to build production ready docker image for our react application. The docker image size for me  <code>25.9 MB</code>. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - <a href="https://github.com/androidfanatic/react-starter-2020">https://github.com/androidfanatic/react-starter-2020</a>.</p>
+<pre><code>docker build -t react-starter-2020:latest .
+</code></pre><p>And to run the application:</p>
+<pre><code>docker run -p 9090:80 react-starter-2020
+</code></pre><p>With that, we are able to build production ready docker image for our react application. The docker image size for me  <code>25.9 MB</code>. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - <a href="https://github.com/androidfanatic/react-starter-2020">https://github.com/androidfanatic/react-starter-2020</a>.</p>
 <p>Thanks for reading.</p>
 
         </div>

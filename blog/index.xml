@@ -62,10 +62,10 @@ CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&am
 &lt;p&gt;We copy the outcome of &lt;code&gt;build_stage&lt;/code&gt; i.e. our react application bundles into nginx&amp;rsquo;s html directory; then expose port 80 and setup a command to be executed when the container is spun off. At this point, the first stage i.e. &lt;code&gt;build_stage&lt;/code&gt; is discarded and the final docker image only includes whatever we did within the final stage i.e. the &lt;code&gt;prod_stage&lt;/code&gt;.&lt;/p&gt;
 &lt;p&gt;And that&amp;rsquo;s it.&lt;/p&gt;
 &lt;p&gt;To build, run the docker build command:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;docker build -t react-starter-2020:latest .&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;And to run the application:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;docker run -p 9090:80 react-starter-2020&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me  &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker build -t react-starter-2020:latest .
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And to run the application:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker run -p 9090:80 react-starter-2020
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me  &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Thanks for reading.&lt;/p&gt;
 </description>
     </item>
