@@ -3,13 +3,13 @@
   <channel>
     <title>Posts on Blog</title>
     <link>https://manishraj.dev/blog/post/</link>
-    <description>Recent content in Posts on Blog</description>
+    <description>Blog (Posts)</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright> </copyright>
     <lastBuildDate>Fri, 28 Feb 2020 00:21:37 +0530</lastBuildDate>
     
-	<atom:link href="https://manishraj.dev/blog/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://manishraj.dev/blog/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -18,8 +18,56 @@
       <pubDate>Fri, 28 Feb 2020 00:21:37 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/react-slim-builds/</guid>
-      <description>In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.
-Containerizing a React app   To do so, we will leverage multi-staged docker builds and to keep the image size smaller, we will use alpine variant of popular docker containers.</description>
+      <description>&lt;p&gt;In this blog post, we will create a slim, production ready docker image for a react application. This process is often termed as Dockerization or containerization in developer communities. Containerization helps create portable and reproducible builds of your application that are easy to ship and deploy to any compliant host environment.&lt;/p&gt;
+&lt;figure style=&#34;width: 40%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
+  &lt;img src=&#34;https://manishraj.dev/blog/img/02/react_app.png&#34; title=&#34;Containerizing a React app&#34;  &gt;
+  &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
+    Containerizing a React app
+  &lt;figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;To do so, we will leverage &lt;a href=&#34;https://docs.docker.com/develop/develop-images/multistage-build/&#34; target=&#34;_blank&#34;&gt;multi-staged&lt;/a&gt; docker builds and to keep the image size smaller, we will use &lt;a href=&#34;https://github.com/docker-library/docs/blob/master/.template-helpers/variant-alpine.md&#34; target=&#34;_blank&#34;&gt;alpine variant&lt;/a&gt; of popular docker images.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s get started.&lt;/p&gt;
+&lt;h3 id=&#34;ignore-files-with-dockerignore&#34;&gt;Ignore files with .dockerignore&lt;/h3&gt;
+&lt;p&gt;First thing first, we want to reduce the size of the build context i.e. make some of the files invisible to docker daemon when running docker commands. By default, build context is a list of files residing in the same directory as that of &lt;code&gt;Dockerfile&lt;/code&gt;. A smaller build context means docker can start building images faster.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s create a file named &lt;code&gt;.dockerignore&lt;/code&gt; with a list of files or folders to ignore.&lt;/p&gt;
+&lt;p&gt;We want to ignore the &lt;code&gt;node_modules&lt;/code&gt; folder because we want to fetch npm dependencies again while building docker images instead of using existing dependencies on a developer&amp;rsquo;s machine. This ensures that correct dependencies are installed on the image.&lt;/p&gt;
+&lt;p&gt;We also want to ignore the &lt;code&gt;build&lt;/code&gt; folder which is something specific to react applications and it contains the generated application bundles. We want to create an application build within image and hence can ignore the local build folders.&lt;/p&gt;
+&lt;h4 id=&#34;dockerignore&#34;&gt;&lt;strong&gt;.dockerignore&lt;/strong&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;node_modules
+build
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;create-a-dockerfile&#34;&gt;Create a Dockerfile&lt;/h3&gt;
+&lt;p&gt;Instructions for creating docker image are stored in a file called &lt;code&gt;Dockerfile&lt;/code&gt;. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output.&lt;/p&gt;
+&lt;p&gt;For us, the first stage is going to be a node process that installs dependencies and then builds the react applications using something along the lines of &lt;code&gt;npm install &amp;amp;&amp;amp; npm run build&lt;/code&gt;. These instructions are pretty straightforward and React developers should feel right at home.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s see how the first stage looks like in a Dockerfile:&lt;/p&gt;
+&lt;h4 id=&#34;dockerfile&#34;&gt;&lt;strong&gt;Dockerfile&lt;/strong&gt;&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;# build
+FROM node:10-alpine as build_stage
+WORKDIR /src
+COPY package.json .
+COPY package-lock.json .
+RUN npm ci
+COPY . .
+RUN npm run build
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This set of instructions in the Dockerfile describes our first stage called the build_stage.&lt;/p&gt;
+&lt;p&gt;What we did here was copy package-lock and &lt;code&gt;package.json&lt;/code&gt; first and then run &lt;code&gt;npm ci&lt;/code&gt;. We used &lt;code&gt;npm ci&lt;/code&gt; instead of &lt;code&gt;npm install&lt;/code&gt; because npm ci does a few more checks and makes sure the dependencies installed are from the lock file. This helps prevent accident upgrades of packages leading to breaking changes. If there&amp;rsquo;s a discrepancy between lock and package.json, &lt;code&gt;npm ci&lt;/code&gt; may choose to fail which helps catch errors earlier in the build process.&lt;/p&gt;
+&lt;p&gt;After dependencies are installed, we make sure that source code for the application is available to the build stage by copying current directory into the container. &lt;code&gt;.dockerignore&lt;/code&gt; also comes into play here. Instructions like &lt;code&gt;COPY . .&lt;/code&gt; use &lt;code&gt;.dockerignore&lt;/code&gt; to skip copying files and folders into the container.&lt;/p&gt;
+&lt;p&gt;And finally we run the &lt;code&gt;npm run build&lt;/code&gt; command which creates the distribution bundle for our react application in the &lt;code&gt;build&lt;/code&gt; directory.&lt;/p&gt;
+&lt;p&gt;Next, let&amp;rsquo;s create the second stage of our multi-stage Dockerfile&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# deploy
+FROM nginx:stable-alpine as prod_stage
+COPY --from=build_stage /src/build /usr/share/nginx/html
+EXPOSE 80
+CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We have used &lt;code&gt;nginx:stable-alpine&lt;/code&gt; as the base image for the next stage because this is the production stage that exposes our application to the web. The alpine variant makes sure we get super slim build images, which can reduce network bandwidth, docker repository storage costs and in some cases increase the performance of containers.&lt;/p&gt;
+&lt;p&gt;We copy the outcome of &lt;code&gt;build_stage&lt;/code&gt; i.e. our react application bundles into nginx&amp;rsquo;s html directory; then expose port 80 and setup a command to be executed when the container is spun off. At this point, the first stage i.e. &lt;code&gt;build_stage&lt;/code&gt; is discarded and the final docker image only includes whatever we did within the final stage i.e. the &lt;code&gt;prod_stage&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;And that&amp;rsquo;s it.&lt;/p&gt;
+&lt;p&gt;To build, run the docker build command:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker build -t react-starter-2020:latest .&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;And to run the application:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;docker run -p 9090:80 react-starter-2020&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me  &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Thanks for reading.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -28,8 +76,244 @@ Containerizing a React app   To do so, we will leverage multi-staged docker buil
       <pubDate>Wed, 21 Aug 2019 23:30:51 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/mapping-my-ladakh-road-trip/</guid>
-      <description>Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.
-Planned route starting from Delhi and ending at Pangong Lake.   I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.</description>
+      <description>&lt;p&gt;Back in May, I went on a week long road trip with two of my friends and we clicked a ton of photos along the way. The goal of this exercise is to visualize those photos on an interactive map.&lt;/p&gt;
+&lt;figure style=&#34;width: 75%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
+  &lt;img src=&#34;https://manishraj.dev/blog/img/08/the_plan.png&#34; title=&#34;Image of planned route of the road trip&#34;  &gt;
+  &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
+    Planned route starting from Delhi and ending at Pangong Lake.
+  &lt;figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;I started by curating all the photos and dumping them in a directory. The next step is to write a nodejs script to process these files.&lt;/p&gt;
+&lt;p&gt;To begin with, we will lists all the files in target folder and filters out jpegs. This is done to discard any png or mp4 files in the folder.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; allFiles &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; fs.readdirSync(path.join(__dirname, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;files&amp;#39;&lt;/span&gt;));
+&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; jpegs &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; allFiles.filter(file =&amp;gt; &lt;span style=&#34;color:#719e07&#34;&gt;/&lt;/span&gt;\.jpe&lt;span style=&#34;color:#719e07&#34;&gt;?&lt;/span&gt;g$&lt;span style=&#34;color:#719e07&#34;&gt;/&lt;/span&gt;i.test(file));
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Next we will parse data out of all the selected jpegs. Given the asynchronous nature of &lt;a href=&#34;https://github.com/gomfunkel/node-exif&#34; target=&#34;_blank&#34;&gt;EXIF&lt;/a&gt; data extraction, we will create an array of promises that we&amp;rsquo;d later resolve using &lt;code&gt;Promise.all()&lt;/code&gt; to get EXIF data of all these files in an array.&lt;/p&gt;
+&lt;p&gt;The result of these promises are structured in JSON format, that we&amp;rsquo;d then use to render the photos back on a map.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// require ExifImage
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; ExifImage &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;exif&amp;#39;&lt;/span&gt;).ExifImage;
+
+&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; allPromises &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; jpegs.map(jpeg =&amp;gt; {
+  &lt;span style=&#34;color:#719e07&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;Promise&lt;/span&gt;((resolve, reject) =&amp;gt; {
+    &lt;span style=&#34;color:#719e07&#34;&gt;try&lt;/span&gt; {
+      &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; filePath &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; path.join(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;files&amp;#39;&lt;/span&gt;, jpeg);
+      ExifImage({ image&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; filePath }, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; (err, exifData) {
+        &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (err) { reject(err); }
+        &lt;span style=&#34;color:#719e07&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (exifData &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; exifData.gps 
+          &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; exifData.gps.GPSLatitude
+        ) {
+          resolve({ jpeg, exifData });
+        } &lt;span style=&#34;color:#719e07&#34;&gt;else&lt;/span&gt; { resolve(); }
+      });
+    } &lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt; (err) { reject(err); }
+  });
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To add these images on a map, we also need to either host the images somewhere and add a link to the JSON or base64 encode the image, include the encoded image in the JSON structure and then serve them on the map using HTML data URLs.&lt;/p&gt;
+&lt;p&gt;I picked the second approach because of its simplicity and used &lt;a href=&#34;https://www.npmjs.com/package/sharp&#34; target=&#34;_blank&#34; title=&#34;Sharp NPM module&#34;&gt;sharp&lt;/a&gt; npm module to do so.&lt;/p&gt;
+&lt;p&gt;Instead of storing encoded values of full size images, we will resize the images to a maximum of 180 pixels using sharp, which works well enough for the visualization.&lt;/p&gt;
+&lt;p&gt;I also used the command &lt;code&gt;mogrify -auto-orient *.jpg&lt;/code&gt; to auto orient some of the images in the folder that were oriented incorrectly but had the correct orientation information embedded in their exif data.&lt;/p&gt;
+&lt;p&gt;The modified script looks something like this:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// require sharp
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; sharp &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;sharp&amp;#39;&lt;/span&gt;);
+
+&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; allPromises &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; jpegs.map(jpeg =&amp;gt; {
+  &lt;span style=&#34;color:#719e07&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;Promise&lt;/span&gt;((resolve, reject) =&amp;gt; {
+    &lt;span style=&#34;color:#719e07&#34;&gt;try&lt;/span&gt; {
+      &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; filePath &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; path.join(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;files&amp;#39;&lt;/span&gt;, jpeg);
+      ExifImage({ image&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; filePath }, &lt;span style=&#34;color:#268bd2&#34;&gt;function&lt;/span&gt; (err, exifData) {
+        &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (err) { reject(err); }
+        &lt;span style=&#34;color:#719e07&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (exifData &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; exifData.gps &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; exifData.gps.GPSLatitude) {
+          sharp(filePath)
+            .resize(&lt;span style=&#34;color:#2aa198&#34;&gt;180&lt;/span&gt;)
+            .toBuffer()
+            .then(data =&amp;gt; {
+              resolve({
+                jpeg,
+                exifData,
+                img&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; data.toString(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;base64&amp;#39;&lt;/span&gt;)
+              });
+            }).&lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt;(reject);
+        } &lt;span style=&#34;color:#719e07&#34;&gt;else&lt;/span&gt; { resolve(); }
+      });
+    } &lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt; (err) { reject(err); }
+  });
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally we need to wait for all the promises to resolve with an array containing exif information of all images. I used &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;Promise.all()&lt;/code&gt;&lt;/a&gt; which does just that.&lt;/p&gt;
+&lt;p&gt;I also wrote two helper functions to convert GPS data from Exif tags into latitude and longitude coordinates. I also used moment.js to parse the date-time of images and convert them into JavaScript timestamp. It worked out well with a bit of timezone correction.&lt;/p&gt;
+&lt;p&gt;After filtering the array to only include images that have meaningful GPS information
+and also sorting the result by timestamp, we have our final JSON ready to be served on a map.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; moment &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;moment&amp;#39;&lt;/span&gt;);
+
+&lt;span style=&#34;color:#b58900&#34;&gt;Promise&lt;/span&gt;.all(allPromises).then(allExifData =&amp;gt; {
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; jpegWithCoords &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; allExifData
+    .filter(data =&amp;gt; data &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; data.jpeg &lt;span style=&#34;color:#719e07&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; data.img)
+    .map(({ jpeg, exifData, img }) =&amp;gt; ({
+      jpeg,
+      coords&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; exifDataToLngLat(exifData.gps),
+      timestamp&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; moment(
+        exifData.exif.CreateDate,
+        &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;YYYY:MM:DD hh:mm:ss&amp;#34;&lt;/span&gt;
+      ),
+      img,
+    })).sort((a, b) =&amp;gt; a.timestamp &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt; b.timestamp);
+  &lt;span style=&#34;color:#586e75&#34;&gt;// write the file
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;  fs.writeFileSync(
+    path.join(__dirname, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;files&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;places.json&amp;#39;&lt;/span&gt;),
+    JSON.stringify(jpegWithCoords)
+  );
+}).&lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt;(console.error)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Here are the two helper methods:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// convert degree, minutes, seconds
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; convertDMSToDD &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; (degrees, minutes, seconds, direction) =&amp;gt; {
+  &lt;span style=&#34;color:#268bd2&#34;&gt;let&lt;/span&gt; dd &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; degrees &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; (minutes &lt;span style=&#34;color:#719e07&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;60&lt;/span&gt;) &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; (seconds &lt;span style=&#34;color:#719e07&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;3600&lt;/span&gt;);
+  &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (direction &lt;span style=&#34;color:#719e07&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;S&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;||&lt;/span&gt; direction &lt;span style=&#34;color:#719e07&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;W&amp;#39;&lt;/span&gt;) {
+    dd &lt;span style=&#34;color:#719e07&#34;&gt;*=&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;;
+  }
+  &lt;span style=&#34;color:#719e07&#34;&gt;return&lt;/span&gt; dd;
+}
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// convert exif data to lngLat
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; exifDataToLngLat &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; (exifData) =&amp;gt; {
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; latDegree &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; exifData.GPSLatitude[&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;];
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; latMinute &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; exifData.GPSLatitude[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;];
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; latSecond &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; exifData.GPSLatitude[&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;];
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; latDirection &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; exifData.GPSLatitudeRef;
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; lat &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; convertDMSToDD(latDegree, latMinute, latSecond, latDirection);
+
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; lngDegree &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; exifData.GPSLongitude[&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;];
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; lngMinute &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; exifData.GPSLongitude[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;];
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; lngSecond &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; exifData.GPSLongitude[&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;];
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; lngDirection &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; exifData.GPSLongitudeRef;
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; lng &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; convertDMSToDD(lngDegree, lngMinute, lngSecond, lngDirection);
+  &lt;span style=&#34;color:#719e07&#34;&gt;return&lt;/span&gt; { lng, lat };
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Once the JSON is ready, visualizing the data on map is pretty straightforward. Using &lt;a href=&#34;https://docs.mapbox.com/mapbox-gl-js/example/custom-marker-icons/&#34; target=&#34;_blank&#34;&gt;mapbox-gl-js&lt;/a&gt; and following snippet, we were able to visualize the data on maps.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;fetch(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;places.json&amp;#39;&lt;/span&gt;).then(res =&amp;gt; res.json()).then(places =&amp;gt; {
+  places.forEach(place =&amp;gt; {
+    &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; el &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;);
+    el.className &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;marker&amp;#39;&lt;/span&gt;;
+    el.innerText &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;📌&amp;#39;&lt;/span&gt;;
+    el.onclick &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; () =&amp;gt; {
+      &lt;span style=&#34;color:#268bd2&#34;&gt;let&lt;/span&gt; removed &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;false&lt;/span&gt;;
+      el.querySelectorAll(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;.imageElement&amp;#39;&lt;/span&gt;).forEach(elem =&amp;gt; {
+        removed &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt;;
+        elem.remove();
+      })
+      &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#719e07&#34;&gt;!&lt;/span&gt;removed) {
+        &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; imgEl &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;);
+
+        imgEl.className &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;imgElement&amp;#39;&lt;/span&gt;;
+        &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; img &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;img&amp;#39;&lt;/span&gt;);
+        img.src &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;data:image/jpg;base64,&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; place.img;
+        &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; captionEl &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;p&amp;#39;&lt;/span&gt;);
+        captionEl.innerText &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;Date&lt;/span&gt;(place.timestamp);
+
+        imgEl.appendChild(img);
+        imgEl.appendChild(captionEl);
+        el.appendChild(imgEl);
+      }
+    }
+    &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; mapboxgl.Marker(el)
+      .setLngLat(place.coords)
+      .addTo(map);
+  })
+}).&lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt;(console.error);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;And here&amp;rsquo;s the final interactive map. Click on the pins to view photos and the time when they were taken.&lt;/p&gt;
+&lt;iframe src=&#34;https://manishraj.dev/blog/html/ladakh&#34; style=&#34;width: 640px; height: 320px; border: 0px; margin: auto; display: block;&#34;&gt;&lt;/iframe&gt;
+&lt;p style=&#34;margin-top: 4px;&#34;&gt;
+  &lt;a href=&#34;https://manishraj.dev/blog/html/ladakh&#34; target=&#34;_blank&#34;&gt;&lt;strong&gt;Click here to view this map in fullscreen&lt;/strong&gt;&lt;/a&gt;
+&lt;/p&gt;
+&lt;p&gt;In the end, I&amp;rsquo;d say it was a fun exercise for me to create this app and re-explore these vast cold deserts and picturesque locations, using random photos clicked throughout the road trip. I hope you enjoyed the write-up.&lt;/p&gt;
+&lt;hr &gt;
+&lt;p&gt;Here&amp;rsquo;s the HTML part of this app that renders the map and the pins on map.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;html&lt;/span&gt; lang&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;en&amp;#34;&lt;/span&gt;&amp;gt;
+&amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;head&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;meta&lt;/span&gt; charset&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;utf-8&amp;#39;&lt;/span&gt; /&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;title&lt;/span&gt;&amp;gt;Ladakh 2019&amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;title&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;meta&lt;/span&gt; name&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;viewport&amp;#39;&lt;/span&gt; content&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;initial-scale=1,maximum-scale=1&amp;#39;&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;script&lt;/span&gt; src&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.1/mapbox-gl.js&amp;#39;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;script&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;link&lt;/span&gt; href&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.1/mapbox-gl.css&amp;#39;&lt;/span&gt; rel&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;stylesheet&amp;#39;&lt;/span&gt; /&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;style&lt;/span&gt;&amp;gt;
+    &lt;span style=&#34;color:#268bd2&#34;&gt;html&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;,&lt;/span&gt;
+    &lt;span style=&#34;color:#268bd2&#34;&gt;body&lt;/span&gt; {
+      &lt;span style=&#34;color:#719e07&#34;&gt;margin&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;padding&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;height&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;100&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;%&lt;/span&gt;;
+    }
+    #map {
+      &lt;span style=&#34;color:#719e07&#34;&gt;width&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;100&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;%&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;height&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;100&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;%&lt;/span&gt;;
+    }
+    .&lt;span style=&#34;color:#268bd2&#34;&gt;marker&lt;/span&gt; {
+      &lt;span style=&#34;color:#719e07&#34;&gt;width&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;12&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;px&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;height&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;12&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;px&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;line-height&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;12&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;px&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;display&lt;/span&gt;: &lt;span style=&#34;color:#719e07&#34;&gt;grid&lt;/span&gt;;
+      place-items: &lt;span style=&#34;color:#cb4b16&#34;&gt;center&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;border-radius&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;50&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;%&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;font-size&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;16&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;px&lt;/span&gt;;
+    }
+    .&lt;span style=&#34;color:#268bd2&#34;&gt;imgEl&lt;/span&gt; {
+      &lt;span style=&#34;color:#719e07&#34;&gt;position&lt;/span&gt;: &lt;span style=&#34;color:#cb4b16&#34;&gt;absolute&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;top&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;font-size&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;10&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;px&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;color&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;#fff&lt;/span&gt;;
+      &lt;span style=&#34;color:#719e07&#34;&gt;background&lt;/span&gt;: &lt;span style=&#34;color:#b58900&#34;&gt;rgba&lt;/span&gt;(&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;0.5&lt;/span&gt;);
+      &lt;span style=&#34;color:#719e07&#34;&gt;text-align&lt;/span&gt;: &lt;span style=&#34;color:#cb4b16&#34;&gt;center&lt;/span&gt;;
+    }
+    .&lt;span style=&#34;color:#268bd2&#34;&gt;imgEl&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;img&lt;/span&gt; {
+      &lt;span style=&#34;color:#719e07&#34;&gt;max-height&lt;/span&gt;: &lt;span style=&#34;color:#2aa198&#34;&gt;180&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;px&lt;/span&gt;;
+    }
+  &amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;style&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;head&lt;/span&gt;&amp;gt;
+&amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;body&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;div&lt;/span&gt; id&lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;map&amp;#39;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;div&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#268bd2&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; base &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;http://13.126.70.198&amp;#39;&lt;/span&gt;;
+    mapboxgl.accessToken &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA&amp;#39;&lt;/span&gt;;
+    &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; map &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; mapboxgl.Map({
+      container&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;map&amp;#39;&lt;/span&gt;,
+      style&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;mapbox://styles/mapbox/dark-v10&amp;#39;&lt;/span&gt;,
+      zoom&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;6&lt;/span&gt;,
+      maxZoom&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;20&lt;/span&gt;,
+      center&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#2aa198&#34;&gt;76.5762&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;33.7782&lt;/span&gt;],
+      attributionControl&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;false&lt;/span&gt;,
+    });
+    &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; popup &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; mapboxgl.Popup();
+    map.on(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;load&amp;#39;&lt;/span&gt;, () =&amp;gt; {
+      fetch(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;places.json&amp;#39;&lt;/span&gt;).then(res =&amp;gt; res.json()).then(places =&amp;gt; {
+        places.forEach(place =&amp;gt; {
+          &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; el &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;);
+          el.className &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;marker&amp;#39;&lt;/span&gt;;
+          el.innerText &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;📌&amp;#39;&lt;/span&gt;;
+          el.onclick &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; () =&amp;gt; {
+            &lt;span style=&#34;color:#268bd2&#34;&gt;let&lt;/span&gt; removed &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;false&lt;/span&gt;;
+            el.querySelectorAll(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;.imgEl&amp;#39;&lt;/span&gt;).forEach(elem =&amp;gt; {
+              removed &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;true&lt;/span&gt;;
+              elem.remove();
+            })
+            &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#719e07&#34;&gt;!&lt;/span&gt;removed) {
+              &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; imgEl &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;);
+              imgEl.className &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;imgEl&amp;#39;&lt;/span&gt;;
+              &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; img &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;img&amp;#39;&lt;/span&gt;);
+              img.src &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;data:image/jpg;base64,&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; place.img;
+              &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; captionEl &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;document&lt;/span&gt;.createElement(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;div&amp;#39;&lt;/span&gt;);
+              captionEl.innerText &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;Date&lt;/span&gt;(place.timestamp).toLocaleString();
+              imgEl.appendChild(img);
+              imgEl.appendChild(captionEl);
+              el.appendChild(imgEl);
+            }
+          }
+          &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; mapboxgl.Marker(el)
+            .setLngLat(place.coords)
+            .addTo(map);
+        })
+      }).&lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt;(console.error);
+    });
+  &amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;script&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;body&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#268bd2&#34;&gt;html&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -38,11 +322,137 @@ Planned route starting from Delhi and ending at Pangong Lake.   I started by cur
       <pubDate>Wed, 27 Mar 2019 05:30:31 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/a-quick-glimpse-of-whats-new-in-es10/</guid>
-      <description>Here&amp;rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:
-  Trim whitespaces only from start of a string
-&amp;quot; My String &amp;quot;.trimStart() // Produces: &amp;quot;My String &amp;quot;   Trim whitespaces only from end of a string:
-&amp;quot; My String &amp;quot;.trimEnd() // Produces: &amp;quot; My String&amp;quot;   Flatten an array:
-[1, 2, 3, [4, [5, 6]]].</description>
+      <description>&lt;p&gt;Here&amp;rsquo;s a quick glimpse of all the TS10 features, that are part of the spec and have already been shipped with the latest version of Chrome:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Trim whitespaces only from start of a string&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot; My String &amp;quot;.trimStart()
+
+// Produces:
+&amp;quot;My String &amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Trim whitespaces only from end of a string:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot; My String &amp;quot;.trimEnd()
+
+// Produces:
+&amp;quot; My String&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Flatten an array:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;, [&lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;, [&lt;span style=&#34;color:#2aa198&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;6&lt;/span&gt;]]].flat()
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Produces:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;, [&lt;span style=&#34;color:#2aa198&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;6&lt;/span&gt;]]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Flatten an array to depth of 2:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, [&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;], &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;5&lt;/span&gt;, [&lt;span style=&#34;color:#2aa198&#34;&gt;6&lt;/span&gt;, [&lt;span style=&#34;color:#2aa198&#34;&gt;7&lt;/span&gt; , &lt;span style=&#34;color:#2aa198&#34;&gt;8&lt;/span&gt;]]].flat(&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;)
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Produces:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;6&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;7&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;8&lt;/span&gt;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Flatten the whole array:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, [&lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;], [
+  [[&lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;6&lt;/span&gt;]],
+  [[[[&lt;span style=&#34;color:#2aa198&#34;&gt;7&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;8&lt;/span&gt;]], &lt;span style=&#34;color:#2aa198&#34;&gt;9&lt;/span&gt;]]
+]].flat(&lt;span style=&#34;color:#cb4b16&#34;&gt;Infinity&lt;/span&gt;)
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Produces:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;5&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;6&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;7&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;8&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;9&lt;/span&gt;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create objects from array like representation of the object:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#b58900&#34;&gt;Object&lt;/span&gt;.fromEntries(
+  [
+    [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;key1&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;], 
+    [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;key2&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;37&lt;/span&gt;]
+  ]
+)
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Produces:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;Object&lt;/span&gt; { key1&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;, key2&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;37&lt;/span&gt; }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create objects from a map:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#b58900&#34;&gt;Object&lt;/span&gt;.fromEntries(
+  &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; Map([
+    [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;key1&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;], 
+    [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;key2&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;37&lt;/span&gt;]
+  ])
+)
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Produces:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;Object&lt;/span&gt; { key1&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;value&amp;#34;&lt;/span&gt;, key2&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;37&lt;/span&gt; }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get symbol description from read-only property &lt;code&gt;.description&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; sym &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; Symbol(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;foo&amp;#39;&lt;/span&gt;);
+console.log(sym.description);
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Outputs:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;foo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Catch without the once-mandatory parameter in catch block:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#719e07&#34;&gt;try&lt;/span&gt; {
+  &lt;span style=&#34;color:#719e07&#34;&gt;throw&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;Error&lt;/span&gt;(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;Some error&amp;#34;&lt;/span&gt;);
+} &lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt; {
+  console.log(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;An error occured&amp;#39;&lt;/span&gt;);
+}
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Outputs:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;An error occured
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Return source code of a function, verbatim, using &lt;code&gt;toString()&lt;/code&gt; method:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; fn &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; (param1, param2) =&amp;gt; {
+  console.log(param1, param2);
+}
+
+console.log(fn.toString())
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Outputs:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;(param1, param2) =&amp;gt; {
+  console.log(param1, param2);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Return all matches (and capturing group) of a string against given regular expression:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; regexp &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#b58900&#34;&gt;RegExp&lt;/span&gt;(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;l&amp;#39;&lt;/span&gt;,&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;g&amp;#39;&lt;/span&gt;); 
+&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; str &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;Hello world&amp;#39;&lt;/span&gt;;
+&lt;span style=&#34;color:#268bd2&#34;&gt;let&lt;/span&gt; matches &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; str.matchAll(regexp);
+
+&lt;span style=&#34;color:#719e07&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; match &lt;span style=&#34;color:#719e07&#34;&gt;of&lt;/span&gt; matches) {
+  console.log(match); 
+}
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Outputs:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#b58900&#34;&gt;Array&lt;/span&gt; [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;l&amp;#34;&lt;/span&gt;]
+&lt;span style=&#34;color:#b58900&#34;&gt;Array&lt;/span&gt; [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;l&amp;#34;&lt;/span&gt;]
+&lt;span style=&#34;color:#b58900&#34;&gt;Array&lt;/span&gt; [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;l&amp;#34;&lt;/span&gt;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Map then flatten the array using &lt;code&gt;flatMap&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;].flatMap(elem =&amp;gt; [elem &lt;span style=&#34;color:#719e07&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;])
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// Produces:
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;[&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;6&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;8&lt;/span&gt;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&#34;are-these-features-ready-to-be-used&#34;&gt;Are these features ready to be used?&lt;/h4&gt;
+&lt;p&gt;Well, some are and some are not. You can check for browser or nodejs compatibility by looking up features on MDN.&lt;/p&gt;
+&lt;p&gt;For example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Array.prototype.flat()&lt;sup&gt;[1]&lt;/sup&gt; is available in NodeJS 11, Chrome 69 and Firefox 62 and above.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Nevertheless these are some really interesting additions to JavaScript and more is on the way.&lt;/p&gt;
+&lt;p&gt;Links and more:&lt;/p&gt;
+&lt;p&gt;[1] &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat#Browser_compatibility&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat#Browser_compatibility&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2] &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3] &lt;a href=&#34;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap&#34;&gt;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -51,8 +461,122 @@ Planned route starting from Delhi and ending at Pangong Lake.   I started by cur
       <pubDate>Sun, 03 Feb 2019 02:30:47 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/generate_vector_tiles_built_in_postgis_functions/</guid>
-      <description>This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions ST_AsMVT and ST_MakeEnvelope.
-1. Setup a test database Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services.</description>
+      <description>&lt;p&gt;This blog post explores the possibility of generating, caching and serving vector tiles on the fly, from a PostgreSQL database, using built-in PostGIS functions &lt;a href=&#34;https://postgis.net/docs/ST_AsMVT.html&#34; target=&#34;_blank&#34;&gt;ST_AsMVT&lt;/a&gt; and  &lt;a href=&#34;https://postgis.net/docs/ST_MakeEnvelope.html&#34; target=&#34;_blank&#34;&gt;ST_MakeEnvelope&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;1-setup-a-test-database&#34;&gt;1. Setup a test database&lt;/h3&gt;
+&lt;p&gt;Let us begin by firing off a db instance. We use docker for this because of its easily reproducible and disposable nature. We also use docker-compose because we want to be able to orchestrate multiple containers such as database, caching and other services. For now, we will get started with a single docker image which gives us a Postgres instance with PostGIS extension installed.&lt;/p&gt;
+&lt;p&gt;File: &lt;code&gt;docker-compose.yml&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;version: &#39;3&#39;
+services:
+  db:
+    image: mdillon/postgis
+    ports:
+      - &amp;quot;5432:5432&amp;quot;
+    environment:
+      - &amp;quot;POSTGRES_PASSWORD=pass&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note: The database password here is extremely simple. Make sure you use something more complex if running this code outside of local development environment.&lt;/p&gt;
+&lt;p&gt;To test the compose file, execute: &lt;code&gt;docker-compose config -q&lt;/code&gt; and to fire up the containers, run the command: &lt;code&gt;docker-compose up -d&lt;/code&gt;:&lt;/p&gt;
+&lt;h3 id=&#34;2-import-some-test-data&#34;&gt;2. Import some test data&lt;/h3&gt;
+&lt;p&gt;Now that we&amp;rsquo;ve a postgres instance up and running, we can begin importing some data.&lt;/p&gt;
+&lt;p&gt;Create a database and initialize the POSTGIS extension:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker-compose exec db psql -U postgres -c &#39;CREATE DATABASE roads&#39;
+docker-compose exec db psql -U postgres roads -c &#39;CREATE EXTENSION POSTGIS&#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I exported road data of the Pune city, the city I live in, and hosted it on the github repo:&lt;/p&gt;
+&lt;p&gt;Download and extract test data &lt;sup&gt;[1]&lt;/sup&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget https://github.com/androidfanatic/tiles_with_st_asmvt/raw/master/data/pune_roads.tar.gz
+tar -xvf pune_roads.tar.gz
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This will extract a GeoJSON file in the current directory. We want to be able to import this data into our database. In comes &lt;code&gt;GDAL&lt;/code&gt;. I call it the swiss-knife of GIS data. GDAL allows one to work with GIS datasets of all sizes and formats and offers wide variety of features for data translation. Head over to &lt;a href=&#34;https://www.gdal.org/&#34; target=&#34;_blank&#34;&gt;&lt;a href=&#34;https://www.gdal.org/&#34;&gt;https://www.gdal.org/&lt;/a&gt;&lt;/a&gt; for quick installation steps and to read more about it.&lt;/p&gt;
+&lt;p&gt;Once installed, we can begin importing the data from the GeoJSON file into our database with this simple one-liner:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;ogr2ogr -f &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;PostgreSQL&amp;#34;&lt;/span&gt; PG:&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;dbname=roads user=postgres host=localhost password=pass&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#cb4b16&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;&lt;/span&gt;  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;pune_roads.geojson&amp;#34;&lt;/span&gt; -nln pune_roads -append &lt;span style=&#34;color:#cb4b16&#34;&gt;\
+&lt;/span&gt;&lt;span style=&#34;color:#cb4b16&#34;&gt;&lt;/span&gt;  -t_srs &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;http://spatialreference.org/ref/epsg/4326/&amp;#34;&lt;/span&gt; -overwrite
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Let&amp;rsquo;s also verify that the data was imported.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;docker-compose exec db psql -U postgres roads -c &amp;quot;SELECT COUNT(*) FROM pune_roads&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Now that we&amp;rsquo;ve the test database setup with some test data seeded in, let&amp;rsquo;s work on generting the vector tiles on the fly.&lt;/p&gt;
+&lt;h3 id=&#34;3-create-a-tile-service&#34;&gt;3. Create a tile service&lt;/h3&gt;
+&lt;p&gt;To display the data back, we begin by creating a HTTP service that returns vector tiles. To do so, we use a combination of ST_AsMVT, ST_AsMVTGeom and ST_MakeEnvelope functions provided by PostGIS.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s a NodeJS script, inspired by Chris&amp;rsquo;s blog post &lt;sup&gt;[2]&lt;/sup&gt;:&lt;/p&gt;
+&lt;p&gt;The interesting bit here is the translation of &lt;code&gt;/z/x/y&lt;/code&gt; parameters to a bounding box that gets consumed by the function ST_MakeEnvelope(). We also set &lt;code&gt;clipping = True&lt;/code&gt; for the function ST_AsMVTGeom and select additional database columns (id, name and highway in this case) that get translated to feature properties.&lt;/p&gt;
+&lt;p&gt;These feature properties can be used for data-driven styling &lt;sup&gt;[3]&lt;/sup&gt;, displaying additional information on map and more.&lt;/p&gt;
+&lt;p&gt;File: &lt;code&gt;app.js&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// mercator
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; SphericalMercator &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;@mapbox/sphericalmercator&amp;#39;&lt;/span&gt;);
+&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; mercator &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; SphericalMercator({size&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;256&lt;/span&gt;});
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// database library
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; {Client} &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;pg&amp;#39;&lt;/span&gt;)
+&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; db &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#719e07&#34;&gt;new&lt;/span&gt; Client(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;postgres://postgres:pass@localhost:5432/roads&amp;#39;&lt;/span&gt;);
+db.connect();
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// http server
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; express &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; require(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;express&amp;#39;&lt;/span&gt;);
+&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; app &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; express();
+
+app.use(express.&lt;span style=&#34;color:#268bd2&#34;&gt;static&lt;/span&gt;(__dirname &lt;span style=&#34;color:#719e07&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;/public&amp;#39;&lt;/span&gt;));
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// route
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; layerName &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;pune_roads&amp;#39;&lt;/span&gt;;
+app.get(&lt;span style=&#34;color:#586e75&#34;&gt;`/tiles/&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;${&lt;/span&gt;layerName&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;/:z/:x/:y.mvt`&lt;/span&gt;, async (req, res) =&amp;gt; {
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; bbox &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; mercator.bbox(req.params.x, req.params.y, req.params.z, &lt;span style=&#34;color:#cb4b16&#34;&gt;false&lt;/span&gt;);
+  &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; query &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#586e75&#34;&gt;`
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;      SELECT ST_AsMVT(q, &amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;${&lt;/span&gt;layerName&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&amp;#39;, 4096, &amp;#39;geom&amp;#39;) FROM (
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;        SELECT 
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;          id, name, highway,
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;          ST_AsMVTGeom(
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;            wkb_geometry,
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;            ST_MakeEnvelope(&lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;${&lt;/span&gt;bbox[&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;]&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;, &lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;${&lt;/span&gt;bbox[&lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;]&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;, &lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;${&lt;/span&gt;bbox[&lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;]&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;, &lt;/span&gt;&lt;span style=&#34;color:#2aa198&#34;&gt;${&lt;/span&gt;bbox[&lt;span style=&#34;color:#2aa198&#34;&gt;3&lt;/span&gt;]&lt;span style=&#34;color:#2aa198&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;, 4326),
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;            4096,
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;            256,
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;            true
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;          ) geom FROM pune_roads WHERE highway IS NOT NULL
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;        ) q
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;    `&lt;/span&gt;;
+  &lt;span style=&#34;color:#719e07&#34;&gt;try&lt;/span&gt; {
+    &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; tiles &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; await db.query(query);
+    &lt;span style=&#34;color:#268bd2&#34;&gt;const&lt;/span&gt; tile &lt;span style=&#34;color:#719e07&#34;&gt;=&lt;/span&gt; tiles.rows[&lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;];
+    res.setHeader(&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;Content-Type&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;application/x-protobuf&amp;#39;&lt;/span&gt;);
+    &lt;span style=&#34;color:#719e07&#34;&gt;if&lt;/span&gt; (tile.st_asmvt.length &lt;span style=&#34;color:#719e07&#34;&gt;===&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;) {
+      res.status(&lt;span style=&#34;color:#2aa198&#34;&gt;204&lt;/span&gt;);
+    }
+    res.send(tile.st_asmvt);
+  } &lt;span style=&#34;color:#719e07&#34;&gt;catch&lt;/span&gt; (err) {
+    res.status(&lt;span style=&#34;color:#2aa198&#34;&gt;404&lt;/span&gt;).send({ error&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; err.toString() });
+  }
+});
+
+app.listen(&lt;span style=&#34;color:#2aa198&#34;&gt;8080&lt;/span&gt;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;4-add-the-new-vector-layer&#34;&gt;4. Add the new vector layer&lt;/h3&gt;
+&lt;p&gt;Let&amp;rsquo;s add the tile layer to the map. We used mapbox &lt;sup&gt;[4]&lt;/sup&gt; which is our web map of choice because of it&amp;rsquo;s performance, data-sets and robustness when it comes to configuring and styling the map.&lt;/p&gt;
+&lt;p&gt;Add the layer to map with this snippet:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;map.addLayer({
+  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;road&amp;#34;&lt;/span&gt;,
+  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;source-layer&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;pune_roads&amp;#34;&lt;/span&gt;,
+  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;source&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; {
+    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;vector&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;tiles&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;http://localhost:8080/tiles/pune_roads/{z}/{x}/{y}.mvt&amp;#34;&lt;/span&gt;],
+    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;tolerance&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;0&lt;/span&gt;,
+  },
+  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;type&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;line&amp;#34;&lt;/span&gt;,
+  &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;paint&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; {
+    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;line-color&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;orangered&amp;#34;&lt;/span&gt;,
+    &lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#34;line-width&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;:&lt;/span&gt; [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;step&amp;#39;&lt;/span&gt;, [&lt;span style=&#34;color:#2aa198&#34;&gt;&amp;#39;zoom&amp;#39;&lt;/span&gt;], &lt;span style=&#34;color:#2aa198&#34;&gt;0.4&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;14&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;1&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;16&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;18&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;4&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;20&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;8&lt;/span&gt;]
+  }
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;At this point, you should be able to see road data being rendered on the map.&lt;/p&gt;
+&lt;center&gt;
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/androidfanatic/tiles_with_st_asmvt/master/img/img3.png&#34; style=&#34;max-width: 100%;&#34; /&gt;&lt;/p&gt;
+&lt;/center&gt;
+&lt;p&gt;Next steps to work on and explore:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cache tiles for sometime, say an hour, instead of re-generating again&lt;/li&gt;
+&lt;li&gt;Allow pre-seeding and invalidation of cached tiles&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can find the entire source code, with caching, here at: &lt;a href=&#34;https://github.com/androidfanatic/tiles_with_st_asmvt&#34;&gt;https://github.com/androidfanatic/tiles_with_st_asmvt&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;References:&lt;/p&gt;
+&lt;p&gt;[1] Road data source: &lt;a href=&#34;https://overpass-turbo.eu/&#34;&gt;https://overpass-turbo.eu/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2] &lt;a href=&#34;https://medium.com/nycplanninglabs/using-the-new-mvt-function-in-postgis-75f8addc1d68&#34;&gt;https://medium.com/nycplanninglabs/using-the-new-mvt-function-in-postgis-75f8addc1d68&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3] &lt;a href=&#34;https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/&#34;&gt;https://docs.mapbox.com/mapbox-gl-js/example/data-driven-circle-colors/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[4] &lt;a href=&#34;https://docs.mapbox.com/mapbox-gl-js/api/&#34;&gt;https://docs.mapbox.com/mapbox-gl-js/api/&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -61,9 +585,34 @@ Planned route starting from Delhi and ending at Pangong Lake.   I started by cur
       <pubDate>Thu, 12 Oct 2017 22:11:46 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/slash-commands-for-slack-workspace/</guid>
-      <description>Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.
-In this post, we will try to set up a slash command /hello for our slack workspace that makes a request to a REST API and displays response back on the slack channel.
-The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.</description>
+      <description>&lt;p&gt;Slack has become one of the most popular chat and collaboration tool in software industry. Slack offers all kinds of custom integration, third party apps and a huge scope for automation of trivial every tasks.&lt;/p&gt;
+&lt;p&gt;In this post, we will try to set up a slash command &lt;code&gt;/hello&lt;/code&gt; for our slack workspace that makes a request to a REST API and displays response back on the slack channel.&lt;/p&gt;
+&lt;p&gt;The REST API can then trigger other APIs, automate something trivial like initiating a project build or even book an uber.&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s how the slash command is supposed to works once we&amp;rsquo;re done with setup:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/10/slash_command_output.gif&#34; style=&#34;width:100%; display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;div style=&#34;font-size: 12px; text-align: center&#34;&gt;Figure: Invoking slash command&lt;/div&gt;
+&lt;p&gt;Alright, let&amp;rsquo;s get started.&lt;/p&gt;
+&lt;h3 id=&#34;deploy-api-service&#34;&gt;Deploy API service&lt;/h3&gt;
+&lt;p&gt;Begin by deploying your API service on the Internet. I used heroku since it offers five free dynos (application containers).&lt;/p&gt;
+&lt;p&gt;I forked the sample nodejs app and built a dummy API service that leverages heroku&amp;rsquo;s one-click deploy.&lt;/p&gt;
+&lt;p&gt;The project is available at: &lt;a href=&#34;https://github.com/androidfanatic/slash-cmd-api&#34;&gt;https://github.com/androidfanatic/slash-cmd-api&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It is a simple API service that returns &lt;strong&gt;&lt;code&gt;hello from api&lt;/code&gt;&lt;/strong&gt; when one makes a GET request to &lt;strong&gt;&lt;code&gt;/hello&lt;/code&gt;&lt;/strong&gt; endpoint.&lt;/p&gt;
+&lt;p&gt;The deployed service is available at: &lt;a href=&#34;http://slash-cmd-api.herokuapp.com/hello&#34;&gt;http://slash-cmd-api.herokuapp.com/hello&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;add-a-slash-command-to-slack-workspace&#34;&gt;Add a slash command to slack workspace&lt;/h3&gt;
+&lt;p&gt;Now that you have your API service deployed on cloud, let&amp;rsquo;s begin configuring slack workspace and add a slash command that calls the API.&lt;/p&gt;
+&lt;p&gt;If you don&amp;rsquo;t already have a workspace on slack, signing up for one is very easy and quick.&lt;/p&gt;
+&lt;p&gt;Once you&amp;rsquo;re inside the workspace, click on workspace name on top left and go to: &lt;strong&gt;Workspace Settings&lt;/strong&gt; &amp;gt; &lt;strong&gt;Configure App&lt;/strong&gt; &amp;gt; &lt;strong&gt;Browse the App Directory&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Search for &amp;ldquo;&lt;strong&gt;Slash Commands&lt;/strong&gt;&amp;rdquo; and click on it.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/10/slash_command_search.png&#34; style=&#34;width:100%; display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;div style=&#34;font-size: 12px; text-align: center&#34;&gt;Figure: Slash Commands for slack&lt;/div&gt;
+&lt;p&gt;Add a new config for &amp;ldquo;slash commands&amp;rdquo; app based on your API specs such as url endpoint, request method, slash command name etc.&lt;/p&gt;
+&lt;p&gt;For me, config looks something like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/10/slash_commands_config.png&#34; style=&#34;width:100%&#34; /&gt;&lt;/p&gt;
+&lt;div style=&#34;font-size: 12px; text-align: center&#34;&gt;Figure: Configurations for slash command&lt;/div&gt;
+&lt;p&gt;Make sure to get the HTTP URL and request method right. Slack also displays a randomly generated token which can be used to verify and accept requests to your API originating only from slack.&lt;/p&gt;
+&lt;p&gt;Click on save integration and go back to any channel to test if the slash command works.&lt;/p&gt;
+&lt;p&gt;Congrats, you just set up a very basic slash command.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -72,8 +621,148 @@ The REST API can then trigger other APIs, automate something trivial like initia
       <pubDate>Sat, 23 Sep 2017 13:41:37 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/webvr-with-aframe/</guid>
-      <description>WebVR WebVR is an emerging technology that enables virtual reality experience to be delivered and experienced from within a web browser. WebVR is mostly composed of experimental Javascript APIs supported by browsers such as Firefox and Chrome and VR headsets such as Oculus Rift, Google Daydream etc.
-WebVR can be used to build all kinds of VR experiences such as presentations, stories, walk-through guides, maps, architectural design demos, games and anything else one can envision.</description>
+      <description>&lt;h2 id=&#34;webvr&#34;&gt;WebVR&lt;/h2&gt;
+&lt;p&gt;WebVR is an emerging technology that enables virtual reality experience to be delivered and experienced from within a web browser. WebVR is mostly composed of experimental Javascript APIs supported by browsers such as Firefox and Chrome and VR headsets such as Oculus Rift, Google Daydream etc.&lt;/p&gt;
+&lt;p&gt;WebVR can be used to build all kinds of VR experiences such as presentations, stories, walk-through guides, maps, architectural design demos, games and anything else one can envision.&lt;/p&gt;
+&lt;h2 id=&#34;a-frame&#34;&gt;A-Frame&lt;/h2&gt;
+&lt;p&gt;A-Frame is a WebVR framework that allows web developers to create VR experiences using simple declarative syntax and HTML-like elements. Check it out at &lt;a href=&#34;https://aframe.io/&#34;&gt;https://aframe.io/&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id=&#34;in-this-post-we-will-use-a-popular-webvr-framework-a-frame-to-build-a-simple-maze-game&#34;&gt;In this post, we will use a popular WebVR framework &amp;ldquo;A-Frame&amp;rdquo; to build a simple maze game.&lt;/h4&gt;
+&lt;p&gt;The idea:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Build a simple 3D maze with 2 exits&lt;/li&gt;
+&lt;li&gt;Drop user in the middle of the maze and allow user to move towards either exit&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;getting-started&#34;&gt;Getting started&lt;/h2&gt;
+&lt;p&gt;We start with a simple template. Create a folder &amp;ldquo;maze-vr&amp;rdquo; and then create &lt;code&gt;index.html&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;File: index.html&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;title&amp;gt;Maze&amp;lt;/title&amp;gt;
+    &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;
+    &amp;lt;script src=&amp;quot;//aframe.io/releases/0.6.0/aframe.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script src=&amp;quot;//cdn.rawgit.com/donmccurdy/aframe-extras/v3.11.4/dist/aframe-extras.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script src=&amp;quot;game.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body class=&amp;quot;a-body &amp;quot;&amp;gt;
+    &amp;lt;a-scene&amp;gt;
+    &amp;lt;/a-scene&amp;gt;
+    &amp;lt;a style=&amp;quot;display: none;&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I also included aframe-extras for physics and added another file &lt;code&gt;game.js&lt;/code&gt; where we will add js code for the game.&lt;/p&gt;
+&lt;p&gt;Run and verify:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd maze-vr
+python -m SimpleHTTPServer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then go to: http://localhost:8000&lt;/p&gt;
+&lt;p&gt;We should have a simple A-Frame scene up and running. A blank screen with no errors on console is what we&amp;rsquo;re looking for at this point.&lt;/p&gt;
+&lt;h2 id=&#34;start-adding-vr-components-to-a-scene&#34;&gt;Start adding VR components to a-scene&lt;/h2&gt;
+&lt;p&gt;Now we&amp;rsquo;ll go ahead and add a few components and configs to &amp;lt;a-scene&amp;gt; in &lt;code&gt;index.html&lt;/code&gt; file.&lt;/p&gt;
+&lt;p&gt;Add ground, sky, user&amp;rsquo;s perspective (camera) and enable physics and stats for the scene element.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    &amp;lt;a-scene 
+      stats 
+      physics=&amp;quot;
+        driver: worker; 
+        workerFps: 60; 
+        workerInterpolate: true; 
+        workerInterpBufferSize: 2;
+      &amp;quot;&amp;gt;
+        &amp;lt;a-sky color=&amp;quot;#6EBAA7&amp;quot;&amp;gt;&amp;lt;/a-sky&amp;gt;
+        &amp;lt;!-- ground --&amp;gt;
+        &amp;lt;a-grid static-body&amp;gt;&amp;lt;/a-grid&amp;gt;
+        &amp;lt;a-entity 
+            camera=&amp;quot;userHeight: 1.6&amp;quot; 
+            universal-controls 
+            kinematic-body
+        &amp;gt;
+        &amp;lt;/a-entity&amp;gt;
+    &amp;lt;/a-scene&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;At this point, we should have a basic scene with ground, sky and user should be able to move using mouse and W-A-S-D keys. Something like this:&lt;/p&gt;
+&lt;img src=&#34;https://manishraj.dev/blog/img/09/aframe_maze_vr_boot.gif&#34;  style=&#34;width: 70%; margin: auto; display: block;&#34;&gt;
+&lt;h2 id=&#34;build-and-render-a-maze&#34;&gt;Build and render a maze&lt;/h2&gt;
+&lt;p&gt;Folks at rosettacode.org have an entire page dedicated to maze generation algorithms so we used one of their JS implementation and modified it a bit. &lt;a href=&#34;https://rosettacode.org/wiki/Maze_generation#JavaScript&#34;&gt;https://rosettacode.org/wiki/Maze_generation#JavaScript&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;We also added two more functions to &lt;code&gt;game.js&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;addWall: create a static-body A-frame entity with specified positions and dimensions&lt;/li&gt;
+&lt;li&gt;renderMaze: generate and render a maze on window load&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can find the entire source for &lt;code&gt;game.js&lt;/code&gt; and this project at &lt;a href=&#34;https://github.com/androidfanatic/aframe-maze-vr/&#34;&gt;https://github.com/androidfanatic/aframe-maze-vr/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A-Frame makes building VR scenes extremely easy. For example, take a look at the addWall method:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function addWall(x, y, z, h, w, d) {
+    var wall = document.createElement(&#39;a-entity&#39;);
+    wall.setAttribute(&amp;quot;position&amp;quot;, x + &amp;quot; &amp;quot; + y + &amp;quot; &amp;quot; + z);
+    wall.setAttribute(&amp;quot;geometry&amp;quot;, &amp;quot;height:&amp;quot; + h + &amp;quot;;width:&amp;quot; + w + &amp;quot;;depth:&amp;quot; + d + &amp;quot;;&amp;quot;);
+    wall.setAttribute(&amp;quot;static-body&amp;quot;, &amp;quot;shape: box;&amp;quot;);
+    document.querySelector(&#39;a-scene&#39;).appendChild(wall);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;applying-textures-to-a-3d-object&#34;&gt;Applying textures to a 3D object:&lt;/h2&gt;
+&lt;p&gt;Load 2D images or texture as assets:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;a-scene ... &amp;gt;
+    &amp;lt;a-assets&amp;gt;
+        &amp;lt;img id=&amp;quot;wall&amp;quot; src=&amp;quot;img/wall.jpg&amp;quot;&amp;gt;
+        &amp;lt;img id=&amp;quot;sand&amp;quot; src=&amp;quot;img/sand.jpg&amp;quot;&amp;gt;
+    &amp;lt;/a-assets&amp;gt;
+    ...
+&amp;lt;/a-scene&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Apply texture to ground and wall components as follows:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;a-grid static-body material=&amp;quot;src: #sand&amp;quot;&amp;gt;&amp;lt;/a-grid&amp;gt;
+
+// and
+
+function addWall(x, y, z, h, w, d) {
+    ...
+    wall.setAttribute(&amp;quot;material&amp;quot;, &amp;quot;src: #wall&amp;quot;);
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And thus we&amp;rsquo;ve finished composing a 3D scene for maze game with shapes, texture, physics and user controls with few lines of code!&lt;/p&gt;
+&lt;p&gt;Go ahead and give it a try. Click below to start. Press &lt;code&gt;esc&lt;/code&gt; to exit.&lt;/p&gt;
+&lt;iframe src=&#34;https://manishraj.dev/blog/html/aframe&#34; style=&#34;width: 640px; height: 320px; border: 0px; margin: auto; display: block;&#34; id=&#34;play_iframe&#34;&gt;&lt;/iframe&gt;
+&lt;p&gt;Play in &lt;a href=&#34;https://manishraj.dev/blog/html/aframe&#34;&gt;fullscreen&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Check this project at: &lt;a href=&#34;https://github.com/androidfanatic/aframe-maze-vr&#34;&gt;https://github.com/androidfanatic/aframe-maze-vr&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;tips-for-debugging&#34;&gt;Tips for debugging:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Use the inspector bundled wit A-Frame by pressing &lt;code&gt;ctrl + alt + i&lt;/code&gt;. You can then pick elements and modify/debug their properties. Once happy with the scene,  you can also export it to HTML from the inspector.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;video src=&#34;https://manishraj.dev/blog/vid/aframe_debug.mp4&#34; id=&#34;inspector_vid&#34; loop style=&#34;width: 100%; display: block; margin: auto;&#34;&gt;&lt;/video&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Add &lt;code&gt;stats&lt;/code&gt; attribute to a-scene to keep an eye on framerate and other params.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Use dev tools and browser console.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;links&#34;&gt;Links:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://aframe.io/&#34;&gt;https://aframe.io/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://aframe.io/aframe-school/&#34;&gt;https://aframe.io/aframe-school/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/donmccurdy/aframe-extras&#34;&gt;https://github.com/donmccurdy/aframe-extras&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;script&gt;
+window.addEventListener(&#39;load&#39;, function() {      
+    var isMobile = window.matchMedia(&#34;only screen and (max-width: 760px)&#34;);
+
+    if (isMobile.matches) {
+        document.querySelector(&#34;#play_iframe&#34;).remove();
+        document.querySelector(&#34;#inspector_vid&#34;).setAttribute(&#39;controls&#39;, &#39;true&#39;);
+    } else {
+        document.querySelector(&#34;#inspector_vid&#34;).play();
+    }
+ });
+&lt;/script&gt;&lt;blockquote&gt;
+&lt;/blockquote&gt;
+</description>
     </item>
     
     <item>
@@ -82,9 +771,178 @@ WebVR can be used to build all kinds of VR experiences such as presentations, st
       <pubDate>Mon, 11 Sep 2017 00:43:32 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/traefix_reverse_proxy_https_and_more/</guid>
-      <description>I stumbled upon Træfik last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.
-Træfik is simple enough to get started with, within minutes and offers a variety of features such as:
- Deploy Traefik using a tiny go binary or docker image. Serve as a reverse proxy for multiple micro-services. Supports several back-end systems such as Docker, Kubernetes, Consul, Amazon ECS and more.</description>
+      <description>&lt;p&gt;I stumbled upon &lt;a href=&#34;https://traefik.io/&#34;&gt;Træfik&lt;/a&gt; last week while working with a client. It is a lightweight, robust HTTP reverse proxy and load balancer.&lt;/p&gt;
+&lt;p&gt;Træfik is simple enough to get started with, within minutes and offers a variety of features such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Deploy Traefik using a tiny go binary or docker image.&lt;/li&gt;
+&lt;li&gt;Serve as a reverse proxy for multiple micro-services.&lt;/li&gt;
+&lt;li&gt;Supports several back-end systems such as Docker, Kubernetes, Consul, Amazon ECS and more.&lt;/li&gt;
+&lt;li&gt;Reload configurations without restarting process.&lt;/li&gt;
+&lt;li&gt;Add proxy SSL support with &lt;a href=&#34;https://letsencrypt.org/&#34;&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Add load balancing.&lt;/li&gt;
+&lt;li&gt;Provide access logs and metrics; dashboard with a clean UI&lt;/li&gt;
+&lt;li&gt;Cluster mode for high availability.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To sum it all up, Træfik is a great tool to serve and manage multiple micro-services or web applications while ensuring high availability, fast speed and continuous deployment.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/09/traefik_architecture.png&#34; style=&#34;max-width: 80%; display: block; margin: auto;&#34; &gt;&lt;/p&gt;
+&lt;center&gt;&amp;copy; https://traefik.io/&lt;/center&gt;
+&lt;p&gt;To demonstrate the robustness and simplicity of traefik, we will try to setup two services with reverse proxy and SSL support. We will host the services on different subdomain on a local machine.&lt;/p&gt;
+&lt;h3 id=&#34;what-are-we-aiming-for&#34;&gt;What are we aiming for?&lt;/h3&gt;
+&lt;p&gt;Setup gitlab and nextcloud on a local machine on different subdomain with SSL support to demonstrate dynamic config reload, docker backend support, proxied SSL and reverse proxy capabilities of Traefik.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;gitlab&lt;/strong&gt; is an open source VCS similar to github&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;nextcloud&lt;/strong&gt; is open source file host similar to dropbox&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I picked up gitlab and nextcloud for this exercise because these are two prominent services often deployed within an organization for internal use and can be a nuisance to setup as both compete for port 80, gitlab offers SSL support out of the box whereas nextcloud depends on a reverse proxy for SSL support.&lt;/p&gt;
+&lt;p&gt;As Traefik supports docker among several other back-end systems, we will attempt docker based deployment of these services.&lt;/p&gt;
+&lt;h3 id=&#34;what-do-we-need-to-begin&#34;&gt;What do we need to begin?&lt;/h3&gt;
+&lt;p&gt;Before we being, we&amp;rsquo;ll need docker host up and running on the target machine, SSL certificate and key (self signed or otherwise) and some free time to glance through Traefik docs.&lt;/p&gt;
+&lt;p&gt;To generate a self signed certificate, check out: &lt;a href=&#34;https://devcenter.heroku.com/articles/ssl-certificate-self&#34;&gt;https://devcenter.heroku.com/articles/ssl-certificate-self&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;start-deploying-microservices&#34;&gt;Start deploying microservices&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Create a traefik config file: &lt;span id=&#34;toml&#34;&gt;&lt;code&gt;traefik.toml&lt;/code&gt; &lt;/span&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; defaultEntryPoints = [&amp;quot;http&amp;quot;, &amp;quot;https&amp;quot;]
+ [entryPoints]
+ [entryPoints.http]
+ address = &amp;quot;:80&amp;quot;
+     [entryPoints.http.redirect]
+     entryPoint = &amp;quot;https&amp;quot;
+ [entryPoints.https]
+ address = &amp;quot;:443&amp;quot;
+     [entryPoints.https.tls]
+     [[entryPoints.https.tls.certificates]]
+     certFile = &amp;quot;/etc/traefik/server.crt&amp;quot;
+     keyFile = &amp;quot;/etc/traefik/server.key&amp;quot;
+ [web]
+ address = &amp;quot;:8080&amp;quot;
+
+ [docker]
+ domain = &amp;quot;docker.localhost&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The config file:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;accepts http and https traffic&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;routes all http traffic to https endpoint&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;adds self signed certificate and key&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enables [web] i.e. Traefik dashboard at port 8080&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Enables [docker] backed and sets the main domain to docker.localhost&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;More information on traefik configs can be found at: &lt;a href=&#34;https://docs.traefik.io/configuration/commons/&#34;&gt;https://docs.traefik.io/configuration/commons/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Start the traefik docker container:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; ssl_cert=`pwd`/server.crt
+ ssl_cert_key=`pwd`/server.key
+
+ docker run --detach \
+   --name traefik \
+   --publish 8080:8080 \
+   --publish 443:443 \
+   --publish 80:80 \
+   --restart always \
+   --volume $PWD/traefik.toml:/etc/traefik/traefik.toml \
+   --volume $ssl_cert:/etc/traefik/server.crt \
+   --volume $ssl_cert_key:/etc/traefik/server.key \
+   --volume /var/run/docker.sock:/var/run/docker.sock \
+   traefik:latest
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The run command:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Publishes port 8080 for dashboard and 80, 443 for http/https traffic&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Makes traefik.toml file available to container.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Makes cert/key available to container. Note that &lt;a href=&#34;#toml&#34;&gt;&lt;code&gt;traefik.toml&lt;/code&gt;&lt;/a&gt; points to this location for SSL cert/key.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Makes docker.sock file available to container. This is how traefik automatically picks up and publishes new containers. For different back-ends, traefik supports other kinds of discovery including REST api.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Once docker run command executes successfully, you should be able to access traefik dashboard at http://localhost:8080.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Start nextcloud docker container:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; docker run --detach \
+   --name nextcloud \
+   --label traefik.port=80 \
+   --restart always \
+   --volume /srv/nextcloud:/var/www/html \
+   nextcloud:latest
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The run command:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;ndash;name: names the container &lt;code&gt;nextcloud&lt;/code&gt;. Traefik uses container name and the domain specified in &lt;a href=&#34;#toml&#34;&gt;&lt;code&gt;traefik.toml&lt;/code&gt;&lt;/a&gt; file to come up with subdomain for the container. In this case, the subdomain where nextcloud gets served is &lt;code&gt;nextcloud.docker.localhost&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;ndash;label: Tags port 80 to be used by traefik for routing. By default, traefik will try to get the first port exposed by container and try to route http/https traffic to it.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;ndash;volume: Adds persistent storage to nextcloud container. More container specific options can be found at: &lt;a href=&#34;https://github.com/nextcloud/docker&#34;&gt;https://github.com/nextcloud/docker&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you visit traefik dashboard at http://localhost:8080, you should be able to see nextcloud container automatically added to &lt;a href=&#34;https://manishraj.dev/blog/img/09/traefik_dashboard_nextcloud.png&#34; target=&#34;_blank&#34;&gt;dashboard&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;If you head over to &lt;a href=&#34;https://nextcloud.docker.localhost&#34;&gt;https://nextcloud.docker.localhost&lt;/a&gt;, you should be presented with &lt;a href=&#34;https://manishraj.dev/blog/img/09/nextcloud_init.png&#34; target=&#34;_blank&#34;&gt;nextcloud UI&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Start gitlab docker container:&lt;/p&gt;
+&lt;p&gt;Alright, let&amp;rsquo;s get the second container running to see how easy it is to route different services with traefik&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; gitlab_path=/srv/gitlab
+
+ docker run --detach \
+   --name gitlab \
+   --label traefik.port=80 \
+   --restart always \
+   --volume $gitlab_path/config:/etc/gitlab \
+   --volume $gitlab_path/logs:/var/log/gitlab \
+   --volume $gitlab_path/data:/var/opt/gitlab \
+   gitlab/gitlab-ce:latest    
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The run command:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;ndash;name: Names the container &lt;code&gt;gitlab&lt;/code&gt; which results in target subdomain being &lt;code&gt;gitlab.docker.localhost&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;ndash;volume: Adds container specific options such as volume mount paths found at: &lt;a href=&#34;http://doc.gitlab.com/omnibus/docker/&#34;&gt;http://doc.gitlab.com/omnibus/docker/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&amp;ndash;label: Tags port 80 to be used by traefik for routing. Tagging a port was useful in this case because gitlab container exposes ports 22, 443 and 80 and traefik was picking up port 22 and forwarding all traffic from gitlab.docker.localhost to port 22 of the container which kept resulting in an ISE.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;At this point, you should have the two services being routed through traefik with SSL support available at &lt;a href=&#34;https://nextcloud.docker.localhost&#34;&gt;https://nextcloud.docker.localhost&lt;/a&gt; and &lt;a href=&#34;https://gitlab.docker.localhost&#34;&gt;https://gitlab.docker.localhost&lt;/a&gt; and traefik dashboard, available at localhost:8080, should look something like this:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://manishraj.dev/blog/img/09/traefix_dashboard.png&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/09/traefix_dashboard.png&#34; style=&#34;max-width: 95%; display: block; margin: auto;&#34; &gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Try exploring the &amp;ldquo;Health&amp;rdquo; tab on dashboard and see what kind of metrics it offers.&lt;/p&gt;
+&lt;h3 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;With this exercise, we observed that traefix automatically picked up and published new services to a different subdomain along with SSL support and load balancing.&lt;/p&gt;
+&lt;p&gt;Traefix shows logging and metrics about service health and status on dashboard.&lt;/p&gt;
+&lt;p&gt;Traefix is simple enough that getting started and deploying multiple services, only takes a few minutes yet robust enough to offer wide range of features and configurations.&lt;/p&gt;
+&lt;h3 id=&#34;links&#34;&gt;Links:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://traefik.io&#34;&gt;https://traefik.io&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://docs.traefik.io/&#34;&gt;https://docs.traefik.io/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -93,9 +951,132 @@ Træfik is simple enough to get started with, within minutes and offers a variet
       <pubDate>Fri, 01 Sep 2017 13:43:32 +0530</pubDate>
       
       <guid>https://manishraj.dev/blog/post/puppeteer-quick-start/</guid>
-      <description>Puppeteer: quick start guide The team behind Google chrome has recently released puppeteer, a nodejs library for controlling Chrome headless. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing community.
-This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.
-Quick start Begin by installing nodejs version 7.6 or later. I use nvm to install and manage different versions of nodejs and it works great!</description>
+      <description>&lt;h1 id=&#34;puppeteer-quick-start-guide&#34;&gt;Puppeteer: quick start guide&lt;/h1&gt;
+&lt;p&gt;The team behind Google chrome has recently released &lt;a target=&#34;_blank&#34; href=&#34;https://github.com/GoogleChrome/puppeteer&#34;&gt;puppeteer&lt;/a&gt;, a nodejs library for controlling &lt;a href=&#34;https://developers.google.com/web/updates/2017/04/headless-chrome&#34; target=&#34;_blank&#34;&gt;Chrome headless&lt;/a&gt;. Chrome headless was first shipped with Chrome v59 and has been a huge success with browser automation and testing  community.&lt;/p&gt;
+&lt;p&gt;This post is a guide to quickly getting started with puppeteer and headless chrome for browser automation, testing and web-scrapping.&lt;/p&gt;
+&lt;h2 id=&#34;quick-start&#34;&gt;Quick start&lt;/h2&gt;
+&lt;p&gt;Begin by installing nodejs version 7.6 or later. I use &lt;a href=&#34;https://github.com/creationix/nvm/blob/master/README.md&#34;&gt;nvm&lt;/a&gt; to install and manage different versions of nodejs and it works great!&lt;/p&gt;
+&lt;p&gt;With &lt;code&gt;nvm&lt;/code&gt;, installing and switching to a version of nodejs is as easy as:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;nvm install v7.6.0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Alternatively, install nodejs v7.6 or above using official installers which can be found here: &lt;a href=&#34;https://nodejs.org/en/download/&#34;&gt;https://nodejs.org/en/download/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;create-a-project-and-install-puppeteer&#34;&gt;Create a project and install puppeteer&lt;/h2&gt;
+&lt;p&gt;Begin setting up a new nodejs project&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;mkdir puppet
+cd puppet
+npm init
+npm i puppeteer --save
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This might take a while as it installs puppeteer and downloads recent version of chromium which is saved locally inside &lt;code&gt;node_modules/puppeteer&lt;/code&gt; folder.&lt;/p&gt;
+&lt;h2 id=&#34;start-simple-visit-a-webpage&#34;&gt;Start simple: visit a webpage&lt;/h2&gt;
+&lt;p&gt;With project set up and puppeteer installed, let&amp;rsquo;s dive into first example.&lt;/p&gt;
+&lt;p&gt;Create a file &lt;code&gt;example.js&lt;/code&gt; with following code:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const puppeteer = require(&#39;puppeteer&#39;);
+
+(async () =&amp;gt; {
+    const browser = await puppeteer.launch({
+        headless: false
+    });
+
+    const page = await browser.newPage();
+    await page.goto(&#39;https://www.example.com&#39;);
+    console.log(&#39;Page loaded&#39;);
+
+    //browser.close();
+})();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run the example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;node example.js
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/09/puppeteer_load_example_com.gif&#34; style=&#34;max-width: 80%; margin: auto; display: block;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;If everything goes well, you should be able to see a new chromium window pop up and load &lt;code&gt;www.example.com&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Notice how we commented out &lt;code&gt;browser.close()&lt;/code&gt; and set headless to false.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Setting headless to false makes puppeteer run chromium in headful mode which is good for visual debugging or observing what goes on when a puppeteer script executes.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Commenting out &lt;code&gt;browser.close()&lt;/code&gt; prevents the browser from closing at the end of script execution. This is also helpful while troubleshooting.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;lookup-cat-gifs&#34;&gt;Lookup cat gifs&lt;/h2&gt;
+&lt;p&gt;Alright, now that we know the basics of creating, executing and troubleshooting, or at least observing, a puppeteer script, let&amp;rsquo;s try automating some common tasks.&lt;/p&gt;
+&lt;p&gt;Create another file &lt;code&gt;cats.js&lt;/code&gt; with following code:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const puppeteer = require(&#39;puppeteer&#39;);
+
+(async () =&amp;gt; {
+
+    const browser = await puppeteer.launch({
+        headless: false
+    });
+
+    const page = await browser.newPage();
+
+    // Go to images.google.com
+    await page.goto(&#39;https://images.google.com&#39;, { 
+        waitUntil: &#39;networkidle&#39; 
+    });
+
+    // Focus on input box
+    await page.focus(&#39;input[name=q]&#39;);
+    // Type some stuff
+    await page.type(&#39;cat gifs&#39;);
+    // Press enter
+    await page.press(&#39;Enter&#39;);
+
+    //browser.close();
+})();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Run the script:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;node cats.js
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Output&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://manishraj.dev/blog/img/09/puppeteer_cat_gifs.gif&#34; style=&#34;max-width: 80%; margin: auto; display: block;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We just added a few function calls - &lt;code&gt;page.focus&lt;/code&gt;, &lt;code&gt;page.type&lt;/code&gt;, &lt;code&gt;page.press&lt;/code&gt; and got some cats in return. Sweet!&lt;/p&gt;
+&lt;h3 id=&#34;so-how-exactly-did-we-look-up-cats&#34;&gt;So how exactly did we look up cats?&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Go to &lt;a href=&#34;https://images.google.com&#34;&gt;https://images.google.com&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; // Go to images.google.com
+ await page.goto(&#39;https://images.google.com&#39;, { 
+     waitUntil: &#39;networkidle&#39; 
+ });
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;waitUntil&lt;/code&gt; option makes puppeteer wait for all network requests to finish i.e. all js, css, images are done loading.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Focus on search box.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;page.focus&lt;/code&gt; takes a css selector as parameter and focuses on that element on page.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; // Focus on input box
+ await page.focus(&#39;input[name=q]&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I was able to find the selector for the search box by using inspector (F12).&lt;/p&gt;
+ &lt;a href=&#34;https://manishraj.dev/blog/img/google_inspector.png&#34; target=&#34;_blank&#34; title=&#34;Click to open in a new window&#34;&gt;
+ &lt;img src=&#34;https://manishraj.dev/blog/img/google_inspector.png&#34; style=&#34;max-width: 90%; height: auto;&#34; /&gt;
+ &lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Now that search box is in focus, all we need to do is type &amp;lsquo;cats gif&amp;rsquo; and press &amp;lsquo;enter&amp;rsquo; which puppeteer provides simple APIs for.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; // Type some stuff
+ await page.type(&#39;cat gifs&#39;);
+ // Press enter
+ await page.press(&#39;Enter&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Apart from searching for cat gifs, puppeteer can be used to take full page screenshots, generate PDF of pages, test UI on different viewport and anything else that a browser can do.&lt;/p&gt;
+&lt;p&gt;Also, once happy with the functioning of script, &lt;code&gt;headless&lt;/code&gt; can be set to true so that puppeteer scripts can run without a GUI, on a VPS, in cloud or otherwise.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;Puppeteer is extremely easy to start with and offers a comprehensive set of APIs. The library comes from team behind Google chrome and is under active development. It has the potential to become widely used for UI testing, web scrapping and browser based automation.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Some links:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/GoogleChrome/puppeteer&#34; target=&#34;_blank&#34;&gt;Puppeteer&lt;/a&gt;
+ &amp;gt; 
+&lt;a href=&#34;https://github.com/GoogleChrome/puppeteer/tree/master/examples&#34; target=&#34;_blank&#34;&gt;Examples&lt;/a&gt;
+ &amp;gt; 
+&lt;a href=&#34;https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md&#34; target=&#34;_blank&#34;&gt;API reference&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here&amp;rsquo;s a good tutorial if you&amp;rsquo;re confused about all that async await stuff like I was: &lt;a href=&#34;https://blog.risingstack.com/mastering-async-await-in-nodejs/&#34; target=&#34;_blank&#34;&gt;&lt;a href=&#34;https://blog.risingstack.com/mastering-async-await-in-nodejs/&#34;&gt;https://blog.risingstack.com/mastering-async-await-in-nodejs/&lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
   </channel>

@@ -14,7 +14,7 @@ In this blog post, we will create a slim, production ready docker image for a re
 </figure>
 
 
-To do so, we will leverage <a href="https://docs.docker.com/develop/develop-images/multistage-build/" target="_blank">multi-staged</a> docker builds and to keep the image size smaller, we will use <a href="https://github.com/docker-library/docs/blob/master/.template-helpers/variant-alpine.md" target="_blank">alpine variant</a> of popular docker containers.
+To do so, we will leverage <a href="https://docs.docker.com/develop/develop-images/multistage-build/" target="_blank">multi-staged</a> docker builds and to keep the image size smaller, we will use <a href="https://github.com/docker-library/docs/blob/master/.template-helpers/variant-alpine.md" target="_blank">alpine variant</a> of popular docker images.
 
 Let's get started.
 
@@ -36,9 +36,9 @@ build
 
 ### Create a Dockerfile
 
-Docker image instructions are stored in a file called `Dockerfile`. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output. 
+Instructions for creating docker image are stored in a file called `Dockerfile`. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output. 
 
-For us, the first stage is going to be a node process that installs dependencies and then does builds react applications using something along the lines of `npm install && npm run build`. These instructions are pretty straightforward and React developers should feel right at home.
+For us, the first stage is going to be a node process that installs dependencies and then builds the react applications using something along the lines of `npm install && npm run build`. These instructions are pretty straightforward and React developers should feel right at home.
 
 Let's see how the first stage looks like in a Dockerfile:
 
@@ -55,13 +55,13 @@ COPY . .
 RUN npm run build
 ```
 
-This set of instructions in the Dockerfile describes our first stage called the build_stage in this case.
+This set of instructions in the Dockerfile describes our first stage called the build_stage.
 
-What we did here was copy package-lock and `package.json` first and then run `npm ci`. We used `npm ci` instead of `npm install` because npm ci does a few more checks and makes sure the dependencies installed are from the lock file. This helps prevent accident upgrades of packages leading to breaking changes. If there's a discrepancy between lock and package.json, `npm ci` may choose to fail which helps catch errors earlier our build process. 
+What we did here was copy package-lock and `package.json` first and then run `npm ci`. We used `npm ci` instead of `npm install` because npm ci does a few more checks and makes sure the dependencies installed are from the lock file. This helps prevent accident upgrades of packages leading to breaking changes. If there's a discrepancy between lock and package.json, `npm ci` may choose to fail which helps catch errors earlier in the build process. 
 
-After dependencies are installed, we make sure that source code for the application is available to the build stage by copying current directory into the container. `.dockerignore` also comes into play. Instructions like `COPY . .` use `.dockerignore` to skip copying files and folders into the container.
+After dependencies are installed, we make sure that source code for the application is available to the build stage by copying current directory into the container. `.dockerignore` also comes into play here. Instructions like `COPY . .` use `.dockerignore` to skip copying files and folders into the container.
 
-And finally we ran the `npm run build` which creates the distribution bundle for our react application in `build` directory.
+And finally we run the `npm run build` command which creates the distribution bundle for our react application in the `build` directory.
 
 Next, let's create the second stage of our multi-stage Dockerfile
 
@@ -75,21 +75,19 @@ CMD ["nginx", "-g", "daemon off;"]
 
 We have used `nginx:stable-alpine` as the base image for the next stage because this is the production stage that exposes our application to the web. The alpine variant makes sure we get super slim build images, which can reduce network bandwidth, docker repository storage costs and in some cases increase the performance of containers.
 
-We copy the outcome of `build_stage` i.e. our react application bundles into nginx's html directory; then expose port 80 and setup a command to be executed when the container is spun off. At this point, the first stage i.e. `build_stage` is discarded and the final docker image only includes whatever we did with the `prod_stage`.
+We copy the outcome of `build_stage` i.e. our react application bundles into nginx's html directory; then expose port 80 and setup a command to be executed when the container is spun off. At this point, the first stage i.e. `build_stage` is discarded and the final docker image only includes whatever we did within the final stage i.e. the `prod_stage`.
 
 And that's it.
 
 To build, run the docker build command:
 
-```
+`
 docker build -t react-starter-2020:latest .
-```
+`
 
 And to run the application:
 
-```
-docker run -p 9090:80 react-starter-2020
-```
+`docker run -p 9090:80 react-starter-2020`
 
 With that, we are able to build production ready docker image for our react application. The docker image size for me  `25.9 MB`. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - https://github.com/androidfanatic/react-starter-2020. 
 
