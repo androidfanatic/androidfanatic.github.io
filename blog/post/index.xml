@@ -36,7 +36,7 @@
 &lt;pre&gt;&lt;code&gt;node_modules
 build
 &lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;create-a-dockerfile&#34;&gt;Create a Dockerfile&lt;/h3&gt;
-&lt;p&gt;Instructions for creating docker image are stored in a file called &lt;code&gt;Dockerfile&lt;/code&gt;. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output.&lt;/p&gt;
+&lt;p&gt;Instructions for creating docker images are stored in a file called &lt;code&gt;Dockerfile&lt;/code&gt;. We are going to use multi-staged builds which means our Dockerfile will include two or more stages i.e. parts of the build process than can be discarded after producing some output.&lt;/p&gt;
 &lt;p&gt;For us, the first stage is going to be a node process that installs dependencies and then builds the react applications using something along the lines of &lt;code&gt;npm install &amp;amp;&amp;amp; npm run build&lt;/code&gt;. These instructions are pretty straightforward and React developers should feel right at home.&lt;/p&gt;
 &lt;p&gt;Let&amp;rsquo;s see how the first stage looks like in a Dockerfile:&lt;/p&gt;
 &lt;h4 id=&#34;dockerfile&#34;&gt;&lt;strong&gt;Dockerfile&lt;/strong&gt;&lt;/h4&gt;
@@ -49,8 +49,8 @@ RUN npm ci
 COPY . .
 RUN npm run build
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;This set of instructions in the Dockerfile describes our first stage called the build_stage.&lt;/p&gt;
-&lt;p&gt;What we did here was copy package-lock and &lt;code&gt;package.json&lt;/code&gt; first and then run &lt;code&gt;npm ci&lt;/code&gt;. We used &lt;code&gt;npm ci&lt;/code&gt; instead of &lt;code&gt;npm install&lt;/code&gt; because npm ci does a few more checks and makes sure the dependencies installed are from the lock file. This helps prevent accident upgrades of packages leading to breaking changes. If there&amp;rsquo;s a discrepancy between lock and package.json, &lt;code&gt;npm ci&lt;/code&gt; may choose to fail which helps catch errors earlier in the build process.&lt;/p&gt;
-&lt;p&gt;After dependencies are installed, we make sure that source code for the application is available to the build stage by copying current directory into the container. &lt;code&gt;.dockerignore&lt;/code&gt; also comes into play here. Instructions like &lt;code&gt;COPY . .&lt;/code&gt; use &lt;code&gt;.dockerignore&lt;/code&gt; to skip copying files and folders into the container.&lt;/p&gt;
+&lt;p&gt;What we did here was copy package-lock and &lt;code&gt;package.json&lt;/code&gt; first and then run &lt;code&gt;npm ci&lt;/code&gt;. We used &lt;code&gt;npm ci&lt;/code&gt; instead of &lt;code&gt;npm install&lt;/code&gt; because npm ci does a few more checks and makes sure the dependencies installed are from the lock file. This helps prevent accidental upgrades of packages leading to breaking changes. If there&amp;rsquo;s a discrepancy between lock and package.json, &lt;code&gt;npm ci&lt;/code&gt; may choose to fail which helps catch errors earlier in the build process.&lt;/p&gt;
+&lt;p&gt;After dependencies are installed, we make sure that the source code for the application is available to the build stage by copying current directory into the container. &lt;code&gt;.dockerignore&lt;/code&gt; also comes into play here. Instructions like &lt;code&gt;COPY . .&lt;/code&gt; use &lt;code&gt;.dockerignore&lt;/code&gt; to skip copying ignored files and folders into the container.&lt;/p&gt;
 &lt;p&gt;And finally we run the &lt;code&gt;npm run build&lt;/code&gt; command which creates the distribution bundle for our react application in the &lt;code&gt;build&lt;/code&gt; directory.&lt;/p&gt;
 &lt;p&gt;Next, let&amp;rsquo;s create the second stage of our multi-stage Dockerfile&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;# deploy
@@ -65,7 +65,7 @@ CMD [&amp;quot;nginx&amp;quot;, &amp;quot;-g&amp;quot;, &amp;quot;daemon off;&am
 &lt;pre&gt;&lt;code&gt;docker build -t react-starter-2020:latest .
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And to run the application:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;docker run -p 9090:80 react-starter-2020
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me  &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;.&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;With that, we are able to build production ready docker image for our react application. The docker image size for me is &lt;code&gt;25.9 MB&lt;/code&gt;. This can vary depending on bundles sizes, assets etc. You can also checkout relevant sources on my Github - &lt;a href=&#34;https://github.com/androidfanatic/react-starter-2020&#34;&gt;https://github.com/androidfanatic/react-starter-2020&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Thanks for reading.&lt;/p&gt;
 </description>
     </item>
