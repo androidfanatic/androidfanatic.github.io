@@ -13,6 +13,112 @@
     
     
     <item>
+      <title>Blinking Lights with NodeMCU</title>
+      <link>https://manishraj.dev/blog/post/blinking-lights/</link>
+      <pubDate>Sun, 31 Oct 2021 00:03:37 +0530</pubDate>
+      
+      <guid>https://manishraj.dev/blog/post/blinking-lights/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Diwali&#34; target=&#34;_blank&#34;&gt;Diwali&lt;/a&gt;, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.&lt;/p&gt;
+&lt;figure style=&#34;width: 60%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
+  &lt;img src=&#34;https://manishraj.dev/blog/img/10/blinking_lights.png&#34; title=&#34;Blinking LED strips&#34;  &gt;
+  &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
+    Blinking LED strips
+  &lt;figcaption&gt;
+&lt;/figure&gt;
+&lt;h3 id=&#34;things-that-wed-need&#34;&gt;Things that we&amp;rsquo;d need:&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;NodeMCU v1.0&lt;/li&gt;
+&lt;li&gt;5v powered led strip - the power rating here is important because we will power the led strip using NodeMCU&lt;/li&gt;
+&lt;li&gt;Few connecting wires&lt;/li&gt;
+&lt;li&gt;Digital Multimeter&lt;/li&gt;
+&lt;/ul&gt;
+&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&amp;OneJS=1&amp;Operation=GetAdHtml&amp;MarketPlace=IN&amp;source=ss&amp;ref=as_ss_li_til&amp;ad_type=product_link&amp;tracking_id=technoslab03-21&amp;language=en_IN&amp;marketplace=amazon&amp;region=IN&amp;placement=B07262H53W&amp;asins=B07262H53W&amp;linkId=8a4e40856749d20d2dce7b2a0f14f1f6&amp;show_border=true&amp;link_opens_in_new_window=true&#34;&gt;&lt;/iframe&gt;
+&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&amp;OneJS=1&amp;Operation=GetAdHtml&amp;MarketPlace=IN&amp;source=ss&amp;ref=as_ss_li_til&amp;ad_type=product_link&amp;tracking_id=technoslab03-21&amp;language=en_IN&amp;marketplace=amazon&amp;region=IN&amp;placement=B07DYHLFH3&amp;asins=B07DYHLFH3&amp;linkId=2ea93063a1246a7efa6a5dcbdd7616c5&amp;show_border=true&amp;link_opens_in_new_window=true&#34;&gt;&lt;/iframe&gt;
+&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&amp;OneJS=1&amp;Operation=GetAdHtml&amp;MarketPlace=IN&amp;source=ss&amp;ref=as_ss_li_til&amp;ad_type=product_link&amp;tracking_id=technoslab03-21&amp;language=en_IN&amp;marketplace=amazon&amp;region=IN&amp;placement=B00ZYFX6A2&amp;asins=B00ZYFX6A2&amp;linkId=a14689e514eee23e658fd4b2ecee1c2b&amp;show_border=true&amp;link_opens_in_new_window=true&#34;&gt;&lt;/iframe&gt;
+&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&amp;OneJS=1&amp;Operation=GetAdHtml&amp;MarketPlace=IN&amp;source=ss&amp;ref=as_ss_li_til&amp;ad_type=product_link&amp;tracking_id=technoslab03-21&amp;language=en_IN&amp;marketplace=amazon&amp;region=IN&amp;placement=B07KK5LZBK&amp;asins=B07KK5LZBK&amp;linkId=79ac4911e6a1d003a766243788cf137e&amp;show_border=true&amp;link_opens_in_new_window=true&#34;&gt;&lt;/iframe&gt;
+&lt;h3 id=&#34;lets-begin&#34;&gt;Let&amp;rsquo;s begin:&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Let&amp;rsquo;s begin by setting up NodeMCU. You&amp;rsquo;d need a micro-USB data cable and connect it to your computer. A quick note here: the cable has to be a micro-USB data cable and not a charging cable because charging cables sometimes do not include data lines and that&amp;rsquo;d make your system power the nodeMCU but won&amp;rsquo;t recognize it for programming.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Setup CP2102 drivers so that your computer can recognize NodeMCU. My operating system (Ubuntu 20.04) already includes these drivers so I didn&amp;rsquo;t need to do this step. The drivers can be downloaded fro here (go to downloads tab): &lt;a href=&#34;https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers&#34;&gt;https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Install Arduino IDE: &lt;a href=&#34;https://www.arduino.cc/en/software/&#34;&gt;https://www.arduino.cc/en/software/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Setup Arduino for NodeMCU development:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Go to File &amp;gt; Preferences &amp;gt; Additional Board Manager URL and add this URL in the input field:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http://arduino.esp8266.com/stable/package_esp8266com_index.json&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Go to Tools &amp;gt; Board &amp;gt; Board Managers and search for ESP8266 by ESP8266 community and add it&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Go to Tools &amp;gt; Board &amp;gt; ESP8266 &amp;gt; NodeMCU v1.0&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Ensure that the NodeMCU microUSB cable is plugged into the system and then go to Tools &amp;gt; Port &amp;gt; Select your NodeMCU port here. This was &lt;code&gt;ttyUSB0&lt;/code&gt; for me. Ensure the NodeMCU is detected by using commands like &lt;code&gt;lsusb&lt;/code&gt; and &lt;code&gt;dmesg -w&lt;/code&gt; to watch for activity on the USB port&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Once connected, let&amp;rsquo;s begin programming. Start a new sketch with the following code:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;color:#586e75&#34;&gt;// data 0 pin
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;#define LED D0
+&lt;/span&gt;&lt;span style=&#34;color:#719e07&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color:#586e75&#34;&gt;// setup for digital write
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;setup&lt;/span&gt;(&lt;span style=&#34;color:#dc322f&#34;&gt;void&lt;/span&gt;)
+{
+  pinMode(LED, OUTPUT);  
+}
+
+&lt;span style=&#34;color:#586e75&#34;&gt;// turn the LED on and off
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;loop&lt;/span&gt;()
+{
+  digitalWrite(LED, HIGH);
+  delay(random(&lt;span style=&#34;color:#2aa198&#34;&gt;100&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;1000&lt;/span&gt;)); &lt;span style=&#34;color:#586e75&#34;&gt;// random deley
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;  digitalWrite(LED, LOW);
+  delay(random(&lt;span style=&#34;color:#2aa198&#34;&gt;100&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;1000&lt;/span&gt;)); &lt;span style=&#34;color:#586e75&#34;&gt;// random delay
+&lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Compile and burn the sketch to NodeMCU and this should set the &lt;code&gt;D0&lt;/code&gt; to high and low after random time intervals. To quickly debug this, I connected a LED to &lt;code&gt;D0&lt;/code&gt; and &lt;code&gt;GND&lt;/code&gt; using a pair of connecting wires.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In this following, we will connect the led strip to &lt;code&gt;D0&lt;/code&gt; and &lt;code&gt;GND&lt;/code&gt;. The LED strip that I used runs on 5V power, using a USB adapter and we will use this fact, to power the entire strip using NodeMCU, which also emits 5V on it&amp;rsquo;s data pins. The LED strip uses enameled copper wire i.e. the two copper wires run in parallel and have a very fine, invisible insulation that prevents the &lt;code&gt;VCC&lt;/code&gt; and &lt;code&gt;GND&lt;/code&gt; cables from touching and short-circuiting the entire strip.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;At the base of the LED string, identify and separate out the copper cables and the scrape-off the thin, invisible insulation using a knife or some sharp tool. At this point, make sure the two copper wires do not touch each other.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Use a digital multimeter to identify the live and ground wire. You can mark one of the cables using tape or color pens, to remember which one is ground wire. Now cut the cables at base and connect live and ground wire to &lt;code&gt;GND&lt;/code&gt; and &lt;code&gt;D0&lt;/code&gt; of the NodeMCU, using connecting wires.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure style=&#34;width: 50%; margin: auto; display: block; margin-bottom: 8px;&#34;&gt;
+  &lt;img src=&#34;https://manishraj.dev/blog/img/10/led_strip.jpeg&#34; title=&#34;LED strip connection&#34;  &gt;
+  &lt;figcaption style=&#34;font-size: 11px&#34;&gt;
+    LED strip connection
+  &lt;figcaption&gt;
+&lt;/figure&gt;
+&lt;ol start=&#34;10&#34;&gt;
+&lt;li&gt;
+&lt;p&gt;Power-up the NodeMCU and you should&amp;rsquo;ve a blinking led strip.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Play with the code to change the blinking pattern or add another strip, to another data pin and make more blinking patterns.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Thanks for reading and Happy Diwali! :)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Creating slim docker images for react apps</title>
       <link>https://manishraj.dev/blog/post/react-slim-builds/</link>
       <pubDate>Fri, 28 Feb 2020 00:21:37 +0530</pubDate>

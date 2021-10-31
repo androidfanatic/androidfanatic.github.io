@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+        
+<meta charset="utf-8">
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer-when-downgrade">
+
+<title>Blinking Lights with NodeMCU  - Blog</title>
+<meta name="description" content="">
+
+<link rel="alternate" type="application/rss+xml" title="RSS" href="https://manishraj.dev/blog/rss/">
+
+<link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
+<link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
+
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1635666565" />
+
+<meta property="og:title" content="Blinking Lights with NodeMCU" />
+<meta property="og:description" content="Diwali, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.
+Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led strip - the power rating here is important because we will power the led strip using NodeMCU Few connecting wires Digital Multimeter      Let&rsquo;s begin:   Let&rsquo;s begin by setting up NodeMCU." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://manishraj.dev/blog/post/blinking-lights/" />
+<meta property="article:published_time" content="2021-10-31T00:03:37+05:30" />
+<meta property="article:modified_time" content="2021-10-31T00:03:37+05:30" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Blinking Lights with NodeMCU"/>
+<meta name="twitter:description" content="Diwali, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.
+Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led strip - the power rating here is important because we will power the led strip using NodeMCU Few connecting wires Digital Multimeter      Let&rsquo;s begin:   Let&rsquo;s begin by setting up NodeMCU."/>
+
+
+
+
+
+
+    
+</head>
+<body>
+    <div class="container">
+        <header> 
+            
+                <h1 class="site-header">
+    <a href="https://manishraj.dev/blog/">Blog</a>
+</h1>
+<nav>
+    
+    
+    <a class="" href="https://manishraj.dev/" title="">Home</a>
+    
+    <a class="" href="https://manishraj.dev/blog/post/" title="">Posts</a>
+    
+</nav>
+
+            
+        </header>
+        <main>
+            
+
+    <article class="post">
+        <header>
+            <h1>Blinking Lights with NodeMCU</h1>
+        </header>
+        <div class="content">
+            <p><a href="https://en.wikipedia.org/wiki/Diwali" target="_blank">Diwali</a>, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.</p>
+<figure style="width: 60%; margin: auto; display: block; margin-bottom: 8px;">
+  <img src="https://manishraj.dev/blog/img/10/blinking_lights.png" title="Blinking LED strips"  >
+  <figcaption style="font-size: 11px">
+    Blinking LED strips
+  <figcaption>
+</figure>
+<h3 id="things-that-wed-need">Things that we&rsquo;d need:</h3>
+<ul>
+<li>NodeMCU v1.0</li>
+<li>5v powered led strip - the power rating here is important because we will power the led strip using NodeMCU</li>
+<li>Few connecting wires</li>
+<li>Digital Multimeter</li>
+</ul>
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=technoslab03-21&language=en_IN&marketplace=amazon&region=IN&placement=B07262H53W&asins=B07262H53W&linkId=8a4e40856749d20d2dce7b2a0f14f1f6&show_border=true&link_opens_in_new_window=true"></iframe>
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=technoslab03-21&language=en_IN&marketplace=amazon&region=IN&placement=B07DYHLFH3&asins=B07DYHLFH3&linkId=2ea93063a1246a7efa6a5dcbdd7616c5&show_border=true&link_opens_in_new_window=true"></iframe>
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=technoslab03-21&language=en_IN&marketplace=amazon&region=IN&placement=B00ZYFX6A2&asins=B00ZYFX6A2&linkId=a14689e514eee23e658fd4b2ecee1c2b&show_border=true&link_opens_in_new_window=true"></iframe>
+<iframe style="width:120px;height:240px;" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" src="//ws-in.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&OneJS=1&Operation=GetAdHtml&MarketPlace=IN&source=ss&ref=as_ss_li_til&ad_type=product_link&tracking_id=technoslab03-21&language=en_IN&marketplace=amazon&region=IN&placement=B07KK5LZBK&asins=B07KK5LZBK&linkId=79ac4911e6a1d003a766243788cf137e&show_border=true&link_opens_in_new_window=true"></iframe>
+<h3 id="lets-begin">Let&rsquo;s begin:</h3>
+<ol>
+<li>
+<p>Let&rsquo;s begin by setting up NodeMCU. You&rsquo;d need a micro-USB data cable and connect it to your computer. A quick note here: the cable has to be a micro-USB data cable and not a charging cable because charging cables sometimes do not include data lines and that&rsquo;d make your system power the nodeMCU but won&rsquo;t recognize it for programming.</p>
+</li>
+<li>
+<p>Setup CP2102 drivers so that your computer can recognize NodeMCU. My operating system (Ubuntu 20.04) already includes these drivers so I didn&rsquo;t need to do this step. The drivers can be downloaded fro here (go to downloads tab): <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers">https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers</a></p>
+</li>
+<li>
+<p>Install Arduino IDE: <a href="https://www.arduino.cc/en/software/">https://www.arduino.cc/en/software/</a></p>
+</li>
+<li>
+<p>Setup Arduino for NodeMCU development:</p>
+<ul>
+<li>
+<p>Go to File &gt; Preferences &gt; Additional Board Manager URL and add this URL in the input field:</p>
+<p><code>http://arduino.esp8266.com/stable/package_esp8266com_index.json</code></p>
+</li>
+<li>
+<p>Go to Tools &gt; Board &gt; Board Managers and search for ESP8266 by ESP8266 community and add it</p>
+</li>
+<li>
+<p>Go to Tools &gt; Board &gt; ESP8266 &gt; NodeMCU v1.0</p>
+</li>
+<li>
+<p>Ensure that the NodeMCU microUSB cable is plugged into the system and then go to Tools &gt; Port &gt; Select your NodeMCU port here. This was <code>ttyUSB0</code> for me. Ensure the NodeMCU is detected by using commands like <code>lsusb</code> and <code>dmesg -w</code> to watch for activity on the USB port</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Once connected, let&rsquo;s begin programming. Start a new sketch with the following code:</p>
+</li>
+</ol>
+<div class="highlight"><pre style="color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#586e75">// data 0 pin
+</span><span style="color:#586e75"></span><span style="color:#719e07">#define LED D0
+</span><span style="color:#719e07"></span>
+<span style="color:#586e75">// setup for digital write
+</span><span style="color:#586e75"></span><span style="color:#dc322f">void</span> <span style="color:#268bd2">setup</span>(<span style="color:#dc322f">void</span>)
+{
+  pinMode(LED, OUTPUT);  
+}
+
+<span style="color:#586e75">// turn the LED on and off
+</span><span style="color:#586e75"></span><span style="color:#dc322f">void</span> <span style="color:#268bd2">loop</span>()
+{
+  digitalWrite(LED, HIGH);
+  delay(random(<span style="color:#2aa198">100</span>, <span style="color:#2aa198">1000</span>)); <span style="color:#586e75">// random deley
+</span><span style="color:#586e75"></span>  digitalWrite(LED, LOW);
+  delay(random(<span style="color:#2aa198">100</span>, <span style="color:#2aa198">1000</span>)); <span style="color:#586e75">// random delay
+</span><span style="color:#586e75"></span>}
+</code></pre></div><ol start="6">
+<li>
+<p>Compile and burn the sketch to NodeMCU and this should set the <code>D0</code> to high and low after random time intervals. To quickly debug this, I connected a LED to <code>D0</code> and <code>GND</code> using a pair of connecting wires.</p>
+</li>
+<li>
+<p>In this following, we will connect the led strip to <code>D0</code> and <code>GND</code>. The LED strip that I used runs on 5V power, using a USB adapter and we will use this fact, to power the entire strip using NodeMCU, which also emits 5V on it&rsquo;s data pins. The LED strip uses enameled copper wire i.e. the two copper wires run in parallel and have a very fine, invisible insulation that prevents the <code>VCC</code> and <code>GND</code> cables from touching and short-circuiting the entire strip.</p>
+</li>
+<li>
+<p>At the base of the LED string, identify and separate out the copper cables and the scrape-off the thin, invisible insulation using a knife or some sharp tool. At this point, make sure the two copper wires do not touch each other.</p>
+</li>
+<li>
+<p>Use a digital multimeter to identify the live and ground wire. You can mark one of the cables using tape or color pens, to remember which one is ground wire. Now cut the cables at base and connect live and ground wire to <code>GND</code> and <code>D0</code> of the NodeMCU, using connecting wires.</p>
+</li>
+</ol>
+<figure style="width: 50%; margin: auto; display: block; margin-bottom: 8px;">
+  <img src="https://manishraj.dev/blog/img/10/led_strip.jpeg" title="LED strip connection"  >
+  <figcaption style="font-size: 11px">
+    LED strip connection
+  <figcaption>
+</figure>
+<ol start="10">
+<li>
+<p>Power-up the NodeMCU and you should&rsquo;ve a blinking led strip.</p>
+</li>
+<li>
+<p>Play with the code to change the blinking pattern or add another strip, to another data pin and make more blinking patterns.</p>
+</li>
+</ol>
+<p>Thanks for reading and Happy Diwali! :)</p>
+
+        </div>
+        <div class="article-info">
+    
+        <div class="article-date">2021-10-31</div>
+    
+    <div class="article-taxonomies">
+        
+            
+    </div>
+</div>
+    </article>
+    
+
+
+        </main>
+        <footer>
+            
+                <p>© 2021<br>
+Powered by <a target="_blank" href="https://gohugo.io/">Hugo</a>, theme <a target="_blank" href="https://github.com/mitrichius/hugo-theme-anubis">Anubis</a>.
+</p>
+            
+        </footer>
+    </div>
+</body>
+</html>

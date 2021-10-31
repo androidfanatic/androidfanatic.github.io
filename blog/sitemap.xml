@@ -3,12 +3,17 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://manishraj.dev/blog/post/react-slim-builds/</loc>
-    <lastmod>2020-02-28T00:21:37+05:30</lastmod>
+    <loc>https://manishraj.dev/blog/post/blinking-lights/</loc>
+    <lastmod>2021-10-31T00:03:37+05:30</lastmod>
   </url>
   
   <url>
     <loc>https://manishraj.dev/blog/post/</loc>
+    <lastmod>2021-10-31T00:03:37+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://manishraj.dev/blog/post/react-slim-builds/</loc>
     <lastmod>2020-02-28T00:21:37+05:30</lastmod>
   </url>
   
