@@ -16,11 +16,11 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1635666677" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1635667156" />
 
 <meta property="og:title" content="Blinking Lights with NodeMCU" />
-<meta property="og:description" content="Diwali, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.
-Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led strip - the power rating here is important because we will power the led strip using NodeMCU Few connecting wires Digital Multimeter      Let&rsquo;s begin:   Let&rsquo;s begin by setting up NodeMCU." />
+<meta property="og:description" content="Diwali, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the NodeMCU to blink some led lights or rather led strips.
+Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led strip - the power rating here is important because we will power the led strip using NodeMCU Few connecting wires Digital Multimeter      Let&rsquo;s begin:   Let&rsquo;s begin by setting up the NodeMCU." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://manishraj.dev/blog/post/blinking-lights/" />
 <meta property="article:published_time" content="2021-10-31T00:03:37+05:30" />
@@ -28,8 +28,8 @@ Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led 
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Blinking Lights with NodeMCU"/>
-<meta name="twitter:description" content="Diwali, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.
-Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led strip - the power rating here is important because we will power the led strip using NodeMCU Few connecting wires Digital Multimeter      Let&rsquo;s begin:   Let&rsquo;s begin by setting up NodeMCU."/>
+<meta name="twitter:description" content="Diwali, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the NodeMCU to blink some led lights or rather led strips.
+Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led strip - the power rating here is important because we will power the led strip using NodeMCU Few connecting wires Digital Multimeter      Let&rsquo;s begin:   Let&rsquo;s begin by setting up the NodeMCU."/>
 
 
 
@@ -64,7 +64,7 @@ Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led 
             <h1>Blinking Lights with NodeMCU</h1>
         </header>
         <div class="content">
-            <p><a href="https://en.wikipedia.org/wiki/Diwali" target="_blank">Diwali</a>, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.</p>
+            <p><a href="https://en.wikipedia.org/wiki/Diwali" target="_blank">Diwali</a>, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the NodeMCU to blink some led lights or rather led strips.</p>
 <figure style="width: 60%; margin: auto; display: block; margin-bottom: 8px;">
   <img src="https://manishraj.dev/blog/img/10/blinking_lights.png" title="Blinking LED strips"  >
   <figcaption style="font-size: 11px">
@@ -85,13 +85,14 @@ Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led 
 <h3 id="lets-begin">Let&rsquo;s begin:</h3>
 <ol>
 <li>
-<p>Let&rsquo;s begin by setting up NodeMCU. You&rsquo;d need a micro-USB data cable and connect it to your computer. A quick note here: the cable has to be a micro-USB data cable and not a charging cable because charging cables sometimes do not include data lines and that&rsquo;d make your system power the nodeMCU but won&rsquo;t recognize it for programming.</p>
+<p>Let&rsquo;s begin by setting up the NodeMCU. You&rsquo;d need a micro-USB data cable and connect it to your computer.</p>
+<p>A quick note here: the cable has to be a micro-USB data cable and not a charging cable because charging cables sometimes do not include data lines and that&rsquo;d make your system power the NodeMCU but won&rsquo;t recognize it for programming.</p>
 </li>
 <li>
-<p>Setup CP2102 drivers so that your computer can recognize NodeMCU. My operating system (Ubuntu 20.04) already includes these drivers so I didn&rsquo;t need to do this step. The drivers can be downloaded fro here (go to downloads tab): <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers">https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers</a></p>
+<p>Setup CP2102 drivers so that your computer can recognize the NodeMCU. My operating system (Ubuntu 20.04) already includes these drivers so I didn&rsquo;t need to do this step. The drivers can be downloaded from here (go to downloads tab and this may required signing up): <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank"><a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers">https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers</a></a></p>
 </li>
 <li>
-<p>Install Arduino IDE: <a href="https://www.arduino.cc/en/software/">https://www.arduino.cc/en/software/</a></p>
+<p>Install Arduino IDE: <a href="https://www.arduino.cc/en/software/" target="_blank"><a href="https://www.arduino.cc/en/software/">https://www.arduino.cc/en/software/</a></a></p>
 </li>
 <li>
 <p>Setup Arduino for NodeMCU development:</p>
@@ -137,7 +138,7 @@ Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led 
 <p>Compile and burn the sketch to NodeMCU and this should set the <code>D0</code> to high and low after random time intervals. To quickly debug this, I connected a LED to <code>D0</code> and <code>GND</code> using a pair of connecting wires.</p>
 </li>
 <li>
-<p>In this following, we will connect the led strip to <code>D0</code> and <code>GND</code>. The LED strip that I used runs on 5V power, using a USB adapter and we will use this fact, to power the entire strip using NodeMCU, which also emits 5V on it&rsquo;s data pins. The LED strip uses enameled copper wire i.e. the two copper wires run in parallel and have a very fine, invisible insulation that prevents the <code>VCC</code> and <code>GND</code> cables from touching and short-circuiting the entire strip.</p>
+<p>In the following steps, we will connect the led strip to <code>D0</code> and <code>GND</code>. The LED strip that I used runs on 5V power, using a USB adapter and we will use this fact, to power the entire strip using NodeMCU, which also emits 5V on it&rsquo;s data pins. The LED strip uses enameled copper wire i.e. the two copper wires run in parallel and have a very fine, invisible insulation that prevents the <code>VCC</code> and <code>GND</code> cables from touching and short-circuiting the entire strip.</p>
 </li>
 <li>
 <p>At the base of the LED string, identify and separate out the copper cables and the scrape-off the thin, invisible insulation using a knife or some sharp tool. At this point, make sure the two copper wires do not touch each other.</p>

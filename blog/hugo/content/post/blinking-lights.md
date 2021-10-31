@@ -4,7 +4,7 @@ date: 2021-10-31T00:03:37+05:30
 draft: false
 ---
 
-<a href="https://en.wikipedia.org/wiki/Diwali" target="_blank">Diwali</a>, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.
+<a href="https://en.wikipedia.org/wiki/Diwali" target="_blank">Diwali</a>, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the NodeMCU to blink some led lights or rather led strips.
 
 <figure style="width: 60%; margin: auto; display: block; margin-bottom: 8px;">
   <img src="/img/10/blinking_lights.png" title="Blinking LED strips"  >
@@ -30,11 +30,13 @@ draft: false
 
 ### Let's begin:
 
-1. Let's begin by setting up NodeMCU. You'd need a micro-USB data cable and connect it to your computer. A quick note here: the cable has to be a micro-USB data cable and not a charging cable because charging cables sometimes do not include data lines and that'd make your system power the nodeMCU but won't recognize it for programming.
+1. Let's begin by setting up the NodeMCU. You'd need a micro-USB data cable and connect it to your computer. 
 
-2. Setup CP2102 drivers so that your computer can recognize NodeMCU. My operating system (Ubuntu 20.04) already includes these drivers so I didn't need to do this step. The drivers can be downloaded fro here (go to downloads tab): https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers
+   A quick note here: the cable has to be a micro-USB data cable and not a charging cable because charging cables sometimes do not include data lines and that'd make your system power the NodeMCU but won't recognize it for programming.
 
-3. Install Arduino IDE: https://www.arduino.cc/en/software/
+2. Setup CP2102 drivers so that your computer can recognize the NodeMCU. My operating system (Ubuntu 20.04) already includes these drivers so I didn't need to do this step. The drivers can be downloaded from here (go to downloads tab and this may required signing up): <a href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers" target="_blank">https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers</a>
+
+3. Install Arduino IDE: <a href="https://www.arduino.cc/en/software/" target="_blank">https://www.arduino.cc/en/software/</a>
 
 4. Setup Arduino for NodeMCU development:
     -  Go to File > Preferences > Additional Board Manager URL and add this URL in the input field:
@@ -71,7 +73,7 @@ void loop()
 
 6. Compile and burn the sketch to NodeMCU and this should set the `D0` to high and low after random time intervals. To quickly debug this, I connected a LED to `D0` and `GND` using a pair of connecting wires.
 
-7. In this following, we will connect the led strip to `D0` and `GND`. The LED strip that I used runs on 5V power, using a USB adapter and we will use this fact, to power the entire strip using NodeMCU, which also emits 5V on it's data pins. The LED strip uses enameled copper wire i.e. the two copper wires run in parallel and have a very fine, invisible insulation that prevents the `VCC` and `GND` cables from touching and short-circuiting the entire strip. 
+7. In the following steps, we will connect the led strip to `D0` and `GND`. The LED strip that I used runs on 5V power, using a USB adapter and we will use this fact, to power the entire strip using NodeMCU, which also emits 5V on it's data pins. The LED strip uses enameled copper wire i.e. the two copper wires run in parallel and have a very fine, invisible insulation that prevents the `VCC` and `GND` cables from touching and short-circuiting the entire strip. 
 
 8. At the base of the LED string, identify and separate out the copper cables and the scrape-off the thin, invisible insulation using a knife or some sharp tool. At this point, make sure the two copper wires do not touch each other. 
 
