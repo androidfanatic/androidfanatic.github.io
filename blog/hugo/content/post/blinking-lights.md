@@ -63,7 +63,7 @@ void setup(void)
 void loop()
 {
   digitalWrite(LED, HIGH);
-  delay(random(100, 1000)); // random deley
+  delay(random(100, 1000)); // random delay
   digitalWrite(LED, LOW);
   delay(random(100, 1000)); // random delay
 }

@@ -16,7 +16,7 @@
 <link rel="icon" type="image/x-icon" href="https://manishraj.dev/blog/favicon.ico">
 <link rel="apple-touch-icon-precomposed" href="https://manishraj.dev/blog/favicon.png">
 
-<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1635666565" />
+<link rel="stylesheet" href="https://manishraj.dev/blog/css/style.css?rnd=1635666677" />
 
 <meta property="og:title" content="Blinking Lights with NodeMCU" />
 <meta property="og:description" content="Diwali, the festival of lights, is around the corner so I decided to take the hardware box out and have some fun! In this blog post, we will setup a NodeMCU (v1.0) on a linux box and then use the digital pins of the nodemcu to blink some led lights or rather led strips.
@@ -128,7 +128,7 @@ Blinking LED strips   Things that we&rsquo;d need:  NodeMCU v1.0 5v powered led 
 </span><span style="color:#586e75"></span><span style="color:#dc322f">void</span> <span style="color:#268bd2">loop</span>()
 {
   digitalWrite(LED, HIGH);
-  delay(random(<span style="color:#2aa198">100</span>, <span style="color:#2aa198">1000</span>)); <span style="color:#586e75">// random deley
+  delay(random(<span style="color:#2aa198">100</span>, <span style="color:#2aa198">1000</span>)); <span style="color:#586e75">// random delay
 </span><span style="color:#586e75"></span>  digitalWrite(LED, LOW);
   delay(random(<span style="color:#2aa198">100</span>, <span style="color:#2aa198">1000</span>)); <span style="color:#586e75">// random delay
 </span><span style="color:#586e75"></span>}

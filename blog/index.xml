@@ -82,7 +82,7 @@
 &lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#dc322f&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#268bd2&#34;&gt;loop&lt;/span&gt;()
 {
   digitalWrite(LED, HIGH);
-  delay(random(&lt;span style=&#34;color:#2aa198&#34;&gt;100&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;1000&lt;/span&gt;)); &lt;span style=&#34;color:#586e75&#34;&gt;// random deley
+  delay(random(&lt;span style=&#34;color:#2aa198&#34;&gt;100&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;1000&lt;/span&gt;)); &lt;span style=&#34;color:#586e75&#34;&gt;// random delay
 &lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;  digitalWrite(LED, LOW);
   delay(random(&lt;span style=&#34;color:#2aa198&#34;&gt;100&lt;/span&gt;, &lt;span style=&#34;color:#2aa198&#34;&gt;1000&lt;/span&gt;)); &lt;span style=&#34;color:#586e75&#34;&gt;// random delay
 &lt;/span&gt;&lt;span style=&#34;color:#586e75&#34;&gt;&lt;/span&gt;}
