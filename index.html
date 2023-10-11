@@ -3,111 +3,179 @@
   <head>
     <title>Manish Raj</title>
     <meta name="viewport" content="width=device-width" />
-    <link id="favicon" rel="shortcut icon" type="image/png" href="/images/favicon.png">
+    <link
+      id="favicon"
+      rel="shortcut icon"
+      type="image/png"
+      href="/images/favicon.png"
+    />
     <style>
-    html, body {
-      padding: 0;
-      margin: 0;
-      font-family: Verdana, Sans-Serif;
-    }
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: Verdana, Sans-Serif;
+      }
 
-    /* cards */
-    .card {
-      box-sizing: border-box;
-      height: 100vh;
-      display: grid;
-      place-items: center;
-    }
-    .card h1, h3 { margin: 0; padding: 0; font-weight: normal; }
-    .card1 { background: #fefefe; color: #434343; }
+      /* cards */
+      .card {
+        box-sizing: border-box;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+      .card h1,
+      h3 {
+        margin: 0;
+        padding: 0;
+        font-weight: normal;
+      }
+      .card1 {
+        background: #fefefe;
+        color: #434343;
+      }
 
-    /* links */
-    .link-simple { color: inherit; text-decoration: none; }
-    .link-simple:visited { color: inherit; }
+      /* links */
+      .link-simple {
+        color: inherit;
+        text-decoration: none;
+      }
+      .link-simple:visited {
+        color: inherit;
+      }
 
-    /* text */
-    .text-center { text-align: center;}
-    .text-medium { font-size: 24px; font-weight: bold; }
-    .text-large { font-size: 36px; }
-    .text-huge { font-size: 64px; }
-    .text-upper { text-transform: uppercase; }
-    a.text-underline{ position: relative; }
-    a.text-underline:after {
-      background: none repeat scroll 0 0 transparent;
-      bottom: 0;
-      content: "";
-      display: block;
-      height: 1px;
-      left: 50%;
-      position: absolute;
-      background: #434343;
-      transition: width 0.3s ease 0s, left 0.3s ease 0s;
-      width: 0;
-    }
-    a.text-underline:hover:after {
-      width: 100%;
-      left: 0;
-    }
-    .avatar {
-      width: 196px;
-      border-radius: 50%;
-      border: 4px solid #ddd;
-    }
-    .social {
-      width: 24px;
-      height: 24px;
-    }
+      /* text */
+      .text-center {
+        text-align: center;
+      }
+      .text-medium {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .text-large {
+        font-size: 36px;
+      }
+      .text-huge {
+        font-size: 64px;
+      }
+      .text-upper {
+        text-transform: uppercase;
+      }
+      a.text-underline {
+        position: relative;
+      }
+      a.text-underline:after {
+        background: none repeat scroll 0 0 transparent;
+        bottom: 0;
+        content: "";
+        display: block;
+        height: 1px;
+        left: 50%;
+        position: absolute;
+        background: #434343;
+        transition: width 0.3s ease 0s, left 0.3s ease 0s;
+        width: 0;
+      }
+      a.text-underline:hover:after {
+        width: 100%;
+        left: 0;
+      }
+      .avatar {
+        width: 196px;
+        border-radius: 50%;
+        border: 4px solid #ddd;
+      }
+      .social_row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+      .social {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+      }
     </style>
   </head>
   <body>
-      <!-- card 1 -->
-      <div class="card card1">
+    <!-- card 1 -->
+    <div class="card card1">
+      <div class="text-center">
+        <p>
+          <img
+            class="avatar"
+            src="/images/me.jpg"
+            alt="Manish Raj - profile image"
+          />
+        </p>
+        <h1 class="text-huge text-upper">Manish Raj</h1>
         <div class="text-center">
+          <p class="text-upper" style="color: #cb4b16">Fullstack Developer</p>
           <p>
-            <img class="avatar" src="/images/me.jpg" alt="Manish Raj - profile image" />
+            <a class="link-simple text-underline" href="/blog">Blog</a> |
+            <a
+              class="link-simple text-underline"
+              href="mailto:manish_raj@outlook.com"
+              title="manish_raj@outlook.com"
+              >Connect</a
+            >
           </p>
-          <h1 class="text-huge text-upper">Manish Raj</h1>
-          <div class="text-center">
-            <p class="text-upper" style="color: #cb4b16;">Fullstack Developer</p>
-            <p>
-              <a class="link-simple text-underline" href="/blog">Blog</a> |  
-              <a class="link-simple text-underline" href="mailto:manish_raj@outlook.com" title="manish_raj@outlook.com">Connect</a>
-            </p>
-            <p>
-                <a target="_blank" title="Linkedin" href="https://www.linkedin.com/in/manish-raj"><img class="social" src="https://camo.githubusercontent.com/45e6bebceba49c2cf76b1b3770b1adbe24e6c454/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f6c696e6b6564696e2e737667" /></a>
-                <a target="_blank" title="Github" href="https://github.com/androidfanatic"><img class="social" src="https://camo.githubusercontent.com/d0518022b7a02d405ad5112a0c8aa455cbfe952e/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f6769746875622e737667" /></a>
-                <a target="_blank" title="Twitter" href="https://twitter.com/manishr41883690"><img class="social" src="https://camo.githubusercontent.com/9bbddae7e626bda73c943e06b4568a7a02e193b4/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f747769747465722e737667" /></a>
-                <a target="_blank" title="Instagram" href="https://instagram.com/geek.manish"><img alt="Instagram" class="social" src="https://camo.githubusercontent.com/68ff38b86f01b428567dcc406116e23728245f4e/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f696e7374616772616d2e737667" /></a>
-              </p>
-          </div>
+          <p class="social_row">
+            <a
+              target="_blank"
+              title="Linkedin"
+              href="https://www.linkedin.com/in/manish-raj"
+              ><img
+                class="social"
+                src="https://camo.githubusercontent.com/45e6bebceba49c2cf76b1b3770b1adbe24e6c454/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f6c696e6b6564696e2e737667"
+            /></a>
+            <a
+              target="_blank"
+              title="Github"
+              href="https://github.com/androidfanatic"
+              ><img
+                class="social"
+                src="https://camo.githubusercontent.com/d0518022b7a02d405ad5112a0c8aa455cbfe952e/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f6769746875622e737667"
+            /></a>
+            <a
+              target="_blank"
+              title="Instagram"
+              href="https://instagram.com/geek.manish"
+              ><img
+                alt="Instagram"
+                class="social"
+                src="https://camo.githubusercontent.com/68ff38b86f01b428567dcc406116e23728245f4e/68747470733a2f2f6564656e742e6769746875622e696f2f537570657254696e7949636f6e732f696d616765732f7376672f696e7374616772616d2e737667"
+            /></a>
+          </p>
         </div>
       </div>
-      <script type="application/ld+json">
-          {
-            "@context": "https://schema.org",
-            "@type": "Person",
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "Hinjewadi",
-              "addressRegion": "Maharashtra, India",
-              "postalCode": "411057"
-            },
-            "email": "manish_raj@outlook.com",
-            "image": "/images/me.jpg",
-            "jobTitle": "Fullstack developer",
-            "name": "Manish Raj",
-            "alumniOf": "University of Pune",
-            "birthPlace": "Bihar",
-            "birthDate": "1993",
-            "gender": "male",
-            "nationality": "Indian",
-            "url": "https://manishraj.dev",
-            "sameAs" : [
-              "https://www.linkedin.com/in/manish-raj/",
-              "https://instagram.com/geek.manish",
-              "https://twitter.com/manishr41883690"
-            ]
-          }
-      </script>
+    </div>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hinjewadi",
+          "addressRegion": "Maharashtra, India",
+          "postalCode": "411057"
+        },
+        "email": "manish_raj@outlook.com",
+        "image": "/images/me.jpg",
+        "jobTitle": "Fullstack developer",
+        "name": "Manish Raj",
+        "alumniOf": "University of Pune",
+        "birthPlace": "Bihar",
+        "birthDate": "1993",
+        "gender": "male",
+        "nationality": "Indian",
+        "url": "https://manishraj.dev",
+        "sameAs": [
+          "https://www.linkedin.com/in/manish-raj/",
+          "https://instagram.com/geek.manish",
+          "https://twitter.com/manishr41883690"
+        ]
+      }
+    </script>
   </body>
 </html>
