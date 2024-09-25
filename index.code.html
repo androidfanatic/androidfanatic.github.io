@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Manish Raj</title>
+    <meta name="viewport" content="width=device-width" />
+    <link
+      id="favicon"
+      rel="shortcut icon"
+      type="image/png"
+      href="/images/favicon.png"
+    />
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        font-family: Verdana, Sans-Serif;
+      }
+
+      /* cards */
+      .card {
+        box-sizing: border-box;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+      .card h1,
+      h3 {
+        margin: 0;
+        padding: 0;
+        font-weight: normal;
+      }
+      .card1 {
+        background: #fefefe;
+        color: #434343;
+      }
+
+      /* links */
+      .link-simple {
+        color: inherit;
+        text-decoration: none;
+      }
+      .link-simple:visited {
+        color: inherit;
+      }
+
+      /* text */
+      .text-center {
+        text-align: center;
+      }
+      .text-medium {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .text-large {
+        font-size: 36px;
+      }
+      .text-huge {
+        font-size: 64px;
+      }
+      .text-upper {
+        text-transform: uppercase;
+      }
+      a.text-underline {
+        position: relative;
+      }
+      a.text-underline:after {
+        background: none repeat scroll 0 0 transparent;
+        bottom: 0;
+        content: "";
+        display: block;
+        height: 1px;
+        left: 50%;
+        position: absolute;
+        background: #434343;
+        transition: width 0.3s ease 0s, left 0.3s ease 0s;
+        width: 0;
+      }
+      a.text-underline:hover:after {
+        width: 100%;
+        left: 0;
+      }
+      .avatar {
+        width: 256px;
+        border-radius: 50%;
+        border: 4px solid #ddd;
+        transition: width 0.3s ease 0s;
+      }
+      .avatar:hover {
+        width: 272px;
+      }
+      .social_row {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+      }
+      .social {
+        padding: 0 4px;
+        filter: opacity(0.7);
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- card 1 -->
+    <div class="card card1">
+      <div class="text-center">
+        <p>
+          <img
+            class="avatar"
+            src="/images/me.jpg"
+            alt="Manish Raj - profile image"
+          />
+        </p>
+        <h1 class="text-huge text-upper">Manish Raj</h1>
+        <div class="text-center">
+          <p class="text-upper" style="color: #cb4b16">Fullstack Developer</p>
+          <p>
+            <a class="link-simple text-underline" href="/blog">Blog</a> |
+            <a
+              class="link-simple text-underline"
+              href="mailto:manish_raj@outlook.com"
+              title="manish_raj@outlook.com"
+              >Connect</a
+            >
+          </p>
+          <p class="social_row">
+            <a
+              target="_blank"
+              title="Linkedin"
+              href="https://www.linkedin.com/in/manish-raj"
+              ><img
+                class="social"
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgY2xhc3M9ImZlYXRoZXIgZmVhdGhlci1saW5rZWRpbiIgZmlsbD0ibm9uZSIgaGVpZ2h0PSIyNCIgc3Ryb2tlPSJjdXJyZW50Q29sb3IiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlLXdpZHRoPSIyIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTYgOGE2IDYgMCAwIDEgNiA2djdoLTR2LTdhMiAyIDAgMCAwLTItMiAyIDIgMCAwIDAtMiAydjdoLTR2LTdhNiA2IDAgMCAxIDYtNnoiLz48cmVjdCBoZWlnaHQ9IjEyIiB3aWR0aD0iNCIgeD0iMiIgeT0iOSIvPjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIi8+PC9zdmc+"
+            /></a>
+            <a
+              target="_blank"
+              title="Github"
+              href="https://github.com/androidfanatic"
+              ><img
+                class="social"
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEwLjAxNzIzMzcsMjAuMDAzNjQzMSBDMTAuMDIyNDI5LDIwLjEyNjQ4MzcgMTAuMDA5MTcyNCwyMC4yNDYzNTc5IDkuOTgzMzA0NjEsMjAuMzY3NjkwNiBDOS45Mzc4NDk1MywyMC41ODA4OTczIDkuODUwMDY5MDIsMjAuODA2NTA3IDkuNzI1ODEzNzUsMjEuMDE0OTU2MSBDOS4zNzI1ODk2MywyMS42MDc1MjA1IDguNzcyNTQzODIsMjIuMDAyOTI5NCA4LDIyLjAwMjkyOTQgQzYuMTgwMDk4NDEsMjIuMDAyOTI5NCA1LjQ2NTgzNTY3LDIxLjExMDEwMSA0LjU3MTUyMzMxLDE4Ljg3NDMyMDEgQzMuOTY1ODM1NjcsMTcuMzYwMTAxIDMuNjgwMDk4NDEsMTcuMDAyOTI5NCAzLDE3LjAwMjkyOTQgTDMsMTUuMDAyOTI5NCBDNC44MTk5MDE1OSwxNS4wMDI5Mjk0IDUuNTM0MTY0MzMsMTUuODk1NzU3OSA2LjQyODQ3NjY5LDE4LjEzMTUzODggQzcuMDM0MTY0MzMsMTkuNjQ1NzU3OSA3LjMxOTkwMTU5LDIwLjAwMjkyOTQgOCwyMC4wMDI5Mjk0IEM4LDE5LjcxMjc2NDQgNy45OTYwMjYyNywxOS40NTU3MzYzIDcuOTg3NjYzMzYsMTkuMTA3NjYgQzcuOTY4MDYzMjQsMTguMjkxODc0NSA3Ljk2NTgwOTIxLDE4LjEyNTMyOTQgOC4wMDEzOTk5NCwxNy45MDcyMzI4IEM4LjAxNTYyMjIxLDE3LjQzMTE0NjEgOC4xMzg1MzUwNSwxNy4wOTMzMzc5IDguMzg0OTk2NTcsMTYuNzU4MDU1IEM2LjE1MzE5MTYzLDE2LjI3MjIyMjUgNC42NDc5MjAxMSwxNS4yNjg4NTA3IDMuNzgzOTczNjcsMTMuNjQxNDEzMSBMMy40NjAzMzY5MiwxMi44ODAzMTE2IEMzLjE0NTA0NTIzLDExLjk3NDIwNDUgMywxMC45NDc1MzE0IDMsOS43NjE4Mjc4OSBDMyw4LjM5NjI3MDUgMy40MTYzNDYxMiw3LjE3NTI5NDQ2IDQuMTk0MDE4MDksNi4xNTQ2Njk0MiBDMy45NTE0MjY3Miw1LjE4NDUyNTAxIDMuOTg0NjUwMzUsMy45OTkyMjEzOSA0LjUyMDMwODcyLDIuNjYwNjAyMTMgTDQuNjk1MzM5ODYsMi4yMjMxOTYzNiBMNS4xNDQwNjgwMywyLjA3OTY1OTgyIEM1LjIwNDE0NzAxLDIuMDYwNDQyMTEgNS4yNzcxODQyNywyLjA0MzA4NTE2IDUuMzYyOTg5MzksMi4wMjk2MTc5NSBDNi4yMzY3NjI0LDEuODkyNDc4MjUgNy40ODAxMDQ3NywyLjIxOTY3OTM4IDkuMTA1NTQ2NzMsMy4yNjA4NDM0OCBDMTAuMDYzNzY2OCwzLjAzODcxOTU2IDExLjA3Mjg0NjQsMi45MjY1NzM3NyAxMi4wODg3NzA1LDIuOTI2NTczNzcgQzEyLjk5NjYzMjUsMi45MjY1NzM3NyAxMy44OTk0NTY1LDMuMDE4MDk4MzEgMTQuNzYxNjMyLDMuMTk4NTM5NDEgQzE2LjM0MzA1OTMsMi4yMDgyMDYxMiAxNy41NTIyMzksMS44OTc1OTg2NSAxOC40MDI1MDE3LDIuMDI5NzkzNzYgQzE4LjQ4NzMxOTIsMi4wNDI5ODA4MSAxOC41NTk2MDk2LDIuMDYwMDA1NDEgMTguNjE5MTkyMywyLjA3ODkwMDA1IEwxOS4wNzA3MTQ3LDIuMjIyMDg1MzEgTDE5LjI0NTk1ODMsMi42NjIxNTgyNCBDMTkuNzE0NTUzNSwzLjgzODg5ODA2IDE5Ljc5NDk3NzgsNC45MjMzNjM3MyAxOS42MjQ0Njk1LDUuODcyMjg5NzkgQzIwLjUxODQ2NzQsNi45NDUwMDM4OSAyMSw4LjI2Mzc4MDY3IDIxLDkuNzYxODI3ODkgQzIxLDExLjAyNDc2NTggMjAuOTA5NTIwOCwxMS45NzQ0MjM2IDIwLjY0OTQzLDEyLjg5ODI5ODggTDIwLjM3NDkwMywxMy42NTE2NTk4IEMxOS42NTYyODI4LDE1LjI3NzM3MTIgMTguMDcxNDYzLDE2LjI5MTk5MzQgMTUuNjI3NTMyLDE2Ljc3NTI0ODggQzE1Ljg4MTU1NSwxNy4xMjY5Njg1IDE2LDE3LjQ4NDAxNjQgMTYsMTguMDAyOTI5NCBMMTYsMTkuMDAyOTI5NCBDMTYsMTkuNDg3NTMyOCAxNiwxOS41MDI0NTUzIDE1Ljk5ODg5NzEsMjAuMDAyOTMzMiBDMTYuMDAxMTY3NywyMC4wMzg4NjgzIDE2LjAwNDE2NzQsMjAuMDU2NDY4MSAxNi4wMDc0NDA5LDIwLjA2NzQzNDMgQzE2LjAwNjkwNTEsMjAuMDY3NjIwNyAxNi4wMDQ0MjQ4LDIwLjcxMjc4NTggMTYsMjIuMDAyOTI5NCBDMTUuMTQ4MjA2MiwyMi4wMDI5Mjk0IDE0LjUxNDg2ODcsMjEuNTg3NTI2NCAxNC4yMDMzNzUzLDIwLjkzMjI1NjEgQzE0LjA0MTg3NjEsMjAuNTkyNTE5NiAxMy45OTM2MjY2LDIwLjI2ODExOTYgMTQsMTkuOTg4NzI4MiBMMTQsMTguMDAyOTI5NCBDMTQsMTcuOTE5MDgyOCAxMy45OTcwOTAzLDE3LjkxNDIzMzMgMTMuNzkyODkzMiwxNy43MTAwMzYyIEMxMy4yNDcwOTAzLDE3LjE2NDIzMzMgMTMsMTYuNzUyNDE2MiAxMywxNi4wMDI5Mjk0IEwxMywxNS4wOTgzMjcgTDEzLjkwMDA3NDksMTUuMDA3OTM0NSBDMTYuNTc5MzQzOSwxNC43Mzg4NjE0IDE4LjAzNjUzNzUsMTMuOTk0ODA5IDE4LjUxOTY3NzksMTIuOTA3ODM4NiBMMTguNzQ1NDYyMSwxMi4yOTA2MDA3IEMxOC45MjUxMTcsMTEuNjQ1MjIwMSAxOSwxMC44NTkyNTczIDE5LDkuNzYxODI3ODkgQzE5LDguNTk1NzM3NyAxOC41OTI5MDQ2LDcuNjMyNDY3NyAxNy44MjI5OTI0LDYuODYyODU4MjkgTDE3LjM5OTgwOSw2LjQzOTg0MTM2IEwxNy41NzI1MjY5LDUuODY2OTU3NDIgQzE3LjcyNTk2NzUsNS4zNTgwMTM5NiAxNy43NjI0MzMxLDQuNzU1Nzg4NiAxNy42MDAxMDc5LDQuMDY4ODk2NDYgQzE3LjU3MzEyNjUsNC4wNzU3MzE1NSAxNy41NDUwOTA4LDQuMDgzMTgwMDkgMTcuNTE1OTg4Nyw0LjA5MTI4MjE2IEMxNi45ODA1NDQyLDQuMjQwMzUwOTQgMTYuMzEyMDMxNSw0LjU2MDIxNDc5IDE1LjUwNjQ0NzEsNS4wOTg2OTE1OSBMMTUuMTM5MDE5LDUuMzQ0MjkxNTQgTDE0LjcxMDA1NjcsNS4yMzc5MjQxMyBDMTMuODgwMzg4LDUuMDMyMTk1OCAxMi45ODg4NTE2LDQuOTI2NTczNzcgMTIuMDg4NzcwNSw0LjkyNjU3Mzc3IEMxMS4wODc4NjI2LDQuOTI2NTczNzcgMTAuMDk4NDYzNyw1LjA1MzkyMTE5IDkuMTg0NDU5MTcsNS4zMDMwOTcxMSBMOC43Mzg0MDUwNyw1LjQyNDcwMDM5IEw4LjM1NjgxODIsNS4xNjM2NTgxIEM3LjUyMzYyNTc1LDQuNTkzNjczOTUgNi44MzE0NTE3OSw0LjI1NDcwODMxIDYuMjc2NDI0MDgsNC4wOTYzNjUyNCBDNi4yMzY3ODQ0OSw0LjA4NTA1NjUyIDYuMTk5MDQwNTcsNC4wNzQ5NDA3NyA2LjE2MzE2NDI3LDQuMDY1OTIyNjMgQzUuOTY5NTIxNyw0Ljg2MDkwNjYgNi4wNDYxMTEyNiw1LjUxNDA1NTgzIDYuMjQyMjMwMTIsNi4wMDQxNjAxNSBMNi40NzczODMwNSw2LjU5MTgxMTI4IEw2LjA0Njg4NDk5LDcuMDU1ODE3OTMgQzUuMzYwODk3MzEsNy43OTUyMDA3MSA1LDguNjk0OTY3MDUgNSw5Ljc2MTgyNzg5IEM1LDEwLjczODU4NzQgNS4xMTQzNDQzOSwxMS41NDc5NTA5IDUuMzIzODgyNTIsMTIuMTU3NjI1NCBMNS41ODU1NjY5OSwxMi43NzcwNTg4IEM2LjIzOTczODY5LDE0LjAwNDU4MjMgNy42MjkyMDQzMiwxNC43NDMwNzYgMTAuMTA2NTc5MiwxNS4wMDg2MjUyIEwxMSwxNS4xMDQzOTA4IEwxMSwxNi4wMDI5Mjk0IEMxMSwxNi43NTI0MTYyIDEwLjc1MjkwOTcsMTcuMTY0MjMzMyAxMC4yMDcxMDY4LDE3LjcxMDAzNjIgQzEwLjAwMjkwOTcsMTcuOTE0MjMzMyAxMCwxNy45MTkwODI4IDEwLDE4LjAwMjkyOTQgTDkuOTgyNzYzNDUsMTguMTg3Nzk2OSBDOS45NzEzNTc5OSwxOC4yNDg0Mjg5IDkuOTcxMzU3OTksMTguNDA0OTg0IDkuOTg3MDg2MzYsMTkuMDU5NjIxNyBDOS45OTQzMjAyNCwxOS4zNjA3MDY1IDkuOTk4NDQyNzEsMTkuNTk5MDExNiA5Ljk5OTYzNDc3LDE5Ljg0ODAzNTEgQzEwLjAxMTU4MjgsMTkuODk5NTg1NSAxMC4wMTMzODksMTkuOTMyODQzOSAxMC4wMTcyMzM3LDIwLjAwMzY0MzEgWiIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+"
+            /></a>
+            <a
+              target="_blank"
+              title="Instagram"
+              href="https://instagram.com/geek.manish"
+              ><img
+                alt="Instagram"
+                class="social"
+                src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pjxzdmcgdmlld0JveD0iMCAwIDMyIDMyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDojMDEwMTAxO308L3N0eWxlPjwvZGVmcz48dGl0bGUvPjxnIGlkPSJJbnN0YWdyYW0iPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTIxLDMwSDExYTksOSwwLDAsMS05LTlWMTFhOSw5LDAsMCwxLDktOUgyMWE5LDksMCwwLDEsOSw5VjIxQTksOSwwLDAsMSwyMSwzMFpNMTEsNGE3LDcsMCwwLDAtNyw3VjIxYTcsNywwLDAsMCw3LDdIMjFhNyw3LDAsMCwwLDctN1YxMWE3LDcsMCwwLDAtNy03WiIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTE2LDIzYTYuODksNi44OSwwLDAsMS0zLS42NiwxLDEsMCwwLDEsLjg1LTEuODEsNSw1LDAsMSwwLTIuMjEtMiwxLDEsMCwxLDEtMS43MywxQTYuOTMsNi45MywwLDAsMSw5LDE2YTcsNywwLDEsMSw3LDdaIi8+PGNpcmNsZSBjbGFzcz0iY2xzLTEiIGN4PSIyMy41IiBjeT0iOC41IiByPSIxLjUiLz48L2c+PC9zdmc+"
+            /></a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Hinjewadi",
+          "addressRegion": "Maharashtra, India",
+          "postalCode": "411057"
+        },
+        "email": "manish_raj@outlook.com",
+        "image": "/images/me.jpg",
+        "jobTitle": "Fullstack developer",
+        "name": "Manish Raj",
+        "alumniOf": "University of Pune",
+        "birthPlace": "Bihar",
+        "birthDate": "1993",
+        "gender": "male",
+        "nationality": "Indian",
+        "url": "https://manishraj.dev",
+        "sameAs": [
+          "https://www.linkedin.com/in/manish-raj/",
+          "https://instagram.com/geek.manish",
+          "https://twitter.com/manishr41883690"
+        ]
+      }
+    </script>
+  </body>
+</html>
